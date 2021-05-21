@@ -1,0 +1,12 @@
+firebase
+react-native-paper
+
+expo-app-loading
+expo-secure-store
+
+redux
+react-redux
+
+@react-navigation/native
+@react-navigation/stack
+@react-navigation/material-bottom-tabs
