@@ -3,6 +3,7 @@ react-native-paper
 
 expo-app-loading
 expo-secure-store
+expo-status-bar
 
 redux
 react-redux

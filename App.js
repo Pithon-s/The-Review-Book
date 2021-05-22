@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { LogBox, Text, View } from "react-native";
 import firebase from "firebase";
 import AppLoading from "expo-app-loading";
+import LoginScreen from "./src/screens/LoginScreen";
 
 const firebaseConfig = () => {
   firebase.initializeApp({
@@ -61,8 +62,8 @@ export default function App() {
   }
 
   return (
-    <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-      <Text>Welcome to The Review Book</Text>
+    <View style={{ flex: 1 }}>
+      <LoginScreen />
     </View>
   );
 }
