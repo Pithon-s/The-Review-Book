@@ -11,6 +11,7 @@ import { StatusBar } from "expo-status-bar";
 import { Button, Checkbox, TextInput } from "react-native-paper";
 
 import colors from "../config/colors";
+import ImagePicker from "../components/ImagePicker";
 
 const height = Dimensions.get("screen").height;
 
@@ -20,10 +21,17 @@ function LoginScreen({}) {
   const [keepLogged, setKeepLogged] = useState(true);
   const [loading, setLoading] = useState(false);
 
+  const [imageUri, setImageUri] = useState();
+
   return (
     <ScrollView style={styles.container}>
       <StatusBar style="light" backgroundColor={colors.black} />
-      <View style={styles.logoContainer}></View>
+      <View style={styles.logoContainer}>
+        <ImagePicker
+          imageUri={imageUri}
+          setImageUri={(uri) => setImageUri(uri)}
+        />
+      </View>
       <View style={styles.fieldContainer}>
         <TextInput
           mode="outlined"
@@ -160,6 +168,8 @@ const styles = StyleSheet.create({
   },
   logoContainer: {
     height: height * 0.25,
+    justifyContent: "center",
+    alignItems: "center",
   },
   checkboxContainer: {
     flex: 1,

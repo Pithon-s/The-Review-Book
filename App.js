@@ -1,6 +1,6 @@
 import { NavigationContainer } from "@react-navigation/native";
 import React, { useEffect, useState } from "react";
-import { LogBox, Text, View } from "react-native";
+import { LogBox, Text, View, StyleSheet } from "react-native";
 import firebase from "firebase";
 import AppLoading from "expo-app-loading";
 import LoginScreen from "./src/screens/LoginScreen";
@@ -62,8 +62,16 @@ export default function App() {
   }
 
   return (
-    <View style={{ flex: 1 }}>
+    <View style={styles.container}>
       <LoginScreen />
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    // justifyContent: "center",
+    // alignItems: "center",
+  },
+});

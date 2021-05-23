@@ -4,6 +4,8 @@ react-native-paper
 expo-app-loading
 expo-secure-store
 expo-status-bar
+expo-image-picker
+expo-permissions
 
 redux
 react-redux
