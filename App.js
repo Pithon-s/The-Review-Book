@@ -3,7 +3,10 @@ import React, { useEffect, useState } from "react";
 import { LogBox, Text, View, StyleSheet } from "react-native";
 import firebase from "firebase";
 import AppLoading from "expo-app-loading";
+
 import LoginScreen from "./src/screens/LoginScreen";
+import MainScreen from "./src/screens/MainScreen";
+import ProfileScreen from "./src/screens/ProfileScreen";
 
 const firebaseConfig = () => {
   firebase.initializeApp({
@@ -63,7 +66,9 @@ export default function App() {
 
   return (
     <View style={styles.container}>
-      <LoginScreen />
+      {/* <LoginScreen /> */}
+      {/* <MainScreen /> */}
+      <ProfileScreen />
     </View>
   );
 }
