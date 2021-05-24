@@ -48,7 +48,6 @@ export default function App() {
     const result = await secureStorage.readUser();
     if (!result) return;
     const parsed = JSON.parse(result);
-
     setUser(parsed);
     _logIn(parsed.email, parsed.password, setUser);
 */
