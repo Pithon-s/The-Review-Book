@@ -1,12 +1,13 @@
 import { NavigationContainer } from "@react-navigation/native";
+import { LogBox } from "react-native";
 import React, { useEffect, useState } from "react";
-import { LogBox, Text, View, StyleSheet } from "react-native";
 import firebase from "firebase";
 import AppLoading from "expo-app-loading";
 
-import LoginScreen from "./src/screens/LoginScreen";
-import MainScreen from "./src/screens/MainScreen";
-import ProfileScreen from "./src/screens/ProfileScreen";
+import NavigationTheme from "./src/navigations/NavigationTheme";
+import AuthNavigation from "./src/navigations/AuthNavigation";
+import { StateProvider } from "./src/hooks/useUser";
+import AppNavigator from "./src/navigations/AppNavigation";
 
 const firebaseConfig = () => {
   firebase.initializeApp({
@@ -36,6 +37,7 @@ const _logIn = (email, password) => {
 
 export default function App() {
   const [isReady, setIsReady] = useState(false);
+  const [user, setUser] = useState();
   LogBox.ignoreLogs([""]);
 
   useEffect(() => {
@@ -64,18 +66,10 @@ export default function App() {
   }
 
   return (
-    <View style={styles.container}>
-      {/* <LoginScreen /> */}
-      {/* <MainScreen /> */}
-      <ProfileScreen />
-    </View>
+    <StateProvider user={user} setUser={setUser}>
+      <NavigationContainer theme={NavigationTheme}>
+        {user ? <AppNavigator /> : <AuthNavigation />}
+      </NavigationContainer>
+    </StateProvider>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    // justifyContent: "center",
-    // alignItems: "center",
-  },
-});

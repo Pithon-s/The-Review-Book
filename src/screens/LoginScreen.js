@@ -11,27 +11,21 @@ import { StatusBar } from "expo-status-bar";
 import { Button, Checkbox, TextInput } from "react-native-paper";
 
 import colors from "../config/colors";
-import ImagePicker from "../components/ImagePicker";
+import { useUser } from "../hooks/useUser";
 
 const height = Dimensions.get("screen").height;
 
-function LoginScreen({}) {
+function LoginScreen({ navigation }) {
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
   const [keepLogged, setKeepLogged] = useState(true);
   const [loading, setLoading] = useState(false);
-
-  const [imageUri, setImageUri] = useState();
+  const { setUser } = useUser();
 
   return (
     <ScrollView style={styles.container}>
       <StatusBar style="light" backgroundColor={colors.black} />
-      <View style={styles.logoContainer}>
-        <ImagePicker
-          imageUri={imageUri}
-          setImageUri={(uri) => setImageUri(uri)}
-        />
-      </View>
+      <View style={styles.logoContainer}></View>
       <View style={styles.fieldContainer}>
         <TextInput
           mode="outlined"
@@ -86,7 +80,7 @@ function LoginScreen({}) {
           <Button
             mode="contained"
             loading={loading}
-            onPress={() => alert("sign in pressed.. TODO")}
+            onPress={() => setUser("---")}
             style={[styles.button, { width: 120 }]}
             theme={{
               colors: { primary: colors.primary },
@@ -97,7 +91,7 @@ function LoginScreen({}) {
 
           <Button
             mode="text"
-            onPress={() => alert("forget password pressed.. TODO")}
+            onPress={() => navigation.navigate("ForgetPassword")}
             style={styles.button}
             theme={{
               colors: { primary: colors.primary },
@@ -124,7 +118,7 @@ function LoginScreen({}) {
 
         <Button
           mode="contained"
-          onPress={() => alert("sign up pressed.. TODO")}
+          onPress={() => navigation.navigate("Register")}
           style={[styles.button, { width: "100%" }]}
           theme={{
             colors: { primary: "#DDDDDD" },
