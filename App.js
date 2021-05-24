@@ -8,7 +8,7 @@ import NavigationTheme from "./src/navigations/NavigationTheme";
 import AuthNavigation from "./src/navigations/AuthNavigation";
 import { StateProvider } from "./src/hooks/useUser";
 import AppNavigator from "./src/navigations/AppNavigation";
-
+//done
 const firebaseConfig = () => {
   firebase.initializeApp({
     apiKey: "AIzaSyDqNkSJMtZmaE4F_cA9u1_ZOwZJGtpFkoY",
