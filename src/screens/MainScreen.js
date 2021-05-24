@@ -5,7 +5,6 @@ import {
   SafeAreaView,
   StatusBar,
   FlatList,
-  KeyboardAvoidingView,
   Dimensions,
 } from "react-native";
 import {
@@ -18,27 +17,21 @@ import {
   Avatar,
   IconButton,
 } from "react-native-paper";
+
 import color from "../config/colors";
+
+const deptArray = [
+  { id: 1, title: "EE Department" },
+  { id: 2, title: "CS Department" },
+  { id: 3, title: "Department" },
+  // { id: 4, title: "Department" },
+];
+
 function MainScreen(props) {
-  const [searchQuery, setSearchQuery] = React.useState("");
-  const deptArray = [
-    {
-      id: 1,
-      uri: "https://shorturl.at/cAJMS",
-      title: "EE Department",
-      onPress: () => {},
-    },
-    {
-      id: 2,
-      uri: "https://shorturl.at/wBEW5",
-      title: "CS Department",
-    },
-    { id: 3, uri: "https://picsum.photos/700", title: "Department" },
-    { id: 4, uri: "https://picsum.photos/700", title: "Department" },
-  ];
-  const onChangeSearch = (query) => setSearchQuery(query);
+  const [searchQuery, setSearchQuery] = useState("");
   const [itemsBlur, setItemsBlur] = useState(false);
   const [isLoading, setLoading] = useState(false);
+  const onChangeSearch = (query) => setSearchQuery(query);
 
   return (
     <SafeAreaView style={styles.mainContainer}>
@@ -112,11 +105,11 @@ function MainScreen(props) {
                 onPress={() => {
                   setItemsBlur(true);
                   setLoading(true);
-                  item.onPress();
+                  // item.onPress();
                 }}
                 style={styles.card}
               >
-                <Card.Cover source={{ uri: item.uri }} />
+                <Card.Cover source={require("../assets/dept.jpg")} />
                 <Card.Content>
                   <Title style={{ color: color.primary }}>{item.title}</Title>
                   <Paragraph>Card content</Paragraph>
@@ -126,11 +119,16 @@ function MainScreen(props) {
           />
         )}
       </View>
+      <View style={{ height: 300, width: 10 }} />
     </SafeAreaView>
   );
 }
 const styles = StyleSheet.create({
-  mainContainer: { flex: 1, backgroundColor: "white" },
+  mainContainer: {
+    flex: 1,
+    backgroundColor: color.white,
+    overflow: "hidden",
+  },
   mainView: {
     flexDirection: "row",
     alignItems: "center",
