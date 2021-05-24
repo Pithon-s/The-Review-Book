@@ -12,7 +12,6 @@ import { Button, Checkbox, TextInput } from "react-native-paper";
 
 import colors from "../config/colors";
 import { useUser } from "../hooks/useUser";
-// import { useUser } from "../hooks/useUser";
 
 const height = Dimensions.get("screen").height;
 
