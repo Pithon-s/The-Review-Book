@@ -4,7 +4,6 @@ import { Avatar } from "react-native-paper";
 import * as imagePicker from "expo-image-picker";
 
 import colors from "../config/colors";
-//import colors from "../config/colors";
 
 function ImagePicker({ imageUri, setImageUri }) {
   useEffect(() => {
