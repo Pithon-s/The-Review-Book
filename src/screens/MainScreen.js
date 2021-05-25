@@ -35,7 +35,7 @@ function MainScreen(props) {
 
   return (
     <SafeAreaView style={styles.mainContainer}>
-      {/* <StatusBar backgroundColor={color.primary} /> */}
+      <StatusBar backgroundColor={color.secondary} />
       <View style={styles.mainView}>
         {isLoading == true ? (
           <IconButton
@@ -137,10 +137,14 @@ const styles = StyleSheet.create({
     //backgroundColor: "tomato",
     justifyContent: "center",
   },
-  searchBar: { width: "95%", borderRadius: 20 },
+  searchBar: {
+    width: "95%",
+    borderRadius: 20,
+  },
   cardView: {
     height: Dimensions.get("screen").height * 0.9,
     width: "100%",
+    paddingBottom: "33%",
   },
   card: {
     height: 270,
