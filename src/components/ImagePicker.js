@@ -62,7 +62,7 @@ function ImagePicker({ imageUri, setImageUri }) {
             size={25}
             color={colors.white}
             theme={{
-              colors: { primary: colors.primaryLight },
+              colors: { primary: "#8bb7d7" },
             }}
             style={{ position: "absolute", bottom: 60, left: 65 }}
           />
@@ -84,11 +84,7 @@ function ImagePicker({ imageUri, setImageUri }) {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    // borderRadius: 40,
-    // borderWidth: 3,
-    // borderColor: colors.primaryLight,
-  },
+  container: {},
   image: {
     width: "100%",
     height: "100%",

@@ -24,7 +24,7 @@ function LoginScreen({ navigation }) {
 
   return (
     <ScrollView style={styles.container}>
-      <StatusBar style="light" backgroundColor={colors.black} />
+      <StatusBar style="light" backgroundColor={colors.primary} />
       <View style={styles.logoContainer}></View>
       <View style={styles.fieldContainer}>
         <TextInput
