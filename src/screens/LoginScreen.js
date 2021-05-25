@@ -22,6 +22,11 @@ function LoginScreen({ navigation }) {
   const [loading, setLoading] = useState(false);
   const { setUser } = useUser();
 
+  const handleSubmit = () => {
+    setLoading(true);
+    // setUser("-");
+  };
+
   return (
     <ScrollView style={styles.container}>
       <StatusBar style="light" backgroundColor={colors.primary} />
@@ -80,7 +85,7 @@ function LoginScreen({ navigation }) {
           <Button
             mode="contained"
             loading={loading}
-            onPress={() => setUser("---")}
+            onPress={handleSubmit}
             style={[styles.button, { width: 120 }]}
             theme={{
               colors: { primary: colors.primary },

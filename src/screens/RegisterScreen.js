@@ -1,20 +1,31 @@
 import React, { useState } from "react";
-import { View, StyleSheet, Text, Dimensions, ScrollView } from "react-native";
+import {
+  View,
+  StyleSheet,
+  Text,
+  Dimensions,
+  ScrollView,
+  TouchableOpacity,
+} from "react-native";
 import { Button } from "react-native-paper";
 import { Formik } from "formik";
 
 import ImagePicker from "../components/ImagePicker";
 import FormTextInput from "../components/common/FormTextInput";
 import colors from "../config/colors";
+import { color } from "react-native-reanimated";
 
 const height = Dimensions.get("screen").height;
 
-function RegisterScreen({}) {
+function RegisterScreen({ navigation }) {
   const [imageUri, setImageUri] = useState();
   const [loading, setLoading] = useState(false);
   const [registrationFailed, setRegistrationFailed] = useState(false);
 
-  const handleSubmit = () => {};
+  const handleSubmit = () => {
+    setLoading(true);
+    setRegistrationFailed(false);
+  };
 
   return (
     <View style={styles.container}>
@@ -97,6 +108,26 @@ function RegisterScreen({}) {
                 >
                   register
                 </Button>
+
+                <View
+                  style={{
+                    flexDirection: "row",
+                    alignItems: "center",
+                    marginTop: 45,
+                    justifyContent: "center",
+                  }}
+                >
+                  <Text style={{ color: colors.darkgrey }}>
+                    {"ALREADY HAVE AN ACCOUNT  "}
+                  </Text>
+                  <TouchableOpacity
+                    onPress={() => navigation.navigate("Login")}
+                  >
+                    <Text style={{ color: colors.primary, fontWeight: "bold" }}>
+                      SIGN IN
+                    </Text>
+                  </TouchableOpacity>
+                </View>
               </View>
             )}
           </Formik>
