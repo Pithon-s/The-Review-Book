@@ -15,7 +15,7 @@ function ProfileScreen(props) {
     <SafeAreaView style={styles.container}>
       <ScrollView showsVerticalScrollIndicator={false}>
         <View style={styles.titlebar}>
-          <Ionicons name="ios-arrow-back" size={24} color="black" />
+          {/* <Ionicons name="ios-arrow-back" size={24} color="black" /> */}
           <Feather name="more-vertical" size={24} color="black" />
         </View>
         <View style={{ alignSelf: "center" }}>
@@ -27,14 +27,14 @@ function ProfileScreen(props) {
             ></Image>
           </View>
           <View style={styles.active} />
-          <View style={styles.add}>
+          {/* <View style={styles.add}>
             <Ionicons
               name="ios-add"
               size={48}
               color="#DFD8C8"
               style={{ marginTop: 6, marginLeft: 2 }}
             ></Ionicons>
-          </View>
+          </View> */}
         </View>
         <View style={styles.info}>
           <Text style={[styles.text, { fontWeight: "200", fontSize: 30 }]}>
@@ -84,9 +84,8 @@ const styles = StyleSheet.create({
     color: "#AEB5BC",
   },
   image: {
-    flex: 1,
-    height: undefined,
-    width: undefined,
+    height: "100%",
+    width: "100%",
   },
   titlebar: {
     flexDirection: "row",
@@ -95,16 +94,20 @@ const styles = StyleSheet.create({
     marginHorizontal: 16,
   },
   profilePic: {
-    height: 200,
-    width: 200,
+    height: 120,
+    width: 120,
     borderRadius: 100,
     overflow: "hidden",
+    borderWidth: 1,
+    borderColor: "black",
+    justifyContent: "center",
+    alignItems: "center",
   },
   active: {
     backgroundColor: "#34FF89",
     position: "absolute",
-    bottom: 28,
-    left: 10,
+    bottom: 85,
+    left: 1,
     padding: 4,
     height: 20,
     width: 20,
