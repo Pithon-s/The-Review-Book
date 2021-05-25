@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { View, StyleSheet, TouchableHighlight, Alert } from "react-native";
 import { Avatar } from "react-native-paper";
 import * as imagePicker from "expo-image-picker";
@@ -6,12 +6,6 @@ import * as imagePicker from "expo-image-picker";
 import colors from "../config/colors";
 
 function ImagePicker({ imageUri, setImageUri }) {
-  useEffect(() => {
-    imagePicker.requestMediaLibraryPermissionsAsync().then(({ status }) => {
-      console.log(status);
-    });
-  }, []);
-
   const pickImage = async () => {
     try {
       imagePicker
@@ -31,7 +25,7 @@ function ImagePicker({ imageUri, setImageUri }) {
     }
   };
 
-  const handleOnPress = () => {
+  const onPressImp = () => {
     !imageUri
       ? pickImage()
       : Alert.alert("Delete", "Are you sure?", [
@@ -43,14 +37,26 @@ function ImagePicker({ imageUri, setImageUri }) {
         ]);
   };
 
+  const handleOnPress = () => {
+    imagePicker.getMediaLibraryPermissionsAsync().then(({ status }) => {
+      if (status != "granted") {
+        imagePicker.requestMediaLibraryPermissionsAsync().then(({ status }) => {
+          if (status != "granted")
+            Alert.alert("Error !!", "Media library permission required.");
+          else onPressImp();
+        });
+      } else onPressImp();
+    });
+  };
+
   return (
     <TouchableHighlight onPress={() => handleOnPress()} underlayColor="#F0F0F0">
-      <View style={styles.container}>
+      <View>
         {imageUri && <Avatar.Image size={80} source={{ uri: imageUri }} />}
         {!imageUri && (
           <Avatar.Image
             size={80}
-            source={require("../assets/user2.png")}
+            source={require("../assets/user.png")}
             theme={{
               colors: { primary: "transparent" },
             }}
@@ -62,9 +68,9 @@ function ImagePicker({ imageUri, setImageUri }) {
             size={25}
             color={colors.white}
             theme={{
-              colors: { primary: "#8bb7d7" },
+              colors: { primary: colors.primaryLight },
             }}
-            style={{ position: "absolute", bottom: 60, left: 65 }}
+            style={{ position: "absolute", bottom: 55, left: 60 }}
           />
         )}
         {imageUri && (
@@ -75,7 +81,7 @@ function ImagePicker({ imageUri, setImageUri }) {
             theme={{
               colors: { primary: colors.danger },
             }}
-            style={{ position: "absolute", bottom: 55, left: 55 }}
+            style={{ position: "absolute", bottom: 55, left: 60 }}
           />
         )}
       </View>
@@ -84,7 +90,6 @@ function ImagePicker({ imageUri, setImageUri }) {
 }
 
 const styles = StyleSheet.create({
-  container: {},
   image: {
     width: "100%",
     height: "100%",
