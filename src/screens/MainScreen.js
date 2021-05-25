@@ -35,7 +35,7 @@ function MainScreen(props) {
 
   return (
     <SafeAreaView style={styles.mainContainer}>
-      <StatusBar backgroundColor={color.white} />
+      <StatusBar barStyle="light" backgroundColor={color.primary} />
       <View style={styles.mainView}>
         {isLoading == true ? (
           <IconButton
@@ -90,7 +90,7 @@ function MainScreen(props) {
                       source={{ uri: "https://picsum.photos/700" }}
                     />
                   )}
-                  onPress={() => console.log("press")}
+                  onPress={() => props.navigation.navigate("TeacherProfile")}
                   rippleColor={color.secondary}
                 />
               )}

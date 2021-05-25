@@ -5,19 +5,12 @@ import color from "../config/colors";
 import { createStackNavigator } from "@react-navigation/stack";
 import ProfileScreen from "../screens/ProfileScreen";
 import MainScreen from "../screens/MainScreen";
-import TeacherProfileScreen from "../screens/TeacherProfileScreen";
 
 const Tab = createMaterialBottomTabNavigator();
-const Stack = createStackNavigator();
-const StackNavigator = () => (
-  <Stack.Navigator initialRouteName="main">
-    <Stack.Screen name="main" component={MainScreen} />
-    <Stack.Screen name="t-profile" component={TeacherProfileScreen} />
-  </Stack.Navigator>
-);
+
 const AppNavigator = () => (
   <Tab.Navigator
-    initialRouteName="MainScreen"
+    initialRouteName="Home"
     shifting={true}
     activeColor={color.white}
     inactiveColor={color.secondary}
@@ -28,7 +21,6 @@ const AppNavigator = () => (
       component={MainScreen}
       options={{
         tabBarLabel: "Home",
-        // tabBarColor: color.white,
         tabBarIcon: () => <Entypo name="home" color={color.white} size={20} />,
       }}
     />
@@ -38,7 +30,6 @@ const AppNavigator = () => (
       component={ProfileScreen}
       options={{
         tabBarLabel: "Account",
-        // tabBarColor: color.primaryLights,
         tabBarIcon: () => (
           <MaterialCommunityIcons
             name="account"

@@ -8,6 +8,7 @@ import NavigationTheme from "./src/navigations/NavigationTheme";
 import AuthNavigation from "./src/navigations/AuthNavigation";
 import { StateProvider } from "./src/hooks/useUser";
 import AppNavigator from "./src/navigations/AppNavigation";
+import ProfileNavigation from "./src/navigations/ProfileNavigation";
 //done
 const firebaseConfig = () => {
   firebase.initializeApp({
@@ -68,7 +69,7 @@ export default function App() {
   return (
     <StateProvider user={user} setUser={setUser}>
       <NavigationContainer theme={NavigationTheme}>
-        {user ? <AppNavigator /> : <AuthNavigation />}
+        {user ? <ProfileNavigation /> : <AuthNavigation />}
       </NavigationContainer>
     </StateProvider>
   );

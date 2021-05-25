@@ -5,7 +5,7 @@ export default {
   dodgerblue: "#1C90FF",
   facebook: "#1877F2",
   lightgrey: "#E7E9E9",
-  primary: "#233e8b",
+  primary: "#325bd1",
   primaryLight: "#8ab6d6",
   secondary: "#325bd1",
   white: "#FFF",

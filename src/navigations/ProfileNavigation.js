@@ -1,11 +1,17 @@
 import React from "react";
 import { View, StyleSheet } from "react-native";
+import AppNavigator from "./AppNavigation";
+import { createStackNavigator } from "@react-navigation/stack";
+import TeacherProfileScreen from "../screens/TeacherProfileScreen";
 const Stack = createStackNavigator();
 function ProfileNavigation(props) {
   return (
-    <Stack.Navigator initialRouteName="main">
-      <Stack.Screen name="main" component={MainScreen} />
-      <Stack.Screen name="t-profile" component={TeacherProfileScreen} />
+    <Stack.Navigator
+      initialRoute="TeacherProfile"
+      screenOptions={{ headerShown: false }}
+    >
+      <Stack.Screen name="TabNavigator" component={AppNavigator} />
+      <Stack.Screen name="TeacherProfile" component={TeacherProfileScreen} />
     </Stack.Navigator>
   );
 }
