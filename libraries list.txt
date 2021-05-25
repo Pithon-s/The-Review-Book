@@ -1,4 +1,5 @@
 firebase
+formik
 react-native-paper
 
 expo-app-loading

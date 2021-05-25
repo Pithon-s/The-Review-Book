@@ -25,7 +25,7 @@ function ImagePicker({ imageUri, setImageUri }) {
     }
   };
 
-  const onPressImp = () => {
+  const handleOnPressImp = () => {
     !imageUri
       ? pickImage()
       : Alert.alert("Delete", "Are you sure?", [
@@ -43,9 +43,9 @@ function ImagePicker({ imageUri, setImageUri }) {
         imagePicker.requestMediaLibraryPermissionsAsync().then(({ status }) => {
           if (status != "granted")
             Alert.alert("Error !!", "Media library permission required.");
-          else onPressImp();
+          else handleOnPressImp();
         });
-      } else onPressImp();
+      } else handleOnPressImp();
     });
   };
 

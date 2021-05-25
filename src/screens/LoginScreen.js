@@ -151,8 +151,6 @@ const styles = StyleSheet.create({
   },
   button: {
     borderRadius: 20,
-    height: 40,
-    justifyContent: "center",
   },
   buttonsContainer: {
     marginTop: 10,
@@ -171,12 +169,14 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   fieldContainer: {
+    justifyContent: "center",
     height: height * 0.4,
     width: "90%",
     alignSelf: "center",
   },
   bottomContainer: {
-    height: height * 0.35,
+    justifyContent: "center",
+    height: height * 0.3,
     width: "90%",
     alignSelf: "center",
   },
