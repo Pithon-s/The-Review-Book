@@ -35,7 +35,7 @@ function MainScreen(props) {
 
   return (
     <SafeAreaView style={styles.mainContainer}>
-      <StatusBar backgroundColor={color.primary} />
+      {/* <StatusBar backgroundColor={color.primary} /> */}
       <View style={styles.mainView}>
         {isLoading == true ? (
           <IconButton

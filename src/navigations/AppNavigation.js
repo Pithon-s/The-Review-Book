@@ -7,7 +7,11 @@ import MainScreen from "../screens/MainScreen";
 
 const Tab = createMaterialBottomTabNavigator();
 const AppNavigator = () => (
-  <Tab.Navigator initialRouteName="MainScreen" shifting={true}>
+  <Tab.Navigator
+    initialRouteName="MainScreen"
+    shifting={true}
+    barStyle={{ backgroundColor: "#233e8b" }}
+  >
     <Tab.Screen
       name="Home"
       component={MainScreen}
