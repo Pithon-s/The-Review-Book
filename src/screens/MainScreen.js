@@ -17,8 +17,6 @@ import {
   Avatar,
   IconButton,
 } from "react-native-paper";
-import colors from "../config/colors";
-
 import color from "../config/colors";
 
 const deptArray = [
