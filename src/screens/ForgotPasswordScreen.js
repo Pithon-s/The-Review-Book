@@ -4,37 +4,53 @@ import {
   Text,
   StyleSheet,
   Dimensions,
-  TouchableOpacity,
   Image,
+  StatusBar,
 } from "react-native";
-import { Avatar, Button, TextInput } from "react-native-paper";
+import { Button, TextInput } from "react-native-paper";
+import firebase from "firebase";
 
 import colors from "../config/colors";
+const iconSize = 85;
 
 const height = Dimensions.get("screen").height;
 
 function ForgotPasswordScreen({}) {
   const [email, setEmail] = useState();
-  const handleContinue = () => {};
-  const handleResend = () => {};
+  const [loading, setLoading] = useState(false);
+
+  const handleSubmit = () => {
+    if (!email) return;
+    setLoading(true);
+
+    firebase
+      .auth()
+      .sendPasswordResetEmail(email)
+      .then(() => Alert.alert("Note !!", "Please check you email."))
+      .catch((error) => {
+        Alert.alert("Error !!", error.message);
+      });
+
+    setLoading(false);
+  };
 
   return (
     <View style={styles.container}>
+      <StatusBar style="light" backgroundColor={colors.primary} />
       <View style={styles.topContainer}>
         <View
           style={{
             justifyContent: "flex-end",
             flex: 1,
-            borderRadius: 45,
-            top: 50,
-            overflow: "hidden",
+            top: iconSize / 2,
           }}
         >
           <Image
             source={require("../assets/lock.png")}
             style={{
-              height: 90,
-              width: 90,
+              height: iconSize,
+              width: iconSize,
+              borderRadius: iconSize / 2,
             }}
           />
         </View>
@@ -60,13 +76,14 @@ function ForgotPasswordScreen({}) {
 
         <Button
           mode="contained"
-          onPress={handleContinue}
+          onPress={handleSubmit}
+          loading={loading}
           style={styles.button}
           theme={{
             colors: { primary: colors.primary },
           }}
         >
-          continue
+          Send email
         </Button>
       </View>
     </View>

@@ -5,10 +5,12 @@ import {
   StyleSheet,
   Dimensions,
   TouchableOpacity,
+  Image,
 } from "react-native";
-import { Avatar, Button } from "react-native-paper";
+import { Button } from "react-native-paper";
 
 import colors from "../config/colors";
+const iconSize = 70;
 
 const height = Dimensions.get("screen").height;
 
@@ -20,18 +22,22 @@ function EmailVerificationScreen({}) {
     <View style={styles.container}>
       <View style={styles.topContainer}>
         <Text style={styles.topTitle}>Email Verification</Text>
-        <Avatar.Image
-          size={80}
-          source={require("../assets/email.png")}
+        <View
           style={{
             justifyContent: "flex-end",
             flex: 1,
-            top: 40,
+            top: iconSize / 2,
           }}
-          theme={{
-            colors: { primary: colors.primary },
-          }}
-        />
+        >
+          <Image
+            source={require("../assets/email.png")}
+            style={{
+              borderRadius: iconSize / 2,
+              height: iconSize,
+              width: iconSize,
+            }}
+          />
+        </View>
       </View>
       <View style={styles.bottomContainer}>
         <Text style={styles.msgText}>
