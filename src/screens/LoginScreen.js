@@ -24,7 +24,7 @@ function LoginScreen({ navigation }) {
 
   const handleSubmit = () => {
     setLoading(true);
-    // setUser("-");
+    setUser("-");
   };
 
   return (

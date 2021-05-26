@@ -7,7 +7,6 @@ import AppLoading from "expo-app-loading";
 import NavigationTheme from "./src/navigations/NavigationTheme";
 import AuthNavigation from "./src/navigations/AuthNavigation";
 import { StateProvider } from "./src/hooks/useUser";
-import AppNavigator from "./src/navigations/AppNavigation";
 import ProfileNavigation from "./src/navigations/ProfileNavigation";
 //done
 

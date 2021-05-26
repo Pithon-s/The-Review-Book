@@ -1,8 +1,10 @@
 import React from "react";
 import { View, StyleSheet } from "react-native";
-import AppNavigator from "./AppNavigation";
 import { createStackNavigator } from "@react-navigation/stack";
+
+import AppNavigator from "./AppNavigation";
 import TeacherProfileScreen from "../screens/TeacherProfileScreen";
+
 const Stack = createStackNavigator();
 function ProfileNavigation(props) {
   return (
