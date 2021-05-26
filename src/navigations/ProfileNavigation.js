@@ -7,7 +7,7 @@ const Stack = createStackNavigator();
 function ProfileNavigation(props) {
   return (
     <Stack.Navigator
-      initialRoute="TeacherProfile"
+      initialRoute="TabNavigator"
       screenOptions={{ headerShown: false }}
     >
       <Stack.Screen name="TabNavigator" component={AppNavigator} />
