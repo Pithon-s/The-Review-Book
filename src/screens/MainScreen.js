@@ -17,6 +17,7 @@ import {
   Avatar,
   IconButton,
 } from "react-native-paper";
+import colors from "../config/colors";
 
 import color from "../config/colors";
 
@@ -35,7 +36,7 @@ function MainScreen(props) {
 
   return (
     <SafeAreaView style={styles.mainContainer}>
-      <StatusBar backgroundColor={color.white} />
+      <StatusBar backgroundColor={color.primary} />
       <View style={styles.mainView}>
         {isLoading == true ? (
           <IconButton
@@ -91,7 +92,7 @@ function MainScreen(props) {
                     />
                   )}
                   onPress={() => console.log("press")}
-                  rippleColor={color.secondary}
+                  rippleColor={color.primaryLight}
                 />
               )}
             />
@@ -100,6 +101,11 @@ function MainScreen(props) {
           <FlatList
             data={deptArray}
             keyExtractor={(key) => key.id.toString()}
+            ListFooterComponent={
+              <View
+                style={{ height: Dimensions.get("screen").height * 0.15 }}
+              />
+            }
             renderItem={({ item }) => (
               <Card
                 onPress={() => {
@@ -119,7 +125,6 @@ function MainScreen(props) {
           />
         )}
       </View>
-      <View style={{ height: 300, width: 10 }} />
     </SafeAreaView>
   );
 }
@@ -144,7 +149,6 @@ const styles = StyleSheet.create({
   cardView: {
     height: Dimensions.get("screen").height * 0.9,
     width: "100%",
-    paddingBottom: "33%",
   },
   card: {
     height: 270,

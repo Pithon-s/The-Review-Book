@@ -22,9 +22,14 @@ function LoginScreen({ navigation }) {
   const [loading, setLoading] = useState(false);
   const { setUser } = useUser();
 
+  const handleSubmit = () => {
+    setLoading(true);
+    // setUser("-");
+  };
+
   return (
     <ScrollView style={styles.container}>
-      <StatusBar backgroundColor={colors.primary} />
+      <StatusBar style="light" backgroundColor={colors.primary} />
       <View style={styles.logoContainer}></View>
       <View style={styles.fieldContainer}>
         <TextInput
@@ -80,7 +85,7 @@ function LoginScreen({ navigation }) {
           <Button
             mode="contained"
             loading={loading}
-            onPress={() => setUser("---")}
+            onPress={handleSubmit}
             style={[styles.button, { width: 120 }]}
             theme={{
               colors: { primary: colors.primary },
@@ -151,8 +156,6 @@ const styles = StyleSheet.create({
   },
   button: {
     borderRadius: 20,
-    height: 40,
-    justifyContent: "center",
   },
   buttonsContainer: {
     marginTop: 10,
@@ -171,12 +174,14 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   fieldContainer: {
+    justifyContent: "center",
     height: height * 0.4,
     width: "90%",
     alignSelf: "center",
   },
   bottomContainer: {
-    height: height * 0.35,
+    justifyContent: "center",
+    height: height * 0.3,
     width: "90%",
     alignSelf: "center",
   },
