@@ -1,62 +1,43 @@
-import React, { useState } from "react";
+import React from "react";
 import {
   View,
   Text,
   StyleSheet,
   Dimensions,
   TouchableOpacity,
-  Image,
 } from "react-native";
-import { Avatar, Button, TextInput } from "react-native-paper";
+import { Avatar, Button } from "react-native-paper";
 
 import colors from "../config/colors";
 
 const height = Dimensions.get("screen").height;
 
-function ForgotPasswordScreen({}) {
-  const [email, setEmail] = useState();
+function EmailVerificationScreen({}) {
   const handleContinue = () => {};
   const handleResend = () => {};
 
   return (
     <View style={styles.container}>
       <View style={styles.topContainer}>
-        <View
+        <Text style={styles.topTitle}>Email Verification</Text>
+        <Avatar.Image
+          size={80}
+          source={require("../assets/email.png")}
           style={{
             justifyContent: "flex-end",
             flex: 1,
-            borderRadius: 45,
-            top: 50,
-            overflow: "hidden",
+            top: 40,
           }}
-        >
-          <Image
-            source={require("../assets/lock.png")}
-            style={{
-              height: 90,
-              width: 90,
-            }}
-          />
-        </View>
-      </View>
-      <View style={styles.bottomContainer}>
-        <Text style={styles.msgText}>
-          Please enter your email address. We will send you an email to reset
-          your password
-        </Text>
-
-        <TextInput
-          mode="flat"
-          label="Enter your email"
-          value={email}
-          onChangeText={(email) => setEmail(email)}
-          placeholder="xxxx-xxx-xxx@cuilahore.edu.pk"
-          keyboardType="email-address"
-          style={styles.textField}
           theme={{
             colors: { primary: colors.primary },
           }}
         />
+      </View>
+      <View style={styles.bottomContainer}>
+        <Text style={styles.msgText}>
+          We just sent you the verification link. Please check your email and
+          'continue' after verify.
+        </Text>
 
         <Button
           mode="contained"
@@ -68,6 +49,30 @@ function ForgotPasswordScreen({}) {
         >
           continue
         </Button>
+
+        <View
+          style={{
+            flexDirection: "row",
+            marginTop: 15,
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <Text style={{ color: colors.darkgrey, fontSize: 16 }}>
+            {"Didn't get the link?  "}
+          </Text>
+          <TouchableOpacity onPress={handleResend}>
+            <Text
+              style={{
+                color: "#5B7CDA",
+                fontWeight: "bold",
+                fontSize: 16,
+              }}
+            >
+              Resend code
+            </Text>
+          </TouchableOpacity>
+        </View>
       </View>
     </View>
   );
@@ -75,17 +80,16 @@ function ForgotPasswordScreen({}) {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    flex: 0.85,
     backgroundColor: colors.white,
   },
   button: {
     borderRadius: 20,
     width: "100%",
-    marginTop: 30,
   },
   topContainer: {
     alignItems: "center",
-    height: height * 0.25,
+    height: height * 0.2,
     backgroundColor: colors.primary,
   },
   topTitle: {
@@ -94,11 +98,8 @@ const styles = StyleSheet.create({
     marginTop: 30,
     fontWeight: "bold",
   },
-  textField: {
-    backgroundColor: colors.white,
-  },
   bottomContainer: {
-    paddingTop: 80,
+    paddingTop: 60,
     height: height * 0.75,
     alignSelf: "center",
     width: "85%",
@@ -111,4 +112,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ForgotPasswordScreen;
+export default EmailVerificationScreen;

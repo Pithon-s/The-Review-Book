@@ -7,133 +7,156 @@ import {
   ScrollView,
   TouchableOpacity,
 } from "react-native";
-import { Button } from "react-native-paper";
+import { Button, Modal, Portal, Provider } from "react-native-paper";
 import { Formik } from "formik";
 
 import ImagePicker from "../components/ImagePicker";
 import FormTextInput from "../components/common/FormTextInput";
 import colors from "../config/colors";
-import { color } from "react-native-reanimated";
+import EmailVerificationScreen from "./EmailVerificationScreen";
 
 const height = Dimensions.get("screen").height;
 
 function RegisterScreen({ navigation }) {
   const [imageUri, setImageUri] = useState();
   const [loading, setLoading] = useState(false);
+  const [isModelVisible, setIsModelVisible] = useState(false);
   const [registrationFailed, setRegistrationFailed] = useState(false);
 
   const handleSubmit = () => {
     setLoading(true);
     setRegistrationFailed(false);
+    // registertion process here -- TODO
+    // inside .then() of createAccount, setIsModelVisible to true.
+
+    setIsModelVisible(true); // temp
+  };
+
+  const handleModelDismiss = () => {
+    setIsModelVisible(false);
   };
 
   return (
-    <View style={styles.container}>
-      <View style={styles.topContainer}>
-        <ImagePicker imageUri={imageUri} setImageUri={setImageUri} />
-      </View>
-      <ScrollView>
-        <View style={styles.bottomContainer}>
-          <Formik
-            initialValues={{
-              name: "",
-              email: "",
-              password: "",
-              confirmPassword: "",
+    <Provider>
+      <View style={styles.container}>
+        <Portal>
+          <Modal
+            visible={isModelVisible}
+            onDismiss={handleModelDismiss}
+            contentContainerStyle={{
+              alignSelf: "center",
             }}
-            onSubmit={handleSubmit}
           >
-            {({ handleSubmit, values, touched }) => (
-              <View style={styles.inputs}>
-                {registrationFailed && (
-                  <Text style={styles.errortext}>Registration Failed!</Text>
-                )}
+            <EmailVerificationScreen />
+          </Modal>
+        </Portal>
 
-                <FormTextInput
-                  mode="flat"
-                  label="Full name"
-                  title="name"
-                  error={!values["name"] && touched["name"]}
-                  style={styles.textField}
-                  theme={{
-                    colors: { primary: colors.primary },
-                  }}
-                />
-
-                <FormTextInput
-                  mode="flat"
-                  label="Email"
-                  title="email"
-                  placeholder="xxxx-xxx-xxx@cuilahore.edu.pk"
-                  keyboardType="email-address"
-                  error={!values["email"] && touched["email"]}
-                  style={styles.textField}
-                  theme={{
-                    colors: { primary: colors.primary },
-                  }}
-                />
-
-                <FormTextInput
-                  mode="flat"
-                  label="Password"
-                  title="password"
-                  secureTextEntry
-                  style={styles.textField}
-                  error={!values["password"] && touched["password"]}
-                  theme={{
-                    colors: { primary: colors.primary },
-                  }}
-                />
-
-                <FormTextInput
-                  mode="flat"
-                  label="Confirm Password"
-                  title="confirmPassword"
-                  secureTextEntry
-                  style={styles.textField}
-                  error={values["password"] !== values["confirmPassword"]}
-                  theme={{
-                    colors: { primary: colors.primary },
-                  }}
-                />
-
-                <Button
-                  mode="contained"
-                  loading={loading}
-                  onPress={handleSubmit}
-                  style={styles.button}
-                  theme={{
-                    colors: { primary: colors.primary },
-                  }}
-                >
-                  register
-                </Button>
-
-                <View
-                  style={{
-                    flexDirection: "row",
-                    alignItems: "center",
-                    marginTop: 45,
-                    justifyContent: "center",
-                  }}
-                >
-                  <Text style={{ color: colors.darkgrey }}>
-                    {"ALREADY HAVE AN ACCOUNT  "}
-                  </Text>
-                  <TouchableOpacity
-                    onPress={() => navigation.navigate("Login")}
-                  >
-                    <Text style={{ color: colors.primary, fontWeight: "bold" }}>
-                      SIGN IN
-                    </Text>
-                  </TouchableOpacity>
-                </View>
-              </View>
-            )}
-          </Formik>
+        <View style={styles.topContainer}>
+          <ImagePicker imageUri={imageUri} setImageUri={setImageUri} />
         </View>
-      </ScrollView>
-    </View>
+        <ScrollView>
+          <View style={styles.bottomContainer}>
+            <Formik
+              initialValues={{
+                name: "",
+                email: "",
+                password: "",
+                confirmPassword: "",
+              }}
+              onSubmit={handleSubmit}
+            >
+              {({ handleSubmit, values, touched }) => (
+                <View style={styles.inputs}>
+                  {registrationFailed && (
+                    <Text style={styles.errortext}>Registration Failed!</Text>
+                  )}
+
+                  <FormTextInput
+                    mode="flat"
+                    label="Full name"
+                    title="name"
+                    error={!values["name"] && touched["name"]}
+                    style={styles.textField}
+                    theme={{
+                      colors: { primary: colors.primary },
+                    }}
+                  />
+
+                  <FormTextInput
+                    mode="flat"
+                    label="Email"
+                    title="email"
+                    placeholder="xxxx-xxx-xxx@cuilahore.edu.pk"
+                    keyboardType="email-address"
+                    error={!values["email"] && touched["email"]}
+                    style={styles.textField}
+                    theme={{
+                      colors: { primary: colors.primary },
+                    }}
+                  />
+
+                  <FormTextInput
+                    mode="flat"
+                    label="Password"
+                    title="password"
+                    secureTextEntry
+                    style={styles.textField}
+                    error={!values["password"] && touched["password"]}
+                    theme={{
+                      colors: { primary: colors.primary },
+                    }}
+                  />
+
+                  <FormTextInput
+                    mode="flat"
+                    label="Confirm Password"
+                    title="confirmPassword"
+                    secureTextEntry
+                    style={styles.textField}
+                    error={values["password"] !== values["confirmPassword"]}
+                    theme={{
+                      colors: { primary: colors.primary },
+                    }}
+                  />
+
+                  <Button
+                    mode="contained"
+                    loading={loading}
+                    onPress={handleSubmit}
+                    style={styles.button}
+                    theme={{
+                      colors: { primary: colors.primary },
+                    }}
+                  >
+                    register
+                  </Button>
+
+                  <View
+                    style={{
+                      flexDirection: "row",
+                      alignItems: "center",
+                      marginTop: 45,
+                      justifyContent: "center",
+                    }}
+                  >
+                    <Text style={{ color: colors.darkgrey }}>
+                      {"ALREADY HAVE AN ACCOUNT?  "}
+                    </Text>
+                    <TouchableOpacity
+                      onPress={() => navigation.navigate("Login")}
+                    >
+                      <Text style={{ color: "#5B7CDA", fontWeight: "bold" }}>
+                        SIGN IN
+                      </Text>
+                    </TouchableOpacity>
+                  </View>
+                </View>
+              )}
+            </Formik>
+          </View>
+        </ScrollView>
+      </View>
+    </Provider>
   );
 }
 

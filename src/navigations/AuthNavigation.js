@@ -5,11 +5,13 @@ import LoginScreen from "../screens/LoginScreen";
 import RegisterScreen from "../screens/RegisterScreen";
 import ForgotPasswordScreen from "../screens/ForgotPasswordScreen";
 import colors from "../config/colors";
+import EmailVerificationScreen from "../screens/EmailVerificationScreen";
 
 const stack = createStackNavigator();
 const AuthNavigation = () => (
   <stack.Navigator
     screenOptions={{ headerShown: false }}
+    // initialRouteName="Register"
     initialRouteName="Login"
   >
     <stack.Screen name="Login" component={LoginScreen} />
@@ -32,13 +34,14 @@ const AuthNavigation = () => (
         headerShown: true,
         headerTransparent: true,
         title: "Reset Your Password",
-        headerTintColor: colors.primary,
+        headerTintColor: colors.white,
         headerTitleStyle: {
           fontSize: 24,
         },
       }}
       component={ForgotPasswordScreen}
     />
+    {/* <stack.Screen name="Verification" component={EmailVerificationScreen} /> */}
   </stack.Navigator>
 );
 
