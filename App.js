@@ -10,6 +10,7 @@ import { StateProvider } from "./src/hooks/useUser";
 import AppNavigator from "./src/navigations/AppNavigation";
 import ProfileNavigation from "./src/navigations/ProfileNavigation";
 //done
+
 const firebaseConfig = () => {
   firebase.initializeApp({
     apiKey: "AIzaSyDqNkSJMtZmaE4F_cA9u1_ZOwZJGtpFkoY",

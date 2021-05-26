@@ -6,7 +6,7 @@ export default {
   facebook: "#1877F2",
   lightgrey: "#E7E9E9",
   primary: "#325bd1",
-  primaryLight: "#8ab6d6",
+  primaryLight: "#8EA5E6",
   secondary: "#325bd1",
   white: "#FFF",
   light: "#fbe0c4",
