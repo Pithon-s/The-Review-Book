@@ -21,7 +21,7 @@ const AuthNavigation = () => (
         headerShown: true,
         headerTransparent: true,
         title: "Register Now",
-        headerTintColor: colors.primary,
+        headerTintColor: colors.white,
         headerTitleStyle: {
           fontSize: 24,
         },

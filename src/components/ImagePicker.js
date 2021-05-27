@@ -1,5 +1,5 @@
 import React from "react";
-import { View, StyleSheet, TouchableHighlight, Alert } from "react-native";
+import { View, StyleSheet, Alert, TouchableOpacity } from "react-native";
 import { Avatar } from "react-native-paper";
 import * as imagePicker from "expo-image-picker";
 
@@ -50,7 +50,7 @@ function ImagePicker({ imageUri, setImageUri }) {
   };
 
   return (
-    <TouchableHighlight onPress={() => handleOnPress()} underlayColor="#F0F0F0">
+    <TouchableOpacity onPress={() => handleOnPress()}>
       <View>
         {imageUri && <Avatar.Image size={80} source={{ uri: imageUri }} />}
         {!imageUri && (
@@ -85,7 +85,7 @@ function ImagePicker({ imageUri, setImageUri }) {
           />
         )}
       </View>
-    </TouchableHighlight>
+    </TouchableOpacity>
   );
 }
 

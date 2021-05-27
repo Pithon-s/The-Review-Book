@@ -16,6 +16,7 @@ import colors from "../config/colors";
 import EmailVerificationScreen from "./EmailVerificationScreen";
 
 const height = Dimensions.get("screen").height;
+const iconSize = 95;
 
 function RegisterScreen({ navigation }) {
   const [imageUri, setImageUri] = useState();
@@ -52,7 +53,9 @@ function RegisterScreen({ navigation }) {
         </Portal>
 
         <View style={styles.topContainer}>
-          <ImagePicker imageUri={imageUri} setImageUri={setImageUri} />
+          <View style={styles.iconContainer}>
+            <ImagePicker imageUri={imageUri} setImageUri={setImageUri} />
+          </View>
         </View>
         <ScrollView>
           <View style={styles.bottomContainer}>
@@ -173,15 +176,25 @@ const styles = StyleSheet.create({
     height: height * 0.25,
     justifyContent: "flex-end",
     alignItems: "center",
-    paddingBottom: 5,
+    backgroundColor: colors.primary,
   },
   bottomContainer: {
     alignSelf: "center",
     paddingBottom: 50,
+    paddingTop: 40,
     width: "90%",
   },
-  textField: {
+  iconContainer: {
+    top: iconSize / 2,
     backgroundColor: colors.white,
+    justifyContent: "center",
+    alignItems: "center",
+    borderRadius: iconSize / 2,
+    width: iconSize,
+    height: iconSize,
+  },
+  textField: {
+    backgroundColor: "transparent",
     marginTop: 5,
   },
   errortext: {

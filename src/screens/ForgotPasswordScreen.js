@@ -40,9 +40,8 @@ function ForgotPasswordScreen({}) {
       <View style={styles.topContainer}>
         <View
           style={{
-            justifyContent: "flex-end",
-            flex: 1,
             top: iconSize / 2,
+            borderRadius: iconSize / 2,
           }}
         >
           <Image
@@ -101,9 +100,10 @@ const styles = StyleSheet.create({
     marginTop: 30,
   },
   topContainer: {
-    alignItems: "center",
     height: height * 0.25,
     backgroundColor: colors.primary,
+    justifyContent: "flex-end",
+    alignItems: "center",
   },
   topTitle: {
     color: colors.white,

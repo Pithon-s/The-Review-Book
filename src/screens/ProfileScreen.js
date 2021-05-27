@@ -19,8 +19,11 @@ import {
   Button,
 } from "react-native-paper";
 import color from "../config/colors";
+import { useUser } from "../hooks/useUser";
 
 function ProfileScreen(props) {
+  const { setUser } = useUser();
+
   const myData = {
     title: "Department of Computer Science",
     uri: require("../assets/dept.jpg"),
@@ -77,7 +80,7 @@ function ProfileScreen(props) {
 
         <Button
           icon="logout"
-          onPress={() => console.log("logout")}
+          onPress={() => setUser()}
           color="red"
           style={{ width: 200, borderRadius: 50, alignSelf: "center" }}
         >
