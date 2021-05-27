@@ -7,7 +7,7 @@ import {
   ScrollView,
   TouchableOpacity,
 } from "react-native";
-import { Button, Modal, Portal, Provider } from "react-native-paper";
+import { Button, Provider } from "react-native-paper";
 import { Formik } from "formik";
 
 import ImagePicker from "../components/ImagePicker";
@@ -33,24 +33,13 @@ function RegisterScreen({ navigation }) {
     setIsModelVisible(true); // temp
   };
 
-  const handleModelDismiss = () => {
-    setIsModelVisible(false);
-  };
-
   return (
     <Provider>
       <View style={styles.container}>
-        <Portal>
-          <Modal
-            visible={isModelVisible}
-            onDismiss={handleModelDismiss}
-            contentContainerStyle={{
-              alignSelf: "center",
-            }}
-          >
-            <EmailVerificationScreen />
-          </Modal>
-        </Portal>
+        <EmailVerificationScreen
+          isModelVisible={isModelVisible}
+          setIsModelVisible={setIsModelVisible}
+        />
 
         <View style={styles.topContainer}>
           <View style={styles.iconContainer}>
