@@ -7,17 +7,29 @@ import {
   ScrollView,
   SafeAreaView,
 } from "react-native";
-import { Ionicons, MaterialIcons, Feather } from "@expo/vector-icons";
-import { StatusBar } from "expo-status-bar";
+import {
+  Searchbar,
+  Card,
+  Title,
+  Paragraph,
+  ActivityIndicator,
+  List,
+  Avatar,
+  IconButton,
+  Button,
+} from "react-native-paper";
+import color from "../config/colors";
 
 function ProfileScreen(props) {
+  const myData = {
+    title: "Department of Computer Science",
+    uri: require("../assets/dept.jpg"),
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView showsVerticalScrollIndicator={false}>
-        <View style={styles.titlebar}>
-          {/* <Ionicons name="ios-arrow-back" size={24} color="black" /> */}
-          <Feather name="more-vertical" size={24} color="black" />
-        </View>
+        <View style={styles.titlebar}></View>
         <View style={{ alignSelf: "center" }}>
           <View style={styles.profilePic}>
             <Image
@@ -27,42 +39,50 @@ function ProfileScreen(props) {
             ></Image>
           </View>
           <View style={styles.active} />
-          {/* <View style={styles.add}>
-            <Ionicons
-              name="ios-add"
-              size={48}
-              color="#DFD8C8"
-              style={{ marginTop: 6, marginLeft: 2 }}
-            ></Ionicons>
-          </View> */}
         </View>
         <View style={styles.info}>
           <Text style={[styles.text, { fontWeight: "200", fontSize: 30 }]}>
             Ali Asad
           </Text>
+          <Text style={[styles.text, { fontSize: 18, color: "#AEB5BC" }]}>
+            SP19-BCS-120
+          </Text>
           <Text style={[styles.text, { fontSize: 14, color: "#AEB5BC" }]}>
             CS Department
           </Text>
         </View>
-        <View style={styles.statContainer}>
-          <View style={styles.statsBox}>
-            <Text style={[styles.text, { fontSize: 24 }]}>85</Text>
-            <Text style={[styles.text, styles.subText]}>Reviews</Text>
-          </View>
-          <View
-            style={[
-              styles.statsBox,
-              {
-                borderColor: "#DFD8C8",
-                borderRightWidth: 1,
-                borderLeftWidth: 1,
-              },
-            ]}
-          >
-            <Text style={[styles.text, { fontSize: 24 }]}>123</Text>
-            <Text style={[styles.text, styles.subText]}>Comments</Text>
-          </View>
+        <Button
+          onPress={() => console.log("logout")}
+          color={color.primary}
+          style={{ width: 200, borderRadius: 50, alignSelf: "center" }}
+        >
+          Edit Profile
+        </Button>
+        <View style={styles.cardView}>
+          <Card onPress={() => console.log("pressed")} style={styles.card}>
+            <Card.Cover source={myData.uri} />
+            <Card.Content>
+              <Title
+                style={{
+                  color: color.primary,
+                  alignSelf: "center",
+                  marginTop: 15,
+                }}
+              >
+                {myData.title}
+              </Title>
+            </Card.Content>
+          </Card>
         </View>
+
+        <Button
+          icon="logout"
+          onPress={() => console.log("logout")}
+          color="red"
+          style={{ width: 200, borderRadius: 50, alignSelf: "center" }}
+        >
+          Logout
+        </Button>
       </ScrollView>
     </SafeAreaView>
   );
@@ -128,6 +148,9 @@ const styles = StyleSheet.create({
     alignItems: "center",
     alignSelf: "center",
     justifyContent: "center",
+    width: "100%",
+    height: 100,
+    justifyContent: "space-around",
   },
   statContainer: {
     flexDirection: "row",
@@ -137,6 +160,18 @@ const styles = StyleSheet.create({
   statsBox: {
     alignItems: "center",
     flex: 1,
+  },
+  card: {
+    height: 270,
+    width: "95%",
+    marginBottom: 10,
+    alignSelf: "center",
+  },
+  cardView: {
+    marginTop: 30,
+    // backgroundColor: "tomato",
+    alignItems: "center",
+    marginBottom: 30,
   },
 });
 

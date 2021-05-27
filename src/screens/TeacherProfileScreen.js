@@ -35,6 +35,13 @@ function TeacherProfileScreen(props) {
     <View style={styles.maincontainer}>
       <StatusBar backgroundColor={color.primary} />
       <View style={styles.imageDiv}>
+        <IconButton
+          icon="arrow-left"
+          color={color.white}
+          size={30}
+          onPress={() => props.navigation.navigate("TabNavigator")}
+          style={{ alignSelf: "flex-start", position: "absolute" }}
+        />
         <View style={styles.imageBackgroundDiv}>
           <Avatar.Image
             size={120}
@@ -48,9 +55,25 @@ function TeacherProfileScreen(props) {
       </View>
       <ScrollView>
         <View style={styles.dataDiv}>
-          <ScrollView>
-            <Paragraph></Paragraph>
-          </ScrollView>
+          <View style={styles.statContainer}>
+            <View style={styles.statsBox}>
+              <Text style={[styles.text, { fontSize: 24 }]}>85</Text>
+              <Text style={[styles.text, styles.subText]}>Reviews</Text>
+            </View>
+            <View
+              style={[
+                styles.statsBox,
+                {
+                  borderColor: "#DFD8C8",
+                  borderRightWidth: 1,
+                  borderLeftWidth: 1,
+                },
+              ]}
+            >
+              <Text style={[styles.text, { fontSize: 24 }]}>123</Text>
+              <Text style={[styles.text, styles.subText]}>Comments</Text>
+            </View>
+          </View>
         </View>
         <View style={styles.commentDiv}>
           <View style={styles.commentTextInput}>
@@ -124,6 +147,8 @@ const styles = StyleSheet.create({
     backgroundColor: color.primary,
     justifyContent: "space-around",
     alignItems: "center",
+    borderTopWidth: 0.3,
+    borderColor: color.white,
   },
   dataDiv: {
     height: Dimensions.get("screen").height * 0.4,
@@ -146,6 +171,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     borderRadius: 80,
+    marginTop: 15,
   },
   title: { color: color.white, fontSize: 24, fontWeight: "500" },
   commentTitle: {
@@ -158,6 +184,15 @@ const styles = StyleSheet.create({
     justifyContent: "space-around",
     alignItems: "center",
     marginBottom: 25,
+  },
+  statContainer: {
+    flexDirection: "row",
+    justifyContent: "space-around",
+    marginTop: 5,
+  },
+  statsBox: {
+    alignItems: "center",
+    flex: 1,
   },
 });
 export default TeacherProfileScreen;
