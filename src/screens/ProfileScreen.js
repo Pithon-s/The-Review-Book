@@ -174,7 +174,7 @@ const styles = StyleSheet.create({
     marginTop: 30,
     // backgroundColor: "tomato",
     alignItems: "center",
-    marginBottom: 30,
+    marginBottom: 15,
   },
 });
 

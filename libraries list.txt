@@ -1,6 +1,7 @@
 firebase
 formik
 react-native-paper
+react-native-vector-icons
 
 expo-app-loading
 expo-secure-store
@@ -10,6 +11,7 @@ expo-permissions
 
 redux
 react-redux
+
 
 @react-navigation/native
 @react-navigation/stack

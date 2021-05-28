@@ -133,7 +133,7 @@ function MainScreen(props) {
                 }}
                 style={styles.card}
               >
-                <Card.Cover source={{ uri: item.uri }} />
+                <Card.Cover source={require("../assets/dept.jpg")} />
                 <Card.Content>
                   <Title style={{ color: color.primary }}>{item.title}</Title>
                 </Card.Content>
