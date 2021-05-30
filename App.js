@@ -1,6 +1,6 @@
 import { NavigationContainer } from "@react-navigation/native";
 import { LogBox } from "react-native";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import firebase from "firebase";
 import AppLoading from "expo-app-loading";
 import { Provider, useDispatch, useSelector } from "react-redux";
@@ -40,7 +40,7 @@ const NavigationImp = () => {
       <AppLoading
         startAsync={authUser}
         onFinish={() => console.log("")}
-        onError={console.log("")}
+        onError={() => console.log("")}
       />
     );
   }
@@ -56,10 +56,6 @@ export default function App() {
   LogBox.ignoreLogs([""]);
 
   const store = createStore(Reducers, applyMiddleware(thunk));
-
-  useEffect(() => {
-    if (!firebase.app.length) firebaseConfig();
-  }, []);
 
   return (
     <Provider store={store}>

@@ -9,9 +9,7 @@ export const Login = (email, password, keepSigned) => {
       .auth()
       .signInWithEmailAndPassword(email, password)
       .then((current) => {
-        if (keepSigned) {
-          secureStorage.storeUser({ email, password });
-        }
+        if (keepSigned) secureStorage.storeUser({ email, password });
 
         // firebase
         //   .database()                        //FIRESTORE  --TODO
@@ -48,7 +46,7 @@ export const Logout = () => {
   };
 };
 
-export const Signin = () => {
+export const Signup = () => {
   return async (dispatch) => {};
 };
 
@@ -62,9 +60,11 @@ export const AutoLogin = () => {
       dispatch({
         type: "AUTO_LOGIN_FAILED",
       });
+      return;
     }
 
+    console.log("auto login passed");
     const parsed = JSON.parse(result);
-    dispatch(Login(parsed.email, parsed.password, true));
+    dispatch(Login(parsed.email, parsed.password, false));
   };
 };
