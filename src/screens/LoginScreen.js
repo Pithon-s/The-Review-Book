@@ -9,9 +9,10 @@ import {
 } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import { Button, Checkbox, TextInput } from "react-native-paper";
+import { useDispatch } from "react-redux";
 
 import colors from "../config/colors";
-import { useUser } from "../hooks/useUser";
+import { Login } from "../actions/AuthActions";
 
 const height = Dimensions.get("screen").height;
 
@@ -20,11 +21,14 @@ function LoginScreen({ navigation }) {
   const [password, setPassword] = useState();
   const [keepLogged, setKeepLogged] = useState(true);
   const [loading, setLoading] = useState(false);
-  const { setUser } = useUser();
+
+  const dispatch = useDispatch();
 
   const handleSubmit = () => {
+    if (!email || !password) return;
+
     setLoading(true);
-    setUser("-");
+    dispatch(Login(email, password, keepLogged));
   };
 
   return (

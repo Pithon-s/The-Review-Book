@@ -9,7 +9,9 @@ expo-image-picker
 expo-permissions
 
 redux
+redux-thunk
 react-redux
+
 
 @react-navigation/native
 @react-navigation/stack
