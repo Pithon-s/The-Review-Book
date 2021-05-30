@@ -2,6 +2,7 @@ const initialState = {
   loading: false,
   isLogged: false,
   isVerified: false,
+  isReady: false,
   user: {
     email: "",
     username: "",
@@ -16,6 +17,7 @@ export default (state = initialState, action) => {
         ...state,
         loading: false,
         isLogged: true,
+        isReady: true,
         user: {
           email: action.payload.email,
           // username: action.payload.username,
@@ -27,6 +29,12 @@ export default (state = initialState, action) => {
       return {
         ...state,
         isLogged: false,
+      };
+
+    case "AUTO_LOGIN_FAILED":
+      return {
+        ...state,
+        isReady: true,
       };
 
     default:

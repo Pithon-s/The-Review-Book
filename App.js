@@ -3,7 +3,7 @@ import { LogBox } from "react-native";
 import React, { useEffect, useState } from "react";
 import firebase from "firebase";
 import AppLoading from "expo-app-loading";
-import { Provider, useSelector } from "react-redux";
+import { Provider, useDispatch, useSelector } from "react-redux";
 import { createStore, applyMiddleware } from "redux";
 import thunk from "redux-thunk";
 
@@ -11,6 +11,7 @@ import NavigationTheme from "./src/navigations/NavigationTheme";
 import AuthNavigation from "./src/navigations/AuthNavigation";
 import ProfileNavigation from "./src/navigations/ProfileNavigation";
 import Reducers from "./src/reducers";
+import { AutoLogin } from "./src/actions/AuthActions";
 
 const firebaseConfig = () => {
   firebase.initializeApp({
@@ -26,6 +27,23 @@ const firebaseConfig = () => {
 
 const NavigationImp = () => {
   const isLogged = useSelector((state) => state.Auth.isLogged);
+  const isReady = useSelector((state) => state.Auth.isReady);
+  const dispatch = useDispatch();
+
+  const authUser = async () => {
+    firebaseConfig();
+    dispatch(AutoLogin());
+  };
+
+  if (!isReady) {
+    return (
+      <AppLoading
+        startAsync={authUser}
+        onFinish={() => console.log("")}
+        onError={console.log("")}
+      />
+    );
+  }
 
   return (
     <NavigationContainer theme={NavigationTheme}>
@@ -35,7 +53,6 @@ const NavigationImp = () => {
 };
 
 export default function App() {
-  const [isReady, setIsReady] = useState(false);
   LogBox.ignoreLogs([""]);
 
   const store = createStore(Reducers, applyMiddleware(thunk));
@@ -43,22 +60,6 @@ export default function App() {
   useEffect(() => {
     if (!firebase.app.length) firebaseConfig();
   }, []);
-
-  const authUser = async () => {
-    firebaseConfig();
-
-    // add autologin here
-  };
-
-  if (!isReady) {
-    return (
-      <AppLoading
-        startAsync={authUser}
-        onFinish={() => setIsReady(true)}
-        onError={console.log("")}
-      />
-    );
-  }
 
   return (
     <Provider store={store}>

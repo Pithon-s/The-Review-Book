@@ -47,3 +47,24 @@ export const Logout = () => {
     });
   };
 };
+
+export const Signin = () => {
+  return async (dispatch) => {};
+};
+
+export const AutoLogin = () => {
+  return async (dispatch) => {
+    console.log("inside auto login");
+
+    const result = await secureStorage.readUser();
+    if (!result) {
+      console.log("auto login failed");
+      dispatch({
+        type: "AUTO_LOGIN_FAILED",
+      });
+    }
+
+    const parsed = JSON.parse(result);
+    dispatch(Login(parsed.email, parsed.password, true));
+  };
+};
