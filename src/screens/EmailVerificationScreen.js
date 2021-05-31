@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   View,
   Text,
@@ -6,26 +6,44 @@ import {
   Dimensions,
   TouchableOpacity,
   Image,
+  Alert,
 } from "react-native";
 import { Button, Modal, Portal } from "react-native-paper";
 import firebase from "firebase";
 import { useDispatch } from "react-redux";
 
 import colors from "../config/colors";
+import { Verified } from "../actions/AuthActions";
 const iconSize = 70;
 
 const height = Dimensions.get("screen").height;
 
-function EmailVerificationScreen({ isModelVisible, setIsModelVisible }) {
+function EmailVerificationScreen({
+  navigation,
+  isModelVisible,
+  setIsModelVisible,
+}) {
   const dispatch = useDispatch();
 
   const handleContinue = () => {
-    if (firebase.auth().currentUser.emailVerified) {
-      console.log("Email verified.. logging new user into app");
-      // dispatch()
-    }
+    // const isVerified = firebase.auth().currentUser.emailVerified;
+    // if (isVerified) dispatch(Verified());
+    // else {
+    //   Alert.alert(
+    //     "Not Verified !!",
+    //     "Please check your email and verify yourself"
+    //   );
+    // }
+    navigation.navigate("Login");
   };
-  const handleResend = () => {};
+  const handleResend = () => {
+    firebase
+      .auth()
+      .currentUser.sendEmailVerification()
+      .then(() => {
+        Alert.alert("Notice", "Verification email sent...");
+      });
+  };
 
   return (
     <Portal>

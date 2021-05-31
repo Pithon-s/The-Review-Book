@@ -48,7 +48,6 @@ export const Login = (email, password, keepSigned, setLoading) => {
       .signInWithEmailAndPassword(email, password)
       .then((current) => {
         if (keepSigned) secureStorage.storeUser({ email, password });
-
         // firebase
         //   .database()                        //FIRESTORE  --TODO
         //   .ref("/users/" + current.uid)
@@ -103,6 +102,7 @@ export const Signup = (
         _createUser(email, username, imageURI)
           .then(() => {
             current.user.sendEmailVerification().then(() => {
+              console.log("email sent");
               setLoading(false);
               setIsModelVisible(true);
             });
@@ -128,7 +128,13 @@ export const Signup = (
   };
 };
 
-// export
+export const Verified = () => {
+  return async (dispatch) => {
+    dispatch({
+      type: "USER_VERIFIED",
+    });
+  };
+};
 
 export const AutoLogin = () => {
   return async (dispatch) => {

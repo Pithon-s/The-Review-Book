@@ -14,7 +14,7 @@ export default (state = initialState, action) => {
     case "LOGIN":
       return {
         ...state,
-        isLogged: true,
+        isLogged: true, // temp.. because user will only login if user_verified
         isReady: true,
         user: {
           email: action.payload.email,
@@ -44,6 +44,14 @@ export default (state = initialState, action) => {
           // profilePictureURI: action.payload.profilePictureURI,
         },
       };
+
+    case "USER_VERIFIED":
+      return {
+        ...state,
+        isVerified: true,
+        isLogged: true,
+      };
+
     default:
       return state;
   }
