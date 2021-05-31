@@ -8,7 +8,7 @@ import {
   ScrollView,
 } from "react-native";
 import { StatusBar } from "expo-status-bar";
-import { Button, Checkbox, TextInput } from "react-native-paper";
+import { Button, Checkbox, TextInput, HelperText } from "react-native-paper";
 import { useDispatch } from "react-redux";
 
 import colors from "../config/colors";
@@ -21,14 +21,35 @@ function LoginScreen({ navigation }) {
   const [password, setPassword] = useState();
   const [keepLogged, setKeepLogged] = useState(true);
   const [loading, setLoading] = useState(false);
-
+  const [themeColor, setThemeColor] = useState(colors.primary);
   const dispatch = useDispatch();
 
+  const validateEmail = (email) => {
+    var re =
+      /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    if (re.test(email)) {
+      //Email valid. Procees to test if it's from the right domain (Second argument is to check that the string ENDS with this domain, and that it doesn't just contain it)
+      if (
+        email.indexOf(
+          "@cuilahore.edu.pk",
+          email.length - "@cuilahore.edu.pk".length
+        ) !== -1
+      ) {
+        //VALID
+        return true;
+      } else {
+        return false;
+      }
+    }
+  };
   const handleSubmit = () => {
     if (!email || !password) return;
-
-    setLoading(true);
-    dispatch(Login(email, password, keepLogged));
+    else if (validateEmail(email)) {
+      setLoading(true);
+      dispatch(Login(email, password, keepLogged));
+    } else {
+      console.log("Not Valid Email");
+    }
   };
 
   return (
@@ -40,14 +61,24 @@ function LoginScreen({ navigation }) {
           mode="outlined"
           label="Enter your email"
           value={email}
-          onChangeText={(email) => setEmail(email)}
+          onChangeText={(email) => {
+            setEmail(email);
+            if (!validateEmail(email)) {
+              setThemeColor("red");
+            } else {
+              setThemeColor(colors.primary);
+            }
+          }}
           placeholder="xxxx-xxx-xxx@cuilahore.edu.pk"
           keyboardType="email-address"
           style={styles.textField}
           theme={{
-            colors: { primary: colors.primary },
+            colors: { primary: themeColor },
           }}
         />
+        <HelperText type="error" visible={themeColor == "red" ? true : false}>
+          Use domain xxxx-xxx-xxx@cuilahore.edu.pk to signin.
+        </HelperText>
         <TextInput
           mode="outlined"
           label="Enter your password"
@@ -94,6 +125,7 @@ function LoginScreen({ navigation }) {
             theme={{
               colors: { primary: colors.primary },
             }}
+            disabled={themeColor == "red" ? true : false}
           >
             sign in
           </Button>
