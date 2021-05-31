@@ -48,7 +48,7 @@ function LoginScreen({ navigation }) {
     if (!email || !password) return;
     else if (validateEmail(email)) {
       setLoading(true);
-      dispatch(Login(email, password, keepLogged));
+      dispatch(Login(email, password, keepLogged, setLoading));
     } else {
       console.log("Not Valid Email");
     }
@@ -78,9 +78,11 @@ function LoginScreen({ navigation }) {
             colors: { primary: themeColor },
           }}
         />
-        <HelperText type="error" visible={themeColor == "red" ? true : false}>
-          Use domain xxxx-xxx-xxx@cuilahore.edu.pk to signin.
-        </HelperText>
+        {themeColor == "red" && (
+          <HelperText type="error" visible={themeColor == "red" ? true : false}>
+            Use domain xxxx-xxx-xxx@cuilahore.edu.pk to signin.
+          </HelperText>
+        )}
         <TextInput
           mode="outlined"
           label="Enter your password"

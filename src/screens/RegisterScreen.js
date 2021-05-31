@@ -14,6 +14,8 @@ import ImagePicker from "../components/ImagePicker";
 import FormTextInput from "../components/common/FormTextInput";
 import colors from "../config/colors";
 import EmailVerificationScreen from "./EmailVerificationScreen";
+import { Signup } from "../actions/AuthActions";
+import { useDispatch } from "react-redux";
 
 const height = Dimensions.get("screen").height;
 const iconSize = 95;
@@ -24,13 +26,22 @@ function RegisterScreen({ navigation }) {
   const [isModelVisible, setIsModelVisible] = useState(false);
   const [registrationFailed, setRegistrationFailed] = useState(false);
 
-  const handleSubmit = () => {
+  const dispatch = useDispatch();
+
+  const handleSubmit = (data) => {
     setLoading(true);
     setRegistrationFailed(false);
-    // registertion process here -- TODO
-    // inside .then() of createAccount, setIsModelVisible to true.
 
-    setIsModelVisible(true); // temp
+    dispatch(
+      Signup(
+        data.name,
+        imageUri,
+        data.email,
+        data.password,
+        setLoading,
+        setIsModelVisible
+      )
+    );
   };
 
   return (

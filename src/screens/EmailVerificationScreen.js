@@ -8,6 +8,8 @@ import {
   Image,
 } from "react-native";
 import { Button, Modal, Portal } from "react-native-paper";
+import firebase from "firebase";
+import { useDispatch } from "react-redux";
 
 import colors from "../config/colors";
 const iconSize = 70;
@@ -15,7 +17,14 @@ const iconSize = 70;
 const height = Dimensions.get("screen").height;
 
 function EmailVerificationScreen({ isModelVisible, setIsModelVisible }) {
-  const handleContinue = () => {};
+  const dispatch = useDispatch();
+
+  const handleContinue = () => {
+    if (firebase.auth().currentUser.emailVerified) {
+      console.log("Email verified.. logging new user into app");
+      // dispatch()
+    }
+  };
   const handleResend = () => {};
 
   return (

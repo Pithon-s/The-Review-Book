@@ -1,5 +1,4 @@
 const initialState = {
-  loading: false,
   isLogged: false,
   isVerified: false,
   isReady: false,
@@ -15,7 +14,6 @@ export default (state = initialState, action) => {
     case "LOGIN":
       return {
         ...state,
-        loading: false,
         isLogged: true,
         isReady: true,
         user: {
@@ -37,6 +35,15 @@ export default (state = initialState, action) => {
         isReady: true,
       };
 
+    case "SIGNUP":
+      return {
+        ...state,
+        user: {
+          email: action.payload.email,
+          username: action.payload.username,
+          // profilePictureURI: action.payload.profilePictureURI,
+        },
+      };
     default:
       return state;
   }

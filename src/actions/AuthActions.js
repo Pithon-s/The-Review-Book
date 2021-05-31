@@ -3,7 +3,45 @@ import { Alert } from "react-native";
 
 import secureStorage from "../utilities/secureStorage";
 
-export const Login = (email, password, keepSigned) => {
+const _uriToBlob = (uri) => {
+  return new Promise((resolve, reject) => {
+    const xhr = new XMLHttpRequest();
+
+    xhr.onload = function () {
+      resolve(xhr.response);
+    };
+    xhr.onerror = function () {
+      reject(new Error("uriToBlob failed"));
+    };
+
+    xhr.responseType = "blob";
+    xhr.open("GET", uri, true);
+    xhr.send(null);
+  });
+};
+const _createUser = async (email, username, imageURI) => {
+  let newPostImagesDir = firebase.storage().ref("users/" + email + "/");
+  const fileType = imageURI.substring(imageURI.lastIndexOf(".") + 1);
+
+  _uriToBlob(imageURI).then((blob) => {
+    newPostImagesDir
+      .child("profile_picture." + fileType)
+      .put(blob, {
+        contentType: "image/" + fileType,
+      })
+      .then((snapshot) => {
+        snapshot.ref.getDownloadURL().then((downloadURI) => {
+          firebase
+            .firestore()
+            .collection("users")
+            .doc(email)
+            .set({ email, username, imageURI: downloadURI });
+        });
+      });
+  });
+};
+
+export const Login = (email, password, keepSigned, setLoading) => {
   return async (dispatch) => {
     firebase
       .auth()
@@ -33,7 +71,10 @@ export const Login = (email, password, keepSigned) => {
           },
         });
       })
-      .catch((error) => Alert.alert("Error !!", error.message));
+      .catch((error) => {
+        setLoading(false);
+        Alert.alert("Error !!", error.message);
+      });
   };
 };
 
@@ -46,9 +87,48 @@ export const Logout = () => {
   };
 };
 
-export const Signup = () => {
-  return async (dispatch) => {};
+export const Signup = (
+  username,
+  imageURI,
+  email,
+  password,
+  setLoading,
+  setIsModelVisible
+) => {
+  return async (dispatch) => {
+    firebase
+      .auth()
+      .createUserWithEmailAndPassword(email, password)
+      .then((current) => {
+        _createUser(email, username, imageURI)
+          .then(() => {
+            current.user.sendEmailVerification().then(() => {
+              setLoading(false);
+              setIsModelVisible(true);
+            });
+
+            dispatch({
+              type: "SIGNUP",
+              payload: {
+                email,
+                username,
+                // profilePictureURI : download able profile picture URI
+              },
+            });
+          })
+          .catch(() => {
+            setLoading(false);
+            setIsModelVisible(true);
+          });
+      })
+      .catch((error) => {
+        setLoading(false);
+        Alert.alert("Error !!", error.message);
+      });
+  };
 };
+
+// export
 
 export const AutoLogin = () => {
   return async (dispatch) => {
