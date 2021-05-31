@@ -9,18 +9,7 @@ import {
   Text,
 } from "react-native";
 import color from "../config/colors";
-import {
-  Searchbar,
-  Card,
-  Title,
-  Paragraph,
-  ActivityIndicator,
-  List,
-  Avatar,
-  IconButton,
-  Button,
-  TextInput,
-} from "react-native-paper";
+import { List, Avatar, IconButton, TextInput } from "react-native-paper";
 import AntDesign from "react-native-vector-icons/AntDesign";
 function TeacherProfileScreen(props) {
   const [deptArray, setArray] = useState([

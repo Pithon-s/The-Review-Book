@@ -11,7 +11,6 @@ import {
   Searchbar,
   Card,
   Title,
-  Paragraph,
   ActivityIndicator,
   List,
   Avatar,

@@ -7,17 +7,7 @@ import {
   ScrollView,
   SafeAreaView,
 } from "react-native";
-import {
-  Searchbar,
-  Card,
-  Title,
-  Paragraph,
-  ActivityIndicator,
-  List,
-  Avatar,
-  IconButton,
-  Button,
-} from "react-native-paper";
+import { Card, Title, Button } from "react-native-paper";
 import color from "../config/colors";
 import { useUser } from "../hooks/useUser";
 
