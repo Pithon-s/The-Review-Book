@@ -41,37 +41,54 @@ const _createUser = async (email, username, imageURI) => {
   });
 };
 
-export const Login = (email, password, keepSigned, setLoading) => {
+export const Login = (
+  email,
+  password,
+  keepSigned,
+  setLoading = null,
+  setIsModelVisible = null
+) => {
   return async (dispatch) => {
     firebase
       .auth()
       .signInWithEmailAndPassword(email, password)
       .then((current) => {
-        if (keepSigned) secureStorage.storeUser({ email, password });
-        // firebase
-        //   .database()                        //FIRESTORE  --TODO
-        //   .ref("/users/" + current.uid)
-        //   .once("value")
-        //   .then((snapshot) => {
-        //     dispatch({
-        //       type: "LOGIN",
-        //       payload: {
-        //         email,
-        //         username: snapshot.val().username,
-        //         profilePictureURI: snapshot.val().profilePictureURI,
-        //       },
-        //     });
-        //   });
-
+        if (setLoading) setLoading(false);
         dispatch({
           type: "LOGIN",
           payload: {
             email,
+            password,
           },
         });
+
+        if (!current.user.emailVerified) {
+          dispatch(sendVerification());
+          if (setIsModelVisible) setIsModelVisible(true);
+        } else {
+          if (keepSigned) secureStorage.storeUser({ email, password });
+          // firebase
+          //   .database()                        //FIRESTORE  --TODO
+          //   .ref("/users/" + current.uid)
+          //   .once("value")
+          //   .then((snapshot) => {
+          //     dispatch({
+          //       type: "LOGIN",
+          //       payload: {
+          //         email,
+          //         username: snapshot.val().username,
+          //         profilePictureURI: snapshot.val().profilePictureURI,
+          //       },
+          //     });
+          //   });
+
+          dispatch({
+            type: "USER_VERIFIED",
+          });
+        }
       })
       .catch((error) => {
-        setLoading(false);
+        if (setLoading) setLoading(false);
         Alert.alert("Error !!", error.message);
       });
   };
@@ -83,6 +100,20 @@ export const Logout = () => {
     dispatch({
       type: "LOGOUT",
     });
+  };
+};
+
+export const sendVerification = () => {
+  return async (dispatch) => {
+    firebase
+      .auth()
+      .currentUser.sendEmailVerification()
+      .then(() => {
+        Alert.alert("Notice", "Verification email sent...");
+        dispatch({
+          type: "VERIFICATION_SENT",
+        });
+      });
   };
 };
 
@@ -101,17 +132,17 @@ export const Signup = (
       .then((current) => {
         _createUser(email, username, imageURI)
           .then(() => {
-            current.user.sendEmailVerification().then(() => {
-              console.log("email sent");
-              setLoading(false);
-              setIsModelVisible(true);
-            });
+            dispatch(sendVerification());
+
+            setLoading(false);
+            setIsModelVisible(true);
 
             dispatch({
               type: "SIGNUP",
               payload: {
                 email,
                 username,
+                password,
                 // profilePictureURI : download able profile picture URI
               },
             });
@@ -138,18 +169,14 @@ export const Verified = () => {
 
 export const AutoLogin = () => {
   return async (dispatch) => {
-    console.log("inside auto login");
-
     const result = await secureStorage.readUser();
     if (!result) {
-      console.log("auto login failed");
       dispatch({
         type: "AUTO_LOGIN_FAILED",
       });
       return;
     }
 
-    console.log("auto login passed");
     const parsed = JSON.parse(result);
     dispatch(Login(parsed.email, parsed.password, false));
   };

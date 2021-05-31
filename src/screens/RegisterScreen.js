@@ -48,7 +48,6 @@ function RegisterScreen({ navigation }) {
     <Provider>
       <View style={styles.container}>
         <EmailVerificationScreen
-          navigation={navigation}
           isModelVisible={isModelVisible}
           setIsModelVisible={setIsModelVisible}
         />

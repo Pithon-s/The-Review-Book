@@ -8,11 +8,18 @@ import {
   ScrollView,
 } from "react-native";
 import { StatusBar } from "expo-status-bar";
-import { Button, Checkbox, TextInput, HelperText } from "react-native-paper";
+import {
+  Button,
+  Checkbox,
+  TextInput,
+  HelperText,
+  Provider,
+} from "react-native-paper";
 import { useDispatch } from "react-redux";
 
 import colors from "../config/colors";
 import { Login } from "../actions/AuthActions";
+import EmailVerificationScreen from "./EmailVerificationScreen";
 
 const height = Dimensions.get("screen").height;
 
@@ -21,6 +28,7 @@ function LoginScreen({ navigation }) {
   const [password, setPassword] = useState();
   const [keepLogged, setKeepLogged] = useState(true);
   const [loading, setLoading] = useState(false);
+  const [isModelVisible, setIsModelVisible] = useState(false);
 
   //State to change the theme color and using the theme color for conditional rendering.
   const [themeColor, setThemeColor] = useState(colors.primary);
@@ -48,145 +56,158 @@ function LoginScreen({ navigation }) {
     if (!email || !password) return;
     else if (validateEmail(email)) {
       setLoading(true);
-      dispatch(Login(email, password, keepLogged, setLoading));
+
+      dispatch(
+        Login(email, password, keepLogged, setLoading, setIsModelVisible)
+      );
     } else {
       console.log("Not Valid Email");
     }
   };
 
   return (
-    <ScrollView style={styles.container}>
-      <StatusBar style="light" backgroundColor={colors.primary} />
-      <View style={styles.logoContainer}></View>
-      <View style={styles.fieldContainer}>
-        <TextInput
-          mode="outlined"
-          label="Enter your email"
-          value={email}
-          onChangeText={(email) => {
-            setEmail(email);
-            if (!validateEmail(email)) {
-              setThemeColor("red");
-            } else {
-              setThemeColor(colors.primary);
-            }
-          }}
-          placeholder="xxxx-xxx-xxx@cuilahore.edu.pk"
-          keyboardType="email-address"
-          style={styles.textField}
-          theme={{
-            colors: { primary: themeColor },
-          }}
-        />
-        {themeColor == "red" && (
-          <HelperText type="error" visible={themeColor == "red" ? true : false}>
-            Use domain xxxx-xxx-xxx@cuilahore.edu.pk to signin.
-          </HelperText>
-        )}
-        <TextInput
-          mode="outlined"
-          label="Enter your password"
-          value={password}
-          onChangeText={(password) => setPassword(password)}
-          placeholder=""
-          secureTextEntry
-          style={[styles.textField, { marginVertical: 10 }]}
-          theme={{
-            colors: { primary: colors.primary },
-          }}
+    <Provider>
+      <ScrollView style={styles.container}>
+        <EmailVerificationScreen
+          isModelVisible={isModelVisible}
+          setIsModelVisible={setIsModelVisible}
         />
 
-        <View
-          style={{
-            flexDirection: "row",
-            alignItems: "center",
-          }}
-        >
-          <Checkbox
-            status={keepLogged ? "checked" : "unchecked"}
-            color={colors.primary}
-            onPress={() => {
-              setKeepLogged(!keepLogged);
+        <StatusBar style="light" backgroundColor={colors.primary} />
+        <View style={styles.logoContainer}></View>
+        <View style={styles.fieldContainer}>
+          <TextInput
+            mode="outlined"
+            label="Enter your email"
+            value={email}
+            onChangeText={(email) => {
+              setEmail(email);
+              if (!validateEmail(email)) {
+                setThemeColor("red");
+              } else {
+                setThemeColor(colors.primary);
+              }
+            }}
+            placeholder="xxxx-xxx-xxx@cuilahore.edu.pk"
+            keyboardType="email-address"
+            style={styles.textField}
+            theme={{
+              colors: { primary: themeColor },
             }}
           />
-          <TouchableWithoutFeedback
-            onPress={() => {
-              setKeepLogged(!keepLogged);
-            }}
-          >
-            <View style={styles.checkboxContainer}>
-              <Text style={styles.text}>Keep me signed in</Text>
-            </View>
-          </TouchableWithoutFeedback>
-        </View>
-
-        <View style={styles.buttonsContainer}>
-          <Button
-            mode="contained"
-            loading={loading}
-            onPress={handleSubmit}
-            style={[styles.button, { width: 120 }]}
+          {themeColor == "red" && (
+            <HelperText
+              type="error"
+              visible={themeColor == "red" ? true : false}
+            >
+              Use domain xxxx-xxx-xxx@cuilahore.edu.pk to signin.
+            </HelperText>
+          )}
+          <TextInput
+            mode="outlined"
+            label="Enter your password"
+            value={password}
+            onChangeText={(password) => setPassword(password)}
+            placeholder=""
+            secureTextEntry
+            style={[styles.textField, { marginVertical: 10 }]}
             theme={{
               colors: { primary: colors.primary },
             }}
-            disabled={themeColor == "red" ? true : false}
+          />
+
+          <View
+            style={{
+              flexDirection: "row",
+              alignItems: "center",
+            }}
           >
-            sign in
+            <Checkbox
+              status={keepLogged ? "checked" : "unchecked"}
+              color={colors.primary}
+              onPress={() => {
+                setKeepLogged(!keepLogged);
+              }}
+            />
+            <TouchableWithoutFeedback
+              onPress={() => {
+                setKeepLogged(!keepLogged);
+              }}
+            >
+              <View style={styles.checkboxContainer}>
+                <Text style={styles.text}>Keep me signed in</Text>
+              </View>
+            </TouchableWithoutFeedback>
+          </View>
+
+          <View style={styles.buttonsContainer}>
+            <Button
+              mode="contained"
+              loading={loading}
+              onPress={handleSubmit}
+              style={[styles.button, { width: 120 }]}
+              theme={{
+                colors: { primary: colors.primary },
+              }}
+              disabled={themeColor == "red" ? true : false}
+            >
+              sign in
+            </Button>
+
+            <Button
+              mode="text"
+              onPress={() => navigation.navigate("ForgetPassword")}
+              style={styles.button}
+              theme={{
+                colors: { primary: colors.primary },
+              }}
+            >
+              forget password?
+            </Button>
+          </View>
+        </View>
+        <View style={styles.bottomContainer}>
+          <View
+            style={{
+              flexDirection: "row",
+              alignItems: "center",
+              marginBottom: 15,
+            }}
+          >
+            <View style={styles.seperator} />
+            <Text numberOfLines={1} style={styles.msgText}>
+              {"  Don't have an account  "}
+            </Text>
+            <View style={styles.seperator} />
+          </View>
+
+          <Button
+            mode="contained"
+            onPress={() => navigation.navigate("Register")}
+            style={[styles.button, { width: "100%" }]}
+            theme={{
+              colors: { primary: "#DDDDDD" },
+            }}
+          >
+            <Text style={{ color: "#5F5F5F" }}>sign up</Text>
           </Button>
+
+          <Text style={styles.or}>OR</Text>
 
           <Button
             mode="text"
-            onPress={() => navigation.navigate("ForgetPassword")}
-            style={styles.button}
+            onPress={() => alert("anonomous pressed.. TODO")}
+            style={[styles.button, { width: "100%" }]}
+            icon="lock"
             theme={{
               colors: { primary: colors.primary },
             }}
           >
-            forget password?
+            <Text style={{ color: colors.primary }}>log in anonymously</Text>
           </Button>
         </View>
-      </View>
-      <View style={styles.bottomContainer}>
-        <View
-          style={{
-            flexDirection: "row",
-            alignItems: "center",
-            marginBottom: 15,
-          }}
-        >
-          <View style={styles.seperator} />
-          <Text numberOfLines={1} style={styles.msgText}>
-            {"  Don't have an account  "}
-          </Text>
-          <View style={styles.seperator} />
-        </View>
-
-        <Button
-          mode="contained"
-          onPress={() => navigation.navigate("Register")}
-          style={[styles.button, { width: "100%" }]}
-          theme={{
-            colors: { primary: "#DDDDDD" },
-          }}
-        >
-          <Text style={{ color: "#5F5F5F" }}>sign up</Text>
-        </Button>
-
-        <Text style={styles.or}>OR</Text>
-
-        <Button
-          mode="text"
-          onPress={() => alert("anonomous pressed.. TODO")}
-          style={[styles.button, { width: "100%" }]}
-          icon="lock"
-          theme={{
-            colors: { primary: colors.primary },
-          }}
-        >
-          <Text style={{ color: colors.primary }}>log in anonymously</Text>
-        </Button>
-      </View>
-    </ScrollView>
+      </ScrollView>
+    </Provider>
   );
 }
 

@@ -39,8 +39,8 @@ const NavigationImp = () => {
     return (
       <AppLoading
         startAsync={authUser}
-        onFinish={() => console.log("app loading finished")}
-        onError={() => console.log("app loading failed")}
+        onFinish={() => console.log("")}
+        onError={() => console.log("")}
       />
     );
   }

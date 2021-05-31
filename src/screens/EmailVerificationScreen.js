@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import {
   View,
   Text,
@@ -10,39 +10,24 @@ import {
 } from "react-native";
 import { Button, Modal, Portal } from "react-native-paper";
 import firebase from "firebase";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 import colors from "../config/colors";
-import { Verified } from "../actions/AuthActions";
+import { Login, sendVerification, Verified } from "../actions/AuthActions";
 const iconSize = 70;
 
 const height = Dimensions.get("screen").height;
 
-function EmailVerificationScreen({
-  navigation,
-  isModelVisible,
-  setIsModelVisible,
-}) {
+function EmailVerificationScreen({ isModelVisible, setIsModelVisible }) {
   const dispatch = useDispatch();
+  const email = useSelector((state) => state.Auth.user.email);
+  const password = useSelector((state) => state.Auth.user.password);
 
-  const handleContinue = () => {
-    // const isVerified = firebase.auth().currentUser.emailVerified;
-    // if (isVerified) dispatch(Verified());
-    // else {
-    //   Alert.alert(
-    //     "Not Verified !!",
-    //     "Please check your email and verify yourself"
-    //   );
-    // }
-    navigation.navigate("Login");
+  const handleLogin = () => {
+    dispatch(Login(email, password, false));
   };
   const handleResend = () => {
-    firebase
-      .auth()
-      .currentUser.sendEmailVerification()
-      .then(() => {
-        Alert.alert("Notice", "Verification email sent...");
-      });
+    dispatch(sendVerification());
   };
 
   return (
@@ -82,13 +67,13 @@ function EmailVerificationScreen({
 
             <Button
               mode="contained"
-              onPress={handleContinue}
+              onPress={handleLogin}
               style={styles.button}
               theme={{
                 colors: { primary: colors.primary },
               }}
             >
-              continue
+              login
             </Button>
 
             <View
