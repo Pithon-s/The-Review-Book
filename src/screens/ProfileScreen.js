@@ -8,15 +8,21 @@ import {
   SafeAreaView,
 } from "react-native";
 import { Card, Title, Button } from "react-native-paper";
+import { useDispatch } from "react-redux";
+
+import { Logout } from "../actions/AuthActions";
 import color from "../config/colors";
-import { useUser } from "../hooks/useUser";
 
 function ProfileScreen(props) {
-  const { setUser } = useUser();
+  const dispatch = useDispatch();
 
   const myData = {
     title: "Department of Computer Science",
     uri: require("../assets/dept.jpg"),
+  };
+
+  const handleLogout = () => {
+    dispatch(Logout());
   };
 
   return (
@@ -70,7 +76,7 @@ function ProfileScreen(props) {
 
         <Button
           icon="logout"
-          onPress={() => setUser()}
+          onPress={handleLogout}
           color="red"
           style={{ width: 200, borderRadius: 50, alignSelf: "center" }}
         >

@@ -1,14 +1,17 @@
 import { NavigationContainer } from "@react-navigation/native";
 import { LogBox } from "react-native";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import firebase from "firebase";
 import AppLoading from "expo-app-loading";
+import { Provider, useDispatch, useSelector } from "react-redux";
+import { createStore, applyMiddleware } from "redux";
+import thunk from "redux-thunk";
 
 import NavigationTheme from "./src/navigations/NavigationTheme";
 import AuthNavigation from "./src/navigations/AuthNavigation";
-import { StateProvider } from "./src/hooks/useUser";
 import ProfileNavigation from "./src/navigations/ProfileNavigation";
-//done
+import Reducers from "./src/reducers";
+import { AutoLogin } from "./src/actions/AuthActions";
 
 const firebaseConfig = () => {
   firebase.initializeApp({
@@ -22,55 +25,41 @@ const firebaseConfig = () => {
   });
 };
 
-/*
-// we can't use useAuthentication's login, because useAuthentication use useUser
-// which have state (user) inside which is defined here in this file
-// so using useAuthentication will create a loop of state (user), and cause ERROR.
-const _logIn = (email, password) => {
-  firebase
-    .auth()
-    .signInWithEmailAndPassword(email, password)
-    .catch((error) => {
-      Alert.alert("Error !!", error.message);
-    });
-};
-*/
-
-export default function App() {
-  const [isReady, setIsReady] = useState(false);
-  const [user, setUser] = useState();
-  LogBox.ignoreLogs([""]);
-
-  useEffect(() => {
-    if (!firebase.app.length) firebaseConfig();
-  }, []);
+const NavigationImp = () => {
+  const isLogged = useSelector((state) => state.Auth.isLogged);
+  const isReady = useSelector((state) => state.Auth.isReady);
+  const dispatch = useDispatch();
 
   const authUser = async () => {
     firebaseConfig();
-    /*
-    const result = await secureStorage.readUser();
-    if (!result) return;
-    const parsed = JSON.parse(result);
-    setUser(parsed);
-    _logIn(parsed.email, parsed.password, setUser);
-*/
+    dispatch(AutoLogin());
   };
 
   if (!isReady) {
     return (
       <AppLoading
         startAsync={authUser}
-        onFinish={() => setIsReady(true)}
-        onError={console.log("")}
+        onFinish={() => console.log("app loading finished")}
+        onError={() => console.log("app loading failed")}
       />
     );
   }
 
   return (
-    <StateProvider user={user} setUser={setUser}>
-      <NavigationContainer theme={NavigationTheme}>
-        {user ? <ProfileNavigation /> : <AuthNavigation />}
-      </NavigationContainer>
-    </StateProvider>
+    <NavigationContainer theme={NavigationTheme}>
+      {isLogged ? <ProfileNavigation /> : <AuthNavigation />}
+    </NavigationContainer>
+  );
+};
+
+export default function App() {
+  LogBox.ignoreLogs([""]);
+
+  const store = createStore(Reducers, applyMiddleware(thunk));
+
+  return (
+    <Provider store={store}>
+      <NavigationImp />
+    </Provider>
   );
 }

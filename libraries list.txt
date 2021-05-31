@@ -10,6 +10,7 @@ expo-image-picker
 expo-permissions
 
 redux
+redux-thunk
 react-redux
 
 
