@@ -1,9 +1,9 @@
 export default {
-  apiKey: "AIzaSyDqNkSJMtZmaE4F_cA9u1_ZOwZJGtpFkoY",
-  authDomain: "the-review-book.firebaseapp.com",
-  projectId: "the-review-book",
-  storageBucket: "the-review-book.appspot.com",
-  messagingSenderId: "475844666441",
-  appId: "1:475844666441:web:bcb6d27e3a098fabb48b98",
-  measurementId: "G-XZ1J7062DV",
+  apiKey: "AIzaSyC6-BGVSAFcLsRSmBHSRPut5BO_s58QyZY",
+  authDomain: "the-review-book-f2959.firebaseapp.com",
+  projectId: "the-review-book-f2959",
+  storageBucket: "the-review-book-f2959.appspot.com",
+  messagingSenderId: "984255567435",
+  appId: "1:984255567435:web:3c3c7c22ee5f31e7a09fce",
+  measurementId: "G-N7E3JE7128",
 };

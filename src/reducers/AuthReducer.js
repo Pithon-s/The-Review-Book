@@ -45,7 +45,7 @@ export default (state = initialState, action) => {
           email: action.payload.email,
           password: action.payload.password,
           username: action.payload.username,
-          // profilePictureURI: action.payload.profilePictureURI,
+          profilePictureURI: action.payload.profilePictureURI,
         },
       };
     case "USER_VERIFIED":
@@ -54,6 +54,7 @@ export default (state = initialState, action) => {
         isVerified: true,
         isModelVisible: false,
         isLogged: true,
+        isLoading: false,
       };
     case "VERIFICATION_SENT":
       return {
