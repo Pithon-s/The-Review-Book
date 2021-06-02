@@ -45,7 +45,7 @@ const _createUser = async (email, username, imageURI) => {
             .firestore()
             .collection("users")
             .doc(email)
-            .set({ email, username, imageURI: downloadURI });
+            .set({ email, username, profilePictureURI: downloadURI });
         });
       });
   });
@@ -64,13 +64,22 @@ export const Login = (email, password, keepSigned, type) => {
       .auth()
       .signInWithEmailAndPassword(email, password)
       .then((current) => {
-        dispatch({
-          type: "LOGIN",
-          payload: {
-            email,
-            password,
-          },
-        });
+        firebase
+          .firestore()
+          .collection("users")
+          .doc(email)
+          .get()
+          .then((doc) => {
+            dispatch({
+              type: "LOGIN",
+              payload: {
+                email,
+                password,
+                username: doc.data().username,
+                profilePictureURI: doc.data().profilePictureURI,
+              },
+            });
+          });
 
         // login action is required multiple places,
         // so to differentiate usage type is requried
@@ -78,20 +87,6 @@ export const Login = (email, password, keepSigned, type) => {
           dispatch(sendVerification());
         } else if (current.user.emailVerified) {
           if (keepSigned) secureStorage.storeUser({ email, password });
-          // firebase
-          //   .database()                        //FIRESTORE  --TODO
-          //   .ref("/users/" + current.uid)
-          //   .once("value")
-          //   .then((snapshot) => {
-          //     dispatch({
-          //       type: "LOGIN",
-          //       payload: {
-          //         email,
-          //         username: snapshot.val().username,
-          //         profilePictureURI: snapshot.val().profilePictureURI,
-          //       },
-          //     });
-          //   });
 
           dispatch({
             type: "USER_VERIFIED",
@@ -111,32 +106,10 @@ export const Login = (email, password, keepSigned, type) => {
           },
         });
         Alert.alert("Error !!", error.message);
+        secureStorage.removeUser();
       });
   };
 };
-
-export const Logout = () => {
-  return async (dispatch) => {
-    secureStorage.removeUser();
-    dispatch({
-      type: "LOGOUT",
-    });
-  };
-};
-
-export const sendVerification = () => {
-  return async (dispatch) => {
-    firebase
-      .auth()
-      .currentUser.sendEmailVerification()
-      .then(() => {
-        dispatch({
-          type: "VERIFICATION_SENT",
-        });
-      });
-  };
-};
-
 export const Signup = (username, imageURI, email, password) => {
   return async (dispatch) => {
     dispatch({
@@ -185,7 +158,27 @@ export const Signup = (username, imageURI, email, password) => {
       });
   };
 };
+export const Logout = () => {
+  return async (dispatch) => {
+    secureStorage.removeUser();
+    dispatch({
+      type: "LOGOUT",
+    });
+  };
+};
 
+export const sendVerification = () => {
+  return async (dispatch) => {
+    firebase
+      .auth()
+      .currentUser.sendEmailVerification()
+      .then(() => {
+        dispatch({
+          type: "VERIFICATION_SENT",
+        });
+      });
+  };
+};
 export const Verified = () => {
   return async (dispatch) => {
     dispatch({
@@ -193,7 +186,6 @@ export const Verified = () => {
     });
   };
 };
-
 export const AutoLogin = () => {
   return async (dispatch) => {
     const result = await secureStorage.readUser();

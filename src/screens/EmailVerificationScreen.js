@@ -23,7 +23,7 @@ function EmailVerificationScreen() {
   const isModelVisible = useSelector((state) => state.Auth.isModelVisible);
 
   const handleLogin = () => {
-    dispatch(Login(email, password, false, "again"));
+    dispatch(Login(email, password, true, "again"));
   };
   const handleResend = () => {
     dispatch(sendVerification());
@@ -68,7 +68,7 @@ function EmailVerificationScreen() {
           <View style={styles.bottomContainer}>
             <Text style={styles.msgText}>
               We just sent you the verification link. Please check your email
-              and 'login' after verify.
+              and 'LOGIN' after verify.
             </Text>
 
             <Button

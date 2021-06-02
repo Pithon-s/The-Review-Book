@@ -8,13 +8,14 @@ import {
   SafeAreaView,
 } from "react-native";
 import { Card, Title, Button } from "react-native-paper";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 import { Logout } from "../actions/AuthActions";
 import color from "../config/colors";
 
 function ProfileScreen(props) {
   const dispatch = useDispatch();
+  const user = useSelector((state) => state.Auth.user);
 
   const myData = {
     title: "Department of Computer Science",
@@ -32,26 +33,35 @@ function ProfileScreen(props) {
         <View style={{ alignSelf: "center" }}>
           <View style={styles.profilePic}>
             <Image
-              source={require("../assets/man.png")}
+              source={
+                user.profilePictureURI
+                  ? { uri: user.profilePictureURI }
+                  : require("../assets/man.png")
+              }
               style={styles.image}
               resizeMode="center"
-            ></Image>
+            />
           </View>
           <View style={styles.active} />
         </View>
         <View style={styles.info}>
           <Text style={[styles.text, { fontWeight: "200", fontSize: 30 }]}>
-            Ali Asad
+            {user.username}
           </Text>
-          <Text style={[styles.text, { fontSize: 18, color: "#AEB5BC" }]}>
-            SP19-BCS-120
+          <Text
+            style={[
+              styles.text,
+              { fontSize: 18, color: "#AEB5BC", textTransform: "uppercase" },
+            ]}
+          >
+            {user.email.substr(0, user.email.indexOf("@"))}
           </Text>
           <Text style={[styles.text, { fontSize: 14, color: "#AEB5BC" }]}>
-            CS Department
+            CS Department (TODO)
           </Text>
         </View>
         <Button
-          onPress={() => console.log("logout")}
+          onPress={() => console.log("edit profile pressed")}
           color={color.primary}
           style={{ width: 200, borderRadius: 50, alignSelf: "center" }}
         >

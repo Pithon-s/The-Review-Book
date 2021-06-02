@@ -22,8 +22,8 @@ export default (state = initialState, action) => {
         user: {
           email: action.payload.email,
           password: action.payload.password,
-          // username: action.payload.username,
-          // profilePictureURI: action.payload.profilePictureURI,
+          username: action.payload.username,
+          profilePictureURI: action.payload.profilePictureURI,
         },
       };
     case "LOGOUT":
