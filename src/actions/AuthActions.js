@@ -20,6 +20,16 @@ const _uriToBlob = (uri) => {
   });
 };
 const _createUser = async (email, username, imageURI) => {
+  if (!imageURI) {
+    firebase
+      .firestore()
+      .collection("users")
+      .doc(email)
+      .set({ email, username });
+
+    return;
+  }
+
   let newPostImagesDir = firebase.storage().ref("users/" + email + "/");
   const fileType = imageURI.substring(imageURI.lastIndexOf(".") + 1);
 
@@ -41,19 +51,19 @@ const _createUser = async (email, username, imageURI) => {
   });
 };
 
-export const Login = (
-  email,
-  password,
-  keepSigned,
-  setLoading = null,
-  setIsModelVisible = null
-) => {
+export const Login = (email, password, keepSigned, type) => {
   return async (dispatch) => {
+    dispatch({
+      type: "SET_LOADING",
+      payload: {
+        value: true,
+      },
+    });
+
     firebase
       .auth()
       .signInWithEmailAndPassword(email, password)
       .then((current) => {
-        if (setLoading) setLoading(false);
         dispatch({
           type: "LOGIN",
           payload: {
@@ -62,10 +72,11 @@ export const Login = (
           },
         });
 
-        if (!current.user.emailVerified) {
+        // login action is required multiple places,
+        // so to differentiate usage type is requried
+        if (!current.user.emailVerified && type != "again") {
           dispatch(sendVerification());
-          if (setIsModelVisible) setIsModelVisible(true);
-        } else {
+        } else if (current.user.emailVerified) {
           if (keepSigned) secureStorage.storeUser({ email, password });
           // firebase
           //   .database()                        //FIRESTORE  --TODO
@@ -85,10 +96,20 @@ export const Login = (
           dispatch({
             type: "USER_VERIFIED",
           });
+        } else {
+          Alert.alert(
+            "Login Failed",
+            "Possible reason, your email is not verified. "
+          );
         }
       })
       .catch((error) => {
-        if (setLoading) setLoading(false);
+        dispatch({
+          type: "SET_LOADING",
+          payload: {
+            value: false,
+          },
+        });
         Alert.alert("Error !!", error.message);
       });
   };
@@ -109,7 +130,6 @@ export const sendVerification = () => {
       .auth()
       .currentUser.sendEmailVerification()
       .then(() => {
-        Alert.alert("Notice", "Verification email sent...");
         dispatch({
           type: "VERIFICATION_SENT",
         });
@@ -117,15 +137,15 @@ export const sendVerification = () => {
   };
 };
 
-export const Signup = (
-  username,
-  imageURI,
-  email,
-  password,
-  setLoading,
-  setIsModelVisible
-) => {
+export const Signup = (username, imageURI, email, password) => {
   return async (dispatch) => {
+    dispatch({
+      type: "SET_LOADING",
+      payload: {
+        value: true,
+      },
+    });
+
     firebase
       .auth()
       .createUserWithEmailAndPassword(email, password)
@@ -133,9 +153,6 @@ export const Signup = (
         _createUser(email, username, imageURI)
           .then(() => {
             dispatch(sendVerification());
-
-            setLoading(false);
-            setIsModelVisible(true);
 
             dispatch({
               type: "SIGNUP",
@@ -148,12 +165,22 @@ export const Signup = (
             });
           })
           .catch(() => {
-            setLoading(false);
-            setIsModelVisible(true);
+            console.log("user creation on firebase failed !!!");
+            dispatch({
+              type: "SET_LOADING",
+              payload: {
+                value: false,
+              },
+            });
           });
       })
       .catch((error) => {
-        setLoading(false);
+        dispatch({
+          type: "SET_LOADING",
+          payload: {
+            value: false,
+          },
+        });
         Alert.alert("Error !!", error.message);
       });
   };
@@ -178,6 +205,6 @@ export const AutoLogin = () => {
     }
 
     const parsed = JSON.parse(result);
-    dispatch(Login(parsed.email, parsed.password, false));
+    dispatch(Login(parsed.email, parsed.password, false, "auto_login"));
   };
 };

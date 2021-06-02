@@ -15,7 +15,7 @@ import {
   HelperText,
   Provider,
 } from "react-native-paper";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 import colors from "../config/colors";
 import { Login } from "../actions/AuthActions";
@@ -27,14 +27,12 @@ function LoginScreen({ navigation }) {
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
   const [keepLogged, setKeepLogged] = useState(true);
-  const [loading, setLoading] = useState(false);
-  const [isModelVisible, setIsModelVisible] = useState(false);
-
-  //State to change the theme color and using the theme color for conditional rendering.
   const [themeColor, setThemeColor] = useState(colors.primary);
+
+  const isLoading = useSelector((state) => state.Auth.isLoading);
   const dispatch = useDispatch();
 
-  //--------Validation Method-----------//
+  //--------Email Validation Method-----------//
   const validateEmail = (email) => {
     var re =
       /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -53,13 +51,9 @@ function LoginScreen({ navigation }) {
   };
 
   const handleSubmit = () => {
-    if (!email || !password) return;
+    if (!email || !password || themeColor == "red") return;
     else if (validateEmail(email)) {
-      setLoading(true);
-
-      dispatch(
-        Login(email, password, keepLogged, setLoading, setIsModelVisible)
-      );
+      dispatch(Login(email, password, keepLogged, "login_screen"));
     } else {
       console.log("Not Valid Email");
     }
@@ -68,10 +62,7 @@ function LoginScreen({ navigation }) {
   return (
     <Provider>
       <ScrollView style={styles.container}>
-        <EmailVerificationScreen
-          isModelVisible={isModelVisible}
-          setIsModelVisible={setIsModelVisible}
-        />
+        <EmailVerificationScreen />
 
         <StatusBar style="light" backgroundColor={colors.primary} />
         <View style={styles.logoContainer}></View>
@@ -143,13 +134,13 @@ function LoginScreen({ navigation }) {
           <View style={styles.buttonsContainer}>
             <Button
               mode="contained"
-              loading={loading}
+              loading={isLoading}
               onPress={handleSubmit}
               style={[styles.button, { width: 120 }]}
               theme={{
                 colors: { primary: colors.primary },
               }}
-              disabled={themeColor == "red" ? true : false}
+              // disabled={themeColor == "red" ? true : false}
             >
               sign in
             </Button>

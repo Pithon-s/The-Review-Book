@@ -6,25 +6,24 @@ import {
   Dimensions,
   TouchableOpacity,
   Image,
-  Alert,
 } from "react-native";
 import { Button, Modal, Portal } from "react-native-paper";
-import firebase from "firebase";
 import { useDispatch, useSelector } from "react-redux";
 
 import colors from "../config/colors";
-import { Login, sendVerification, Verified } from "../actions/AuthActions";
-const iconSize = 70;
+import { Login, sendVerification } from "../actions/AuthActions";
 
+const iconSize = 70;
 const height = Dimensions.get("screen").height;
 
-function EmailVerificationScreen({ isModelVisible, setIsModelVisible }) {
+function EmailVerificationScreen() {
   const dispatch = useDispatch();
   const email = useSelector((state) => state.Auth.user.email);
   const password = useSelector((state) => state.Auth.user.password);
+  const isModelVisible = useSelector((state) => state.Auth.isModelVisible);
 
   const handleLogin = () => {
-    dispatch(Login(email, password, false));
+    dispatch(Login(email, password, false, "again"));
   };
   const handleResend = () => {
     dispatch(sendVerification());
@@ -34,7 +33,14 @@ function EmailVerificationScreen({ isModelVisible, setIsModelVisible }) {
     <Portal>
       <Modal
         visible={isModelVisible}
-        onDismiss={() => setIsModelVisible(false)}
+        onDismiss={() =>
+          dispatch({
+            type: "SET_IS_MODEL_VISIBLE",
+            payload: {
+              value: false,
+            },
+          })
+        }
         contentContainerStyle={{
           alignSelf: "center",
         }}
@@ -62,7 +68,7 @@ function EmailVerificationScreen({ isModelVisible, setIsModelVisible }) {
           <View style={styles.bottomContainer}>
             <Text style={styles.msgText}>
               We just sent you the verification link. Please check your email
-              and 'continue' after verify.
+              and 'login' after verify.
             </Text>
 
             <Button

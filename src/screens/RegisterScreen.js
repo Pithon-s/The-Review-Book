@@ -15,42 +15,24 @@ import FormTextInput from "../components/common/FormTextInput";
 import colors from "../config/colors";
 import EmailVerificationScreen from "./EmailVerificationScreen";
 import { Signup } from "../actions/AuthActions";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 const height = Dimensions.get("screen").height;
 const iconSize = 95;
 
 function RegisterScreen({ navigation }) {
   const [imageUri, setImageUri] = useState();
-  const [loading, setLoading] = useState(false);
-  const [isModelVisible, setIsModelVisible] = useState(false);
-  const [registrationFailed, setRegistrationFailed] = useState(false);
-
+  const isLoading = useSelector((state) => state.Auth.isLoading);
   const dispatch = useDispatch();
 
   const handleSubmit = (data) => {
-    setLoading(true);
-    setRegistrationFailed(false);
-
-    dispatch(
-      Signup(
-        data.name,
-        imageUri,
-        data.email,
-        data.password,
-        setLoading,
-        setIsModelVisible
-      )
-    );
+    dispatch(Signup(data.name, imageUri, data.email, data.password));
   };
 
   return (
     <Provider>
       <View style={styles.container}>
-        <EmailVerificationScreen
-          isModelVisible={isModelVisible}
-          setIsModelVisible={setIsModelVisible}
-        />
+        <EmailVerificationScreen />
 
         <View style={styles.topContainer}>
           <View style={styles.iconContainer}>
@@ -70,10 +52,6 @@ function RegisterScreen({ navigation }) {
             >
               {({ handleSubmit, values, touched }) => (
                 <View style={styles.inputs}>
-                  {registrationFailed && (
-                    <Text style={styles.errortext}>Registration Failed!</Text>
-                  )}
-
                   <FormTextInput
                     mode="flat"
                     label="Full name"
@@ -124,7 +102,7 @@ function RegisterScreen({ navigation }) {
 
                   <Button
                     mode="contained"
-                    loading={loading}
+                    loading={isLoading}
                     onPress={handleSubmit}
                     style={styles.button}
                     theme={{
@@ -196,11 +174,6 @@ const styles = StyleSheet.create({
   textField: {
     backgroundColor: "transparent",
     marginTop: 5,
-  },
-  errortext: {
-    alignSelf: "center",
-    color: colors.danger,
-    fontSize: 16,
   },
 });
 
