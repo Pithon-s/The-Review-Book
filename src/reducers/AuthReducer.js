@@ -38,8 +38,8 @@ export default (state = initialState, action) => {
       };
     case "LOGOUT":
       return {
-        ...state,
-        isLogged: false,
+        ...initialState,
+        isReady: true,
       };
     case "AUTO_LOGIN_FAILED":
       return {

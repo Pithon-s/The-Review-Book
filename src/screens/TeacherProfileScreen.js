@@ -15,7 +15,7 @@ import color from "../config/colors";
 
 function TeacherProfileScreen(props) {
   const [total, setTotal] = useState(0);
-  const isAllowed = useSelector((state) => state.Auth.user.isAnonymous);
+  const isAnonymous = useSelector((state) => state.Auth.user.isAnonymous);
   const teacherData = {
     imgUrl: "https://picsum.photos/200/300",
     name: "Nadeem Ghafoor",
@@ -149,12 +149,12 @@ function TeacherProfileScreen(props) {
             </View>
           </View>
 
-          {!isAllowed ? (
+          {!isAnonymous ? (
             <View style={styles.ratingView}>
               <Text style={{ fontSize: 22 }}>
                 Tell us about your experience:
               </Text>
-              <Text>{handleRating}</Text>
+              <Text>{handleRating()}</Text>
             </View>
           ) : null}
         </View>
@@ -171,7 +171,7 @@ function TeacherProfileScreen(props) {
                 marginLeft: 10,
               }}
               // multiline={true}
-              disabled={isAllowed}
+              disabled={isAnonymous}
               theme={{
                 colors: { primary: color.primary },
               }}
@@ -182,7 +182,7 @@ function TeacherProfileScreen(props) {
               size={35}
               onPress={handleSend}
               style={{ marginTop: 10 }}
-              disabled={isAllowed}
+              disabled={isAnonymous}
             />
           </View>
 

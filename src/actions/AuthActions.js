@@ -74,7 +74,6 @@ export const Login = (email, password, keepSigned, type) => {
           .then((doc) => {
             if (doc.exists) {
               console.log("firestore read successful.");
-
               dispatch({
                 type: "LOGIN",
                 payload: {
@@ -122,19 +121,24 @@ export const Login = (email, password, keepSigned, type) => {
 export const AnonymousLogin = (setAnonymousLoading) => {
   setAnonymousLoading(true);
   return async (dispatch) => {
-    firebase
-      .auth()
-      .signInAnonymously()
-      .then(() => {
-        setAnonymousLoading(false);
-        dispatch({
-          type: "ANONYMOUS_LOGIN",
-        });
-      })
-      .catch((error) => {
-        setAnonymousLoading(false);
-        Alert.alert("Anonymous login failed", error.message);
+    setTimeout(() => {
+      dispatch({
+        type: "ANONYMOUS_LOGIN",
       });
+      setAnonymousLoading(false);
+    }, 1000);
+
+    // firebase
+    //   .auth()
+    //   .signInAnonymously()
+    //   .then(() => {
+    //     setAnonymousLoading(false);
+
+    //   })
+    //   .catch((error) => {
+    //     setAnonymousLoading(false);
+    //     Alert.alert("Anonymous login failed", error.message);
+    //   });
   };
 };
 export const Signup = (username, imageURI, email, password, resetForm) => {

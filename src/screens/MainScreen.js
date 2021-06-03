@@ -17,33 +17,7 @@ import {
   IconButton,
 } from "react-native-paper";
 import color from "../config/colors";
-
-const deptArray = [
-  { id: 1, title: "Department of Computer Science", uri: "../assets/dept.jpg" },
-  {
-    id: 2,
-    title: "Department of Electrical & Computer Engineering",
-    uri: "../assets/dept.jpg",
-  },
-  {
-    id: 4,
-    title: "Department of Chemical Engineering",
-    uri: "../assets/dept.jpg",
-  },
-  {
-    id: 5,
-    title: "Department of Management Sciences",
-    uri: "../assets/dept.jpg",
-  },
-  { id: 6, title: "Department of Ecnomics", uri: "../assets/dept.jpg" },
-  { id: 7, title: "Department of Humanities", uri: "../assets/dept.jpg" },
-  { id: 8, title: "Department of Physics", uri: "../assets/dept.jpg" },
-  { id: 9, title: "Department of Pharmacy", uri: "../assets/dept.jpg" },
-  { id: 10, title: "Department of Mathematics", uri: "../assets/dept.jpg" },
-  { id: 11, title: "Department of Chemistery", uri: "../assets/dept.jpg" },
-  { id: 12, title: "Department of Architecture", uri: "../assets/dept.jpg" },
-  { id: 13, title: "Department of Art & Design", uri: "../assets/dept.jpg" },
-];
+import deptArray from "../utilities/DepartmentData";
 
 function MainScreen(props) {
   const [searchQuery, setSearchQuery] = useState("");
@@ -134,7 +108,7 @@ function MainScreen(props) {
                 }}
                 style={styles.card}
               >
-                <Card.Cover source={require("../assets/dept.jpg")} />
+                <Card.Cover source={item.uri} />
                 <Card.Content>
                   <Title style={{ color: color.primary }}>{item.title}</Title>
                 </Card.Content>

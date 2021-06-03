@@ -39,7 +39,13 @@ function RegisterScreen({ navigation }) {
       return;
 
     dispatch(
-      Signup(data.username, imageUri, data.email, data.password, resetForm)
+      Signup(
+        data.username,
+        imageUri,
+        data.email.toLowerCase(),
+        data.password,
+        resetForm
+      )
     );
   };
 

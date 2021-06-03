@@ -37,7 +37,7 @@ function LoginScreen({ navigation }) {
   const handleSubmit = () => {
     if (!email || !password || !validateEmail(email)) return;
 
-    dispatch(Login(email, password, keepLogged, "login_screen"));
+    dispatch(Login(email.toLowerCase(), password, keepLogged, "login_screen"));
   };
 
   const handleAnonymous = () => {

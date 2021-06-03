@@ -21,6 +21,8 @@ function ProfileScreen(props) {
     uri: require("../assets/dept.jpg"),
   };
 
+  //---------Handlers--------
+  const handleEditProfile = () => console.log("edit profile pressed");
   const handleLogout = () => {
     dispatch(Logout());
   };
@@ -35,7 +37,7 @@ function ProfileScreen(props) {
               source={
                 user.profilePictureURI
                   ? { uri: user.profilePictureURI }
-                  : require("../assets/man.png")
+                  : require("../assets/user.png")
               }
               style={styles.image}
               resizeMode="center"
@@ -47,24 +49,30 @@ function ProfileScreen(props) {
           <Text style={[styles.text, { fontWeight: "200", fontSize: 30 }]}>
             {user.username}
           </Text>
-          {user.email && (
-            <Text
-              style={[
-                styles.text,
-                { fontSize: 18, color: "#AEB5BC", textTransform: "uppercase" },
-              ]}
-            >
-              {user.email.substr(0, user.email.indexOf("@"))}
-            </Text>
+          {!user.isAnonymous && (
+            <>
+              <Text
+                style={[
+                  styles.text,
+                  {
+                    fontSize: 18,
+                    color: "#AEB5BC",
+                    textTransform: "uppercase",
+                  },
+                ]}
+              >
+                {user.email.substr(0, user.email.indexOf("@"))}
+              </Text>
+              <Text style={[styles.text, { fontSize: 14, color: "#AEB5BC" }]}>
+                CS Department (TODO)
+              </Text>
+            </>
           )}
-          <Text style={[styles.text, { fontSize: 14, color: "#AEB5BC" }]}>
-            CS Department (TODO)
-          </Text>
         </View>
 
         {!user.isAnonymous ? (
           <Button
-            onPress={() => console.log("edit profile pressed")}
+            onPress={handleEditProfile}
             color={color.primary}
             style={{ width: 200, borderRadius: 50, alignSelf: "center" }}
           >
