@@ -119,7 +119,19 @@ export const Login = (email, password, keepSigned, type) => {
       });
   };
 };
-export const Signup = (username, imageURI, email, password) => {
+export const AnonymousLogin = () => {
+  return async (dispatch) => {
+    firebase
+      .auth()
+      .signInAnonymously()
+      .then(() => {
+        dispatch({
+          type: "ANONYMOUS_LOGIN",
+        });
+      });
+  };
+};
+export const Signup = (username, imageURI, email, password, resetForm) => {
   return async (dispatch) => {
     dispatch({
       type: "SET_LOADING",
@@ -140,11 +152,11 @@ export const Signup = (username, imageURI, email, password) => {
               type: "SIGNUP",
               payload: {
                 email,
-                username,
                 password,
-                // profilePictureURI : download able profile picture URI
               },
             });
+
+            resetForm();
           })
           .catch(() => {
             console.log("user creation on firebase failed !!!");

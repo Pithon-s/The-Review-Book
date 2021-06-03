@@ -9,6 +9,7 @@ const initialState = {
     password: "",
     username: "",
     profilePictureURI: "",
+    isAnonymous: false,
   },
 };
 
@@ -24,6 +25,15 @@ export default (state = initialState, action) => {
           password: action.payload.password,
           username: action.payload.username,
           profilePictureURI: action.payload.profilePictureURI,
+        },
+      };
+    case "ANONYMOUS_LOGIN":
+      return {
+        ...state,
+        isLogged: true,
+        user: {
+          isAnonymous: true,
+          username: "Anonymous",
         },
       };
     case "LOGOUT":
@@ -44,8 +54,6 @@ export default (state = initialState, action) => {
         user: {
           email: action.payload.email,
           password: action.payload.password,
-          username: action.payload.username,
-          profilePictureURI: action.payload.profilePictureURI,
         },
       };
     case "USER_VERIFIED":

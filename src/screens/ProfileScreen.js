@@ -48,14 +48,16 @@ function ProfileScreen(props) {
           <Text style={[styles.text, { fontWeight: "200", fontSize: 30 }]}>
             {user.username}
           </Text>
-          <Text
-            style={[
-              styles.text,
-              { fontSize: 18, color: "#AEB5BC", textTransform: "uppercase" },
-            ]}
-          >
-            {user.email.substr(0, user.email.indexOf("@"))}
-          </Text>
+          {user.email && (
+            <Text
+              style={[
+                styles.text,
+                { fontSize: 18, color: "#AEB5BC", textTransform: "uppercase" },
+              ]}
+            >
+              {user.email.substr(0, user.email.indexOf("@"))}
+            </Text>
+          )}
           <Text style={[styles.text, { fontSize: 14, color: "#AEB5BC" }]}>
             CS Department (TODO)
           </Text>

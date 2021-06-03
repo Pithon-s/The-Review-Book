@@ -18,7 +18,7 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 
 import colors from "../config/colors";
-import { Login } from "../actions/AuthActions";
+import { AnonymousLogin, Login } from "../actions/AuthActions";
 import EmailVerificationScreen from "./EmailVerificationScreen";
 import validateEmail from "../utilities/validateEmail";
 
@@ -37,6 +37,10 @@ function LoginScreen({ navigation }) {
     if (!email || !password || !validateEmail(email)) return;
 
     dispatch(Login(email, password, keepLogged, "login_screen"));
+  };
+
+  const handleAnonymous = () => {
+    dispatch(AnonymousLogin());
   };
 
   return (
@@ -114,7 +118,6 @@ function LoginScreen({ navigation }) {
               theme={{
                 colors: { primary: colors.primary },
               }}
-              // disabled={themeColor == "red" ? true : false}
             >
               sign in
             </Button>
@@ -161,7 +164,7 @@ function LoginScreen({ navigation }) {
 
           <Button
             mode="text"
-            onPress={() => alert("anonomous pressed.. TODO")}
+            onPress={handleAnonymous}
             style={[styles.button, { width: "100%" }]}
             icon="lock"
             theme={{

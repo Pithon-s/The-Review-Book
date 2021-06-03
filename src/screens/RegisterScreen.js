@@ -28,7 +28,7 @@ function RegisterScreen({ navigation }) {
   const isLoading = useSelector((state) => state.Auth.isLoading);
   const dispatch = useDispatch();
 
-  const handleSubmit = (data) => {
+  const handleSubmit = (data, { resetForm }) => {
     if (
       !data.username ||
       !data.email ||
@@ -38,7 +38,9 @@ function RegisterScreen({ navigation }) {
     )
       return;
 
-    dispatch(Signup(data.username, imageUri, data.email, data.password));
+    dispatch(
+      Signup(data.username, imageUri, data.email, data.password, resetForm)
+    );
   };
 
   return (
