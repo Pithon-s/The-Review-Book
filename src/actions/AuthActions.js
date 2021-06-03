@@ -72,12 +72,8 @@ export const Login = (email, password, keepSigned, type) => {
           .doc(email)
           .get()
           .then((doc) => {
-            // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-            // RED FLAG
-            // unknown bug.. somehow firebase is getting doc object but not data.
             if (doc.exists) {
               console.log("firestore read successful.");
-              // console.log(doc.data());
 
               dispatch({
                 type: "LOGIN",
@@ -88,18 +84,6 @@ export const Login = (email, password, keepSigned, type) => {
                   profilePictureURI: doc.data().profilePictureURI,
                 },
               });
-            } else {
-              console.log("firestore read failed.");
-
-              dispatch({
-                type: "LOGIN",
-                payload: {
-                  email,
-                  password,
-                  username: ":(",
-                  profilePictureURI: "",
-                },
-              });
             }
 
             console.log("verifing user.");
@@ -107,7 +91,7 @@ export const Login = (email, password, keepSigned, type) => {
             // so to differentiate usage type is requried
             if (!current.user.emailVerified && type != "again") {
               dispatch(sendVerification());
-              console.log("varification failed, sending verification email.");
+              console.log("verification failed, sending verification email.");
             } else if (current.user.emailVerified) {
               if (keepSigned) secureStorage.storeUser({ email, password });
               console.log("verification successful");
@@ -124,6 +108,7 @@ export const Login = (email, password, keepSigned, type) => {
           });
       })
       .catch((error) => {
+        secureStorage.removeUser();
         dispatch({
           type: "SET_LOADING",
           payload: {
@@ -131,7 +116,6 @@ export const Login = (email, password, keepSigned, type) => {
           },
         });
         Alert.alert("Error !!", error.message);
-        secureStorage.removeUser();
       });
   };
 };

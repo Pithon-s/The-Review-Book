@@ -20,6 +20,7 @@ import { useDispatch, useSelector } from "react-redux";
 import colors from "../config/colors";
 import { Login } from "../actions/AuthActions";
 import EmailVerificationScreen from "./EmailVerificationScreen";
+import validateEmail from "../utilities/validateEmail";
 
 const height = Dimensions.get("screen").height;
 
@@ -27,36 +28,15 @@ function LoginScreen({ navigation }) {
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
   const [keepLogged, setKeepLogged] = useState(true);
-  const [themeColor, setThemeColor] = useState(colors.primary);
+  const [isInvalidEmail, setIsInvalidEmail] = useState(true);
 
   const isLoading = useSelector((state) => state.Auth.isLoading);
   const dispatch = useDispatch();
 
-  //--------Email Validation Method-----------//
-  const validateEmail = (email) => {
-    var re =
-      /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    if (re.test(email)) {
-      if (
-        email.indexOf(
-          "@cuilahore.edu.pk",
-          email.length - "@cuilahore.edu.pk".length
-        ) !== -1
-      ) {
-        return true;
-      } else {
-        return false;
-      }
-    }
-  };
-
   const handleSubmit = () => {
-    if (!email || !password || themeColor == "red") return;
-    else if (validateEmail(email)) {
-      dispatch(Login(email, password, keepLogged, "login_screen"));
-    } else {
-      console.log("Not Valid Email");
-    }
+    if (!email || !password || !validateEmail(email)) return;
+
+    dispatch(Login(email, password, keepLogged, "login_screen"));
   };
 
   return (
@@ -73,27 +53,21 @@ function LoginScreen({ navigation }) {
             value={email}
             onChangeText={(email) => {
               setEmail(email);
-              if (!validateEmail(email)) {
-                setThemeColor("red");
-              } else {
-                setThemeColor(colors.primary);
-              }
+              if (!validateEmail(email)) setIsInvalidEmail(false);
+              else setIsInvalidEmail(true);
             }}
+            error={!isInvalidEmail}
             placeholder="xxxx-xxx-xxx@cuilahore.edu.pk"
             keyboardType="email-address"
             style={styles.textField}
             theme={{
-              colors: { primary: themeColor },
+              colors: { primary: colors.primary },
             }}
           />
-          {themeColor == "red" && (
-            <HelperText
-              type="error"
-              visible={themeColor == "red" ? true : false}
-            >
-              Use domain xxxx-xxx-xxx@cuilahore.edu.pk to signin.
-            </HelperText>
-          )}
+          <HelperText type="error" visible={!isInvalidEmail}>
+            Use domain xxxx-xxx-xxx@cuilahore.edu.pk
+          </HelperText>
+
           <TextInput
             mode="outlined"
             label="Enter your password"
@@ -101,7 +75,7 @@ function LoginScreen({ navigation }) {
             onChangeText={(password) => setPassword(password)}
             placeholder=""
             secureTextEntry
-            style={[styles.textField, { marginVertical: 10 }]}
+            style={[styles.textField, { marginBottom: 10 }]}
             theme={{
               colors: { primary: colors.primary },
             }}

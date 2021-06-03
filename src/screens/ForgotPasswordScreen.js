@@ -6,11 +6,13 @@ import {
   Dimensions,
   Image,
   StatusBar,
+  Alert,
 } from "react-native";
-import { Button, TextInput } from "react-native-paper";
+import { Button, HelperText, TextInput } from "react-native-paper";
 import firebase from "firebase";
 
 import colors from "../config/colors";
+import validateEmail from "../utilities/validateEmail";
 const iconSize = 85;
 
 const height = Dimensions.get("screen").height;
@@ -18,9 +20,10 @@ const height = Dimensions.get("screen").height;
 function ForgotPasswordScreen({}) {
   const [email, setEmail] = useState();
   const [loading, setLoading] = useState(false);
+  const [isInvalidEmail, setIsInvalidEmail] = useState(true);
 
   const handleSubmit = () => {
-    if (!email) return;
+    if (!email || !validateEmail(email)) return;
     setLoading(true);
 
     firebase
@@ -64,7 +67,13 @@ function ForgotPasswordScreen({}) {
           mode="flat"
           label="Enter your email"
           value={email}
-          onChangeText={(email) => setEmail(email)}
+          onChangeText={(email) => {
+            setEmail(email);
+
+            if (!validateEmail(email)) setIsInvalidEmail(false);
+            else setIsInvalidEmail(true);
+          }}
+          error={!isInvalidEmail}
           placeholder="xxxx-xxx-xxx@cuilahore.edu.pk"
           keyboardType="email-address"
           style={styles.textField}
@@ -72,6 +81,9 @@ function ForgotPasswordScreen({}) {
             colors: { primary: colors.primary },
           }}
         />
+        <HelperText type="error" visible={!isInvalidEmail}>
+          Use domain xxxx-xxx-xxx@cuilahore.edu.pk
+        </HelperText>
 
         <Button
           mode="contained"
@@ -97,7 +109,7 @@ const styles = StyleSheet.create({
   button: {
     borderRadius: 20,
     width: "100%",
-    marginTop: 30,
+    marginTop: 20,
   },
   topContainer: {
     height: height * 0.25,

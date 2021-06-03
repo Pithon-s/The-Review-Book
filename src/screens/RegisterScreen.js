@@ -7,7 +7,7 @@ import {
   ScrollView,
   TouchableOpacity,
 } from "react-native";
-import { Button, Provider } from "react-native-paper";
+import { Button, Provider, HelperText } from "react-native-paper";
 import { Formik } from "formik";
 
 import ImagePicker from "../components/ImagePicker";
@@ -16,17 +16,29 @@ import colors from "../config/colors";
 import EmailVerificationScreen from "./EmailVerificationScreen";
 import { Signup } from "../actions/AuthActions";
 import { useDispatch, useSelector } from "react-redux";
+import validateEmail from "../utilities/validateEmail";
 
 const height = Dimensions.get("screen").height;
 const iconSize = 95;
 
 function RegisterScreen({ navigation }) {
   const [imageUri, setImageUri] = useState();
+  const [isInvalidEmail, setIsInvalidEmail] = useState(true);
+
   const isLoading = useSelector((state) => state.Auth.isLoading);
   const dispatch = useDispatch();
 
   const handleSubmit = (data) => {
-    dispatch(Signup(data.name, imageUri, data.email, data.password));
+    if (
+      !data.username ||
+      !data.email ||
+      !data.password ||
+      !data.confirmPassword ||
+      !validateEmail(data.email)
+    )
+      return;
+
+    dispatch(Signup(data.username, imageUri, data.email, data.password));
   };
 
   return (
@@ -43,20 +55,20 @@ function RegisterScreen({ navigation }) {
           <View style={styles.bottomContainer}>
             <Formik
               initialValues={{
-                name: "",
+                username: "",
                 email: "",
                 password: "",
                 confirmPassword: "",
               }}
               onSubmit={handleSubmit}
             >
-              {({ handleSubmit, values, touched }) => (
+              {({ handleSubmit, setFieldValue, values, touched }) => (
                 <View style={styles.inputs}>
                   <FormTextInput
                     mode="flat"
                     label="Full name"
-                    title="name"
-                    error={!values["name"] && touched["name"]}
+                    title="username"
+                    error={!values["username"] && touched["username"]}
                     style={styles.textField}
                     theme={{
                       colors: { primary: colors.primary },
@@ -69,12 +81,27 @@ function RegisterScreen({ navigation }) {
                     title="email"
                     placeholder="xxxx-xxx-xxx@cuilahore.edu.pk"
                     keyboardType="email-address"
-                    error={!values["email"] && touched["email"]}
+                    error={
+                      (!values["email"] && touched["email"]) || !isInvalidEmail
+                    }
+                    onChangeText={(email) => {
+                      setFieldValue("email", email);
+
+                      if (!validateEmail(email)) setIsInvalidEmail(false);
+                      else setIsInvalidEmail(true);
+                    }}
                     style={styles.textField}
                     theme={{
                       colors: { primary: colors.primary },
                     }}
                   />
+                  <HelperText
+                    type="error"
+                    visible={!isInvalidEmail}
+                    style={{ marginBottom: -20 }}
+                  >
+                    Use domain xxxx-xxx-xxx@cuilahore.edu.pk
+                  </HelperText>
 
                   <FormTextInput
                     mode="flat"
