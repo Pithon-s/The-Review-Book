@@ -16,7 +16,6 @@ import {
   Avatar,
   IconButton,
 } from "react-native-paper";
-
 import color from "../config/colors";
 
 const deptArray = [
@@ -69,6 +68,7 @@ function MainScreen(props) {
             style={{ backgroundColor: color.white, marginLeft: 45 }}
           />
         ) : null}
+
         <Searchbar
           placeholder="Search"
           //Cancel button me msla ha
@@ -89,6 +89,7 @@ function MainScreen(props) {
           onTouchCancel={() => console.log(searchQuery)}
         />
       </View>
+
       <View style={styles.cardView}>
         {itemsBlur == true ? (
           isLoading == true ? (
@@ -156,7 +157,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     height: Dimensions.get("screen").height * 0.1,
     width: "100%",
-    //backgroundColor: "tomato",
     justifyContent: "center",
   },
   searchBar: {

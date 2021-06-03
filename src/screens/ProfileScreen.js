@@ -16,7 +16,6 @@ import color from "../config/colors";
 function ProfileScreen(props) {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.Auth.user);
-
   const myData = {
     title: "Department of Computer Science",
     uri: require("../assets/dept.jpg"),
@@ -62,13 +61,17 @@ function ProfileScreen(props) {
             CS Department (TODO)
           </Text>
         </View>
-        <Button
-          onPress={() => console.log("edit profile pressed")}
-          color={color.primary}
-          style={{ width: 200, borderRadius: 50, alignSelf: "center" }}
-        >
-          Edit Profile
-        </Button>
+
+        {!user.isAnonymous ? (
+          <Button
+            onPress={() => console.log("edit profile pressed")}
+            color={color.primary}
+            style={{ width: 200, borderRadius: 50, alignSelf: "center" }}
+          >
+            Edit Profile
+          </Button>
+        ) : null}
+
         <View style={styles.cardView}>
           <Card onPress={() => console.log("pressed")} style={styles.card}>
             <Card.Cover source={myData.uri} />
