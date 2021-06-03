@@ -29,6 +29,7 @@ function LoginScreen({ navigation }) {
   const [password, setPassword] = useState();
   const [keepLogged, setKeepLogged] = useState(true);
   const [isInvalidEmail, setIsInvalidEmail] = useState(true);
+  const [anonymousLoading, setAnonymousLoading] = useState(false);
 
   const isLoading = useSelector((state) => state.Auth.isLoading);
   const dispatch = useDispatch();
@@ -40,7 +41,7 @@ function LoginScreen({ navigation }) {
   };
 
   const handleAnonymous = () => {
-    dispatch(AnonymousLogin());
+    dispatch(AnonymousLogin(setAnonymousLoading));
   };
 
   return (
@@ -166,6 +167,7 @@ function LoginScreen({ navigation }) {
             mode="text"
             onPress={handleAnonymous}
             style={[styles.button, { width: "100%" }]}
+            loading={anonymousLoading}
             icon="lock"
             theme={{
               colors: { primary: colors.primary },
