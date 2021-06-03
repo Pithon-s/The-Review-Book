@@ -114,6 +114,9 @@ export const Login = (email, password, keepSigned, type) => {
             value: false,
           },
         });
+        dispatch({
+          type: "AUTO_LOGIN_FAILED",
+        });
         Alert.alert("Error !!", error.message);
       });
   };
@@ -127,18 +130,6 @@ export const AnonymousLogin = (setAnonymousLoading) => {
       });
       setAnonymousLoading(false);
     }, 1000);
-
-    // firebase
-    //   .auth()
-    //   .signInAnonymously()
-    //   .then(() => {
-    //     setAnonymousLoading(false);
-
-    //   })
-    //   .catch((error) => {
-    //     setAnonymousLoading(false);
-    //     Alert.alert("Anonymous login failed", error.message);
-    //   });
   };
 };
 export const Signup = (username, imageURI, email, password, resetForm) => {
@@ -185,6 +176,7 @@ export const Signup = (username, imageURI, email, password, resetForm) => {
             value: false,
           },
         });
+
         Alert.alert("Error !!", error.message);
       });
   };
