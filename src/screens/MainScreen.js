@@ -23,13 +23,15 @@ function MainScreen(props) {
   const [searchQuery, setSearchQuery] = useState("");
   const [itemsBlur, setItemsBlur] = useState(false);
   const [isLoading, setLoading] = useState(false);
+  const [showBackButton, setShowBackButton] = useState(false);
+
   const onChangeSearch = (query) => setSearchQuery(query);
 
   return (
     <SafeAreaView style={styles.mainContainer}>
       <StatusBar backgroundColor={color.primary} />
       <View style={styles.mainView}>
-        {isLoading == true ? (
+        {showBackButton == true ? (
           <IconButton
             icon="arrow-left"
             color={color.primary}
@@ -37,6 +39,7 @@ function MainScreen(props) {
             onPress={() => {
               setLoading(false);
               setItemsBlur(false);
+              setShowBackButton(false);
               setSearchQuery("");
             }}
             style={{ backgroundColor: color.white, marginLeft: 45 }}
@@ -45,18 +48,22 @@ function MainScreen(props) {
 
         <Searchbar
           placeholder="Search"
-          //Cancel button me msla ha
           onChangeText={onChangeSearch}
           value={searchQuery}
           style={styles.searchBar}
-          onSubmitEditing={() => setLoading(false)}
+          onSubmitEditing={() => {
+            setLoading(false);
+            setShowBackButton(true);
+          }}
           onTextInput={() => {
             if (searchQuery === "") {
               setItemsBlur(false);
               setLoading(false);
+              setShowBackButton(false);
             } else {
               setItemsBlur(true);
               setLoading(true);
+              setShowBackButton(true);
             }
           }}
           iconColor={color.primary}
