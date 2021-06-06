@@ -1,17 +1,12 @@
 import React from "react";
-import {
-  View,
-  Text,
-  StyleSheet,
-  Dimensions,
-  TouchableOpacity,
-} from "react-native";
+import { View, Text, StyleSheet, Dimensions } from "react-native";
 import { Button } from "react-native-paper";
 import { useDispatch, useSelector } from "react-redux";
 
 import colors from "../config/colors";
 import { Login, sendVerification } from "../actions/AuthActions";
 import PopUpDialog from "../components/PopUpDialog";
+import TextWithTouchable from "../components/TextWithTouchable";
 
 const height = Dimensions.get("screen").height;
 
@@ -49,29 +44,16 @@ function EmailVerificationScreen() {
             continue
           </Button>
 
-          <View
+          <TextWithTouchable
+            description="Didn't get the link?  "
+            touchableDescription="Resend code"
+            fontSize={15}
+            handlePress={handleResend}
             style={{
-              flexDirection: "row",
               marginTop: 15,
               justifyContent: "center",
-              alignItems: "center",
             }}
-          >
-            <Text style={{ color: colors.darkgrey, fontSize: 16 }}>
-              {"Didn't get the link?  "}
-            </Text>
-            <TouchableOpacity onPress={handleResend}>
-              <Text
-                style={{
-                  color: "#5B7CDA",
-                  fontWeight: "bold",
-                  fontSize: 16,
-                }}
-              >
-                Resend code
-              </Text>
-            </TouchableOpacity>
-          </View>
+          />
         </View>
       </View>
     </PopUpDialog>

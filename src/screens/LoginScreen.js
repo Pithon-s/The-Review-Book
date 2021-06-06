@@ -1,26 +1,14 @@
 import React, { useState } from "react";
-import {
-  View,
-  StyleSheet,
-  Dimensions,
-  Text,
-  TouchableWithoutFeedback,
-  ScrollView,
-} from "react-native";
+import { View, StyleSheet, Dimensions, Text, ScrollView } from "react-native";
 import { StatusBar } from "expo-status-bar";
-import {
-  Button,
-  Checkbox,
-  TextInput,
-  HelperText,
-  Provider,
-} from "react-native-paper";
+import { Button, TextInput, HelperText, Provider } from "react-native-paper";
 import { useDispatch, useSelector } from "react-redux";
 
 import colors from "../config/colors";
 import { AnonymousLogin, Login } from "../actions/AuthActions";
 import EmailVerificationScreen from "./EmailVerificationScreen";
 import validateEmail from "../utilities/validateEmail";
+import CheckboxWithDesc from "../components/CheckboxWithDesc";
 
 const height = Dimensions.get("screen").height;
 
@@ -86,29 +74,13 @@ function LoginScreen({ navigation }) {
             }}
           />
 
-          <View
-            style={{
-              flexDirection: "row",
-              alignItems: "center",
+          <CheckboxWithDesc
+            status={keepLogged}
+            description="Keep me signed in"
+            handlePress={() => {
+              setKeepLogged(!keepLogged);
             }}
-          >
-            <Checkbox
-              status={keepLogged ? "checked" : "unchecked"}
-              color={colors.primary}
-              onPress={() => {
-                setKeepLogged(!keepLogged);
-              }}
-            />
-            <TouchableWithoutFeedback
-              onPress={() => {
-                setKeepLogged(!keepLogged);
-              }}
-            >
-              <View style={styles.checkboxContainer}>
-                <Text style={styles.text}>Keep me signed in</Text>
-              </View>
-            </TouchableWithoutFeedback>
-          </View>
+          />
 
           <View style={styles.buttonsContainer}>
             <Button
@@ -199,11 +171,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
-  checkboxContainer: {
-    flex: 1,
-    height: 40,
-    justifyContent: "center",
-  },
+
   fieldContainer: {
     justifyContent: "center",
     height: height * 0.4,

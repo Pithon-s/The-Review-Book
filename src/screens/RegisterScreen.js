@@ -1,28 +1,24 @@
 import React, { useState } from "react";
-import {
-  View,
-  StyleSheet,
-  Text,
-  Dimensions,
-  ScrollView,
-  TouchableOpacity,
-} from "react-native";
+import { View, StyleSheet, Dimensions, ScrollView } from "react-native";
 import { Button, Provider, HelperText } from "react-native-paper";
 import { Formik } from "formik";
+import { useDispatch, useSelector } from "react-redux";
 
 import ImagePicker from "../components/ImagePicker";
 import FormTextInput from "../components/common/FormTextInput";
 import colors from "../config/colors";
 import EmailVerificationScreen from "./EmailVerificationScreen";
 import { Signup } from "../actions/AuthActions";
-import { useDispatch, useSelector } from "react-redux";
 import validateEmail from "../utilities/validateEmail";
+import CheckboxWithDesc from "../components/CheckboxWithDesc";
+import TextWithTouchable from "../components/TextWithTouchable";
 
 const height = Dimensions.get("screen").height;
 const iconSize = 95;
 
 function RegisterScreen({ navigation }) {
   const [imageUri, setImageUri] = useState();
+  const [isAgree, setIsAgree] = useState(false);
   const [isInvalidEmail, setIsInvalidEmail] = useState(true);
 
   const isLoading = useSelector((state) => state.Auth.isLoading);
@@ -136,6 +132,22 @@ function RegisterScreen({ navigation }) {
                     }}
                   />
 
+                  <CheckboxWithDesc
+                    status={isAgree}
+                    fontSize={14}
+                    style={{ marginTop: 10 }}
+                    descriptionComp={
+                      <TextWithTouchable
+                        description="Agree to "
+                        touchableDescription="term and conditions"
+                        handlePress={() => alert("term and conditions... TODO")}
+                      />
+                    }
+                    handlePress={() => {
+                      setIsAgree(!isAgree);
+                    }}
+                  />
+
                   <Button
                     mode="contained"
                     loading={isLoading}
@@ -148,25 +160,13 @@ function RegisterScreen({ navigation }) {
                     register
                   </Button>
 
-                  <View
-                    style={{
-                      flexDirection: "row",
-                      alignItems: "center",
-                      marginTop: 45,
-                      justifyContent: "center",
-                    }}
-                  >
-                    <Text style={{ color: colors.darkgrey }}>
-                      {"ALREADY HAVE AN ACCOUNT?  "}
-                    </Text>
-                    <TouchableOpacity
-                      onPress={() => navigation.navigate("Login")}
-                    >
-                      <Text style={{ color: "#5B7CDA", fontWeight: "bold" }}>
-                        SIGN IN
-                      </Text>
-                    </TouchableOpacity>
-                  </View>
+                  <TextWithTouchable
+                    description="ALREADY HAVE AN ACCOUNT?  "
+                    touchableDescription="SIGN IN"
+                    handlePress={() => navigation.navigate("Login")}
+                    fontSize={14}
+                    style={{ marginTop: 30, justifyContent: "center" }}
+                  />
                 </View>
               )}
             </Formik>
@@ -182,7 +182,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   button: {
-    top: 30,
+    top: 20,
     backgroundColor: colors.primary,
     borderRadius: 20,
   },
