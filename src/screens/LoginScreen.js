@@ -3,6 +3,7 @@ import { View, StyleSheet, Dimensions, Text, ScrollView } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import { Button, TextInput, HelperText, Provider } from "react-native-paper";
 import { useDispatch, useSelector } from "react-redux";
+import { Entypo } from "@expo/vector-icons";
 
 import colors from "../config/colors";
 import { AnonymousLogin, Login } from "../actions/AuthActions";
@@ -15,6 +16,7 @@ const height = Dimensions.get("screen").height;
 function LoginScreen({ navigation }) {
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
+  const [showPassword, setShowPassword] = useState(false);
   const [keepLogged, setKeepLogged] = useState(true);
   const [isInvalidEmail, setIsInvalidEmail] = useState(true);
   const [anonymousLoading, setAnonymousLoading] = useState(false);
@@ -65,9 +67,21 @@ function LoginScreen({ navigation }) {
             mode="outlined"
             label="Enter your password"
             value={password}
+            right={
+              <TextInput.Icon
+                name={() => (
+                  <Entypo
+                    name={showPassword ? "eye" : "eye-with-line"}
+                    size={20}
+                    color={colors.darkgrey}
+                  />
+                )}
+                onPress={() => setShowPassword(!showPassword)}
+              />
+            }
             onChangeText={(password) => setPassword(password)}
             placeholder=""
-            secureTextEntry
+            secureTextEntry={!showPassword}
             style={[styles.textField, { marginBottom: 10 }]}
             theme={{
               colors: { primary: colors.primary },

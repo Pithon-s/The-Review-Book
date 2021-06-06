@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import { View, StyleSheet, Dimensions, ScrollView } from "react-native";
-import { Button, Provider, HelperText } from "react-native-paper";
+import { Button, Provider, HelperText, TextInput } from "react-native-paper";
 import { Formik } from "formik";
 import { useDispatch, useSelector } from "react-redux";
+import { Entypo } from "@expo/vector-icons";
 
 import ImagePicker from "../components/ImagePicker";
 import FormTextInput from "../components/common/FormTextInput";
@@ -22,6 +23,7 @@ function RegisterScreen({ navigation }) {
   const [isAgree, setIsAgree] = useState(false);
   const [showTerms, setShowTerms] = useState(false);
   const [isInvalidEmail, setIsInvalidEmail] = useState(true);
+  const [showPassword, setShowPassword] = useState(false);
 
   const isLoading = useSelector((state) => state.Auth.isLoading);
   const dispatch = useDispatch();
@@ -115,30 +117,54 @@ function RegisterScreen({ navigation }) {
                     mode="flat"
                     label="Password"
                     title="password"
-                    secureTextEntry
+                    secureTextEntry={!showPassword}
                     style={styles.textField}
                     error={!values["password"] && touched["password"]}
                     theme={{
                       colors: { primary: colors.primary },
                     }}
+                    right={
+                      <TextInput.Icon
+                        name={() => (
+                          <Entypo
+                            name={showPassword ? "eye" : "eye-with-line"}
+                            size={20}
+                            color={colors.darkgrey}
+                          />
+                        )}
+                        onPress={() => setShowPassword(!showPassword)}
+                      />
+                    }
                   />
 
                   <FormTextInput
                     mode="flat"
                     label="Confirm Password"
                     title="confirmPassword"
-                    secureTextEntry
+                    secureTextEntry={!showPassword}
                     style={styles.textField}
                     error={values["password"] !== values["confirmPassword"]}
                     theme={{
                       colors: { primary: colors.primary },
                     }}
+                    right={
+                      <TextInput.Icon
+                        name={() => (
+                          <Entypo
+                            name={showPassword ? "eye" : "eye-with-line"}
+                            size={20}
+                            color={colors.darkgrey}
+                          />
+                        )}
+                        onPress={() => setShowPassword(!showPassword)}
+                      />
+                    }
                   />
 
                   <CheckboxWithDesc
                     status={isAgree}
                     fontSize={14}
-                    style={{ marginTop: 10 }}
+                    style={{ marginVertical: 10 }}
                     descriptionComp={
                       <TextWithTouchable
                         description="Agree to "
@@ -154,6 +180,7 @@ function RegisterScreen({ navigation }) {
                   <Button
                     mode="contained"
                     loading={isLoading}
+                    disabled={!isAgree}
                     onPress={handleSubmit}
                     style={styles.button}
                     theme={{
@@ -168,7 +195,7 @@ function RegisterScreen({ navigation }) {
                     touchableDescription="SIGN IN"
                     handlePress={() => navigation.navigate("Login")}
                     fontSize={14}
-                    style={{ marginTop: 30, justifyContent: "center" }}
+                    style={{ marginTop: 15, justifyContent: "center" }}
                   />
                 </View>
               )}
@@ -185,8 +212,6 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   button: {
-    top: 20,
-    backgroundColor: colors.primary,
     borderRadius: 20,
   },
   topContainer: {

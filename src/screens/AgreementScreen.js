@@ -15,7 +15,7 @@ function AgreementScreen({ isVisible, setIsVisible }) {
 
   return (
     <PopUpDialog
-      icon={require("../assets/1425720.png")}
+      icon={require("../assets/terms.png")}
       roundIcon={false}
       visible={isVisible}
       title="Terms and Conditions"
@@ -23,7 +23,12 @@ function AgreementScreen({ isVisible, setIsVisible }) {
     >
       <View style={styles.container}>
         <View style={styles.bottomContainer}>
-          <Text style={styles.msgText}>Term and conditions (TODO)</Text>
+          <Text style={styles.msgText}>
+            {"1. Koi bakchodi ni krni. " +
+              "\n2. Yaki karo gai hum uni ko shekayat laga den gai. " +
+              "\n3. Uni waly tumhari degree kha jain gai. " +
+              "\n4. Abba ka paisa barbad. "}
+          </Text>
 
           <Button
             mode="contained"
@@ -44,22 +49,19 @@ function AgreementScreen({ isVisible, setIsVisible }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    width: width * 0.85,
-    alignItems: "center",
-    padding: 10,
+    padding: 15,
   },
   button: {
     borderRadius: 20,
-    width: width * 0.75,
   },
   bottomContainer: {
     paddingTop: 60,
     flex: 1,
+    width: width * 0.8,
   },
   msgText: {
     color: colors.darkgrey,
-    fontSize: 18,
-    textAlign: "center",
+    fontSize: 16,
     marginBottom: 40,
   },
 });
