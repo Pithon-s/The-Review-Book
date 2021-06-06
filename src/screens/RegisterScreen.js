@@ -44,7 +44,8 @@ function RegisterScreen({ navigation }) {
         imageUri,
         data.email.toLowerCase(),
         data.password,
-        resetForm
+        resetForm,
+        setImageUri
       )
     );
   };

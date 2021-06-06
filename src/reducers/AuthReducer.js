@@ -19,7 +19,6 @@ export default (state = initialState, action) => {
       return {
         ...state,
         isReady: true,
-        isLoading: false,
         user: {
           email: action.payload.email,
           password: action.payload.password,
@@ -41,11 +40,11 @@ export default (state = initialState, action) => {
         ...initialState,
         isReady: true,
       };
-    case "AUTO_LOGIN_FAILED":
+    case "LOGIN_FAILED":
       return {
         ...state,
-        isReady: true,
         isLoading: false,
+        isReady: true,
       };
     case "SIGNUP":
       return {
@@ -62,7 +61,6 @@ export default (state = initialState, action) => {
         isVerified: true,
         isModelVisible: false,
         isLogged: true,
-        isLoading: false,
       };
     case "VERIFICATION_SENT":
       return {
@@ -73,6 +71,11 @@ export default (state = initialState, action) => {
       return {
         ...state,
         isLoading: action.payload.value,
+      };
+    case "SET_IS_READY":
+      return {
+        ...state,
+        isReady: action.payload.value,
       };
     case "SET_IS_MODEL_VISIBLE":
       return {

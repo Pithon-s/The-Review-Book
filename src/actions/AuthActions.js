@@ -72,6 +72,13 @@ export const Login = (email, password, keepSigned, type) => {
           .doc(email)
           .get()
           .then((doc) => {
+            dispatch({
+              type: "SET_LOADING",
+              payload: {
+                value: false,
+              },
+            });
+
             if (doc.exists) {
               console.log("firestore read successful.");
               dispatch({
@@ -109,13 +116,7 @@ export const Login = (email, password, keepSigned, type) => {
       .catch((error) => {
         secureStorage.removeUser();
         dispatch({
-          type: "SET_LOADING",
-          payload: {
-            value: false,
-          },
-        });
-        dispatch({
-          type: "AUTO_LOGIN_FAILED",
+          type: "LOGIN_FAILED",
         });
         Alert.alert("Error !!", error.message);
       });
@@ -132,7 +133,14 @@ export const AnonymousLogin = (setAnonymousLoading) => {
     }, 1000);
   };
 };
-export const Signup = (username, imageURI, email, password, resetForm) => {
+export const Signup = (
+  username,
+  imageURI,
+  email,
+  password,
+  resetForm,
+  setImageUri
+) => {
   return async (dispatch) => {
     dispatch({
       type: "SET_LOADING",
@@ -158,6 +166,7 @@ export const Signup = (username, imageURI, email, password, resetForm) => {
             });
 
             resetForm();
+            setImageUri(null);
           })
           .catch(() => {
             console.log("user creation on firebase failed !!!");
@@ -214,7 +223,7 @@ export const AutoLogin = () => {
     const result = await secureStorage.readUser();
     if (!result) {
       dispatch({
-        type: "AUTO_LOGIN_FAILED",
+        type: "LOGIN_FAILED",
       });
       return;
     }

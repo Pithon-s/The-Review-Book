@@ -5,24 +5,23 @@ import {
   StyleSheet,
   Dimensions,
   TouchableOpacity,
-  Image,
 } from "react-native";
-import { Button, Modal, Portal } from "react-native-paper";
+import { Button } from "react-native-paper";
 import { useDispatch, useSelector } from "react-redux";
 
 import colors from "../config/colors";
 import { Login, sendVerification } from "../actions/AuthActions";
+import PopUpDialog from "../components/PopUpDialog";
 
-const iconSize = 70;
 const height = Dimensions.get("screen").height;
 
 function EmailVerificationScreen() {
   const dispatch = useDispatch();
   const email = useSelector((state) => state.Auth.user.email);
   const password = useSelector((state) => state.Auth.user.password);
-  const isModelVisible = useSelector((state) => state.Auth.isModelVisible);
+  const isLoading = useSelector((state) => state.Auth.isLoading);
 
-  const handleLogin = () => {
+  const handleContinue = () => {
     dispatch(Login(email, password, true, "again"));
   };
   const handleResend = () => {
@@ -30,107 +29,62 @@ function EmailVerificationScreen() {
   };
 
   return (
-    <Portal>
-      <Modal
-        visible={isModelVisible}
-        onDismiss={() =>
-          dispatch({
-            type: "SET_IS_MODEL_VISIBLE",
-            payload: {
-              value: false,
-            },
-          })
-        }
-        contentContainerStyle={{
-          alignSelf: "center",
-        }}
-      >
-        <View style={styles.container}>
-          <View style={styles.topContainer}>
-            <Text style={styles.topTitle}>Email Verification</Text>
-            <View
-              style={{
-                justifyContent: "flex-end",
-                flex: 1,
-                top: iconSize / 2,
-              }}
-            >
-              <Image
-                source={require("../assets/email.png")}
-                style={{
-                  borderRadius: iconSize / 2,
-                  height: iconSize,
-                  width: iconSize,
-                }}
-              />
-            </View>
-          </View>
-          <View style={styles.bottomContainer}>
-            <Text style={styles.msgText}>
-              We just sent you the verification link. Please check your email
-              and 'LOGIN' after verify.
+    <PopUpDialog icon={require("../assets/email.png")}>
+      <View style={styles.container}>
+        <View style={styles.bottomContainer}>
+          <Text style={styles.msgText}>
+            We just sent you the verification link. Please check your email and
+            'CONTINUE' after verify.
+          </Text>
+
+          <Button
+            mode="contained"
+            onPress={handleContinue}
+            loading={isLoading}
+            style={styles.button}
+            theme={{
+              colors: { primary: colors.primary },
+            }}
+          >
+            continue
+          </Button>
+
+          <View
+            style={{
+              flexDirection: "row",
+              marginTop: 15,
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <Text style={{ color: colors.darkgrey, fontSize: 16 }}>
+              {"Didn't get the link?  "}
             </Text>
-
-            <Button
-              mode="contained"
-              onPress={handleLogin}
-              style={styles.button}
-              theme={{
-                colors: { primary: colors.primary },
-              }}
-            >
-              login
-            </Button>
-
-            <View
-              style={{
-                flexDirection: "row",
-                marginTop: 15,
-                justifyContent: "center",
-                alignItems: "center",
-              }}
-            >
-              <Text style={{ color: colors.darkgrey, fontSize: 16 }}>
-                {"Didn't get the link?  "}
+            <TouchableOpacity onPress={handleResend}>
+              <Text
+                style={{
+                  color: "#5B7CDA",
+                  fontWeight: "bold",
+                  fontSize: 16,
+                }}
+              >
+                Resend code
               </Text>
-              <TouchableOpacity onPress={handleResend}>
-                <Text
-                  style={{
-                    color: "#5B7CDA",
-                    fontWeight: "bold",
-                    fontSize: 16,
-                  }}
-                >
-                  Resend code
-                </Text>
-              </TouchableOpacity>
-            </View>
+            </TouchableOpacity>
           </View>
         </View>
-      </Modal>
-    </Portal>
+      </View>
+    </PopUpDialog>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 0.85,
-    backgroundColor: colors.white,
+    flex: 1,
   },
   button: {
     borderRadius: 20,
     width: "100%",
-  },
-  topContainer: {
-    alignItems: "center",
-    height: height * 0.2,
-    backgroundColor: colors.primary,
-  },
-  topTitle: {
-    color: colors.white,
-    fontSize: 22,
-    marginTop: 30,
-    fontWeight: "bold",
   },
   bottomContainer: {
     paddingTop: 60,
