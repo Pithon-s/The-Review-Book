@@ -15,6 +15,7 @@ function EmailVerificationScreen() {
   const email = useSelector((state) => state.Auth.user.email);
   const password = useSelector((state) => state.Auth.user.password);
   const isLoading = useSelector((state) => state.Auth.isLoading);
+  const isModelVisible = useSelector((state) => state.Auth.isModelVisible);
 
   const handleContinue = () => {
     dispatch(Login(email, password, true, "again"));
@@ -24,7 +25,19 @@ function EmailVerificationScreen() {
   };
 
   return (
-    <PopUpDialog icon={require("../assets/email.png")}>
+    <PopUpDialog
+      icon={require("../assets/email.png")}
+      visible={isModelVisible}
+      title="Email Verification"
+      onDismiss={() =>
+        dispatch({
+          type: "SET_IS_MODEL_VISIBLE",
+          payload: {
+            value: false,
+          },
+        })
+      }
+    >
       <View style={styles.container}>
         <View style={styles.bottomContainer}>
           <Text style={styles.msgText}>

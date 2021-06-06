@@ -1,35 +1,32 @@
 import React from "react";
 import { View, Text, StyleSheet, Dimensions, Image } from "react-native";
 import { Modal, Portal } from "react-native-paper";
-import { useDispatch, useSelector } from "react-redux";
 
 import colors from "../config/colors";
 
 const height = Dimensions.get("screen").height;
 
-function PopUpDialog({ children, icon, iconSize = 70 }) {
-  const dispatch = useDispatch();
-  const isModelVisible = useSelector((state) => state.Auth.isModelVisible);
-
+function PopUpDialog({
+  title,
+  children,
+  icon,
+  iconSize = 70,
+  roundIcon = true,
+  visible,
+  onDismiss,
+}) {
   return (
     <Portal>
       <Modal
-        visible={isModelVisible}
-        onDismiss={() =>
-          dispatch({
-            type: "SET_IS_MODEL_VISIBLE",
-            payload: {
-              value: false,
-            },
-          })
-        }
+        visible={visible}
+        onDismiss={onDismiss}
         contentContainerStyle={{
           alignSelf: "center",
         }}
       >
         <View style={styles.container}>
           <View style={styles.topContainer}>
-            <Text style={styles.topTitle}>Email Verification</Text>
+            <Text style={styles.topTitle}>{title}</Text>
             <View
               style={{
                 justifyContent: "flex-end",
@@ -40,7 +37,7 @@ function PopUpDialog({ children, icon, iconSize = 70 }) {
               <Image
                 source={icon}
                 style={{
-                  borderRadius: iconSize / 2,
+                  borderRadius: roundIcon ? iconSize / 2 : 0,
                   height: iconSize,
                   width: iconSize,
                 }}

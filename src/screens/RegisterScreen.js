@@ -12,6 +12,7 @@ import { Signup } from "../actions/AuthActions";
 import validateEmail from "../utilities/validateEmail";
 import CheckboxWithDesc from "../components/CheckboxWithDesc";
 import TextWithTouchable from "../components/TextWithTouchable";
+import AgreementScreen from "./AgreementScreen";
 
 const height = Dimensions.get("screen").height;
 const iconSize = 95;
@@ -19,6 +20,7 @@ const iconSize = 95;
 function RegisterScreen({ navigation }) {
   const [imageUri, setImageUri] = useState();
   const [isAgree, setIsAgree] = useState(false);
+  const [showTerms, setShowTerms] = useState(false);
   const [isInvalidEmail, setIsInvalidEmail] = useState(true);
 
   const isLoading = useSelector((state) => state.Auth.isLoading);
@@ -50,6 +52,7 @@ function RegisterScreen({ navigation }) {
     <Provider>
       <View style={styles.container}>
         <EmailVerificationScreen />
+        <AgreementScreen isVisible={showTerms} setIsVisible={setShowTerms} />
 
         <View style={styles.topContainer}>
           <View style={styles.iconContainer}>
@@ -140,7 +143,7 @@ function RegisterScreen({ navigation }) {
                       <TextWithTouchable
                         description="Agree to "
                         touchableDescription="term and conditions"
-                        handlePress={() => alert("term and conditions... TODO")}
+                        handlePress={() => setShowTerms(true)}
                       />
                     }
                     handlePress={() => {
