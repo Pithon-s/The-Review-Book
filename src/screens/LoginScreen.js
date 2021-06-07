@@ -3,7 +3,7 @@ import { View, StyleSheet, Dimensions, Text, ScrollView } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import { Button, TextInput, HelperText, Provider } from "react-native-paper";
 import { useDispatch, useSelector } from "react-redux";
-import { Entypo } from "@expo/vector-icons";
+import { Ionicons } from "@expo/vector-icons";
 
 import colors from "../config/colors";
 import { AnonymousLogin, Login } from "../actions/AuthActions";
@@ -27,7 +27,14 @@ function LoginScreen({ navigation }) {
   const handleSubmit = () => {
     if (!email || !password || !validateEmail(email)) return;
 
-    dispatch(Login(email.toLowerCase(), password, keepLogged, "login_screen"));
+    dispatch(
+      Login(
+        email.toLowerCase(),
+        password.toLowerCase(),
+        keepLogged,
+        "login_screen"
+      )
+    );
   };
 
   const handleAnonymous = () => {
@@ -70,8 +77,10 @@ function LoginScreen({ navigation }) {
             right={
               <TextInput.Icon
                 name={() => (
-                  <Entypo
-                    name={showPassword ? "eye" : "eye-with-line"}
+                  <Ionicons
+                    name={
+                      showPassword ? "ios-eye-off-outline" : "ios-eye-outline"
+                    }
                     size={20}
                     color={colors.darkgrey}
                   />

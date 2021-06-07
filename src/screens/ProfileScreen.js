@@ -46,7 +46,12 @@ function ProfileScreen(props) {
           <View style={styles.active} />
         </View>
         <View style={styles.info}>
-          <Text style={[styles.text, { fontWeight: "200", fontSize: 30 }]}>
+          <Text
+            style={[
+              styles.text,
+              { fontWeight: "200", fontSize: 30, textTransform: "capitalize" },
+            ]}
+          >
             {user.username}
           </Text>
           {!user.isAnonymous && (

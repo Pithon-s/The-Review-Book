@@ -18,12 +18,14 @@ function CheckboxWithDesc({
         color={colors.primary}
         onPress={handlePress}
       />
-      <TouchableWithoutFeedback onPress={handlePress}>
-        <View style={styles.checkboxContainer}>
-          {description && <Text style={styles.text}>{description}</Text>}
-          {descriptionComp}
-        </View>
-      </TouchableWithoutFeedback>
+      {description && (
+        <TouchableWithoutFeedback onPress={handlePress}>
+          <View style={styles.checkboxContainer}>
+            <Text style={styles.text}>{description}</Text>
+          </View>
+        </TouchableWithoutFeedback>
+      )}
+      {descriptionComp}
     </View>
   );
 }
