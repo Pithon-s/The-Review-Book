@@ -29,9 +29,9 @@ function ForgotPasswordScreen({}) {
     firebase
       .auth()
       .sendPasswordResetEmail(email)
-      .then(() => Alert.alert("Note !!", "Please check you email."))
+      .then(() => Alert.alert("Recovery email sent", "Please check you email."))
       .catch((error) => {
-        Alert.alert("Error !!", error.message);
+        Alert.alert("Password reset failed !!", error.message);
       });
 
     setLoading(false);

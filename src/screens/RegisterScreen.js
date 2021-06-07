@@ -3,7 +3,7 @@ import { View, StyleSheet, Dimensions, ScrollView } from "react-native";
 import { Button, Provider, HelperText, TextInput } from "react-native-paper";
 import { Formik } from "formik";
 import { useDispatch, useSelector } from "react-redux";
-import { Entypo } from "@expo/vector-icons";
+import { Entypo, Ionicons } from "@expo/vector-icons";
 
 import ImagePicker from "../components/ImagePicker";
 import FormTextInput from "../components/common/FormTextInput";
@@ -43,7 +43,7 @@ function RegisterScreen({ navigation }) {
         data.username,
         imageUri,
         data.email.toLowerCase(),
-        data.password,
+        data.password.toLowerCase(),
         resetForm,
         setImageUri
       )
@@ -126,8 +126,12 @@ function RegisterScreen({ navigation }) {
                     right={
                       <TextInput.Icon
                         name={() => (
-                          <Entypo
-                            name={showPassword ? "eye" : "eye-with-line"}
+                          <Ionicons
+                            name={
+                              showPassword
+                                ? "ios-eye-off-outline"
+                                : "ios-eye-outline"
+                            }
                             size={20}
                             color={colors.darkgrey}
                           />
@@ -150,8 +154,12 @@ function RegisterScreen({ navigation }) {
                     right={
                       <TextInput.Icon
                         name={() => (
-                          <Entypo
-                            name={showPassword ? "eye" : "eye-with-line"}
+                          <Ionicons
+                            name={
+                              showPassword
+                                ? "ios-eye-off-outline"
+                                : "ios-eye-outline"
+                            }
                             size={20}
                             color={colors.darkgrey}
                           />

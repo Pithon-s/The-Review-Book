@@ -19,6 +19,7 @@ export default (state = initialState, action) => {
       return {
         ...state,
         isReady: true,
+        isLoading: false,
         user: {
           email: action.payload.email,
           password: action.payload.password,
@@ -32,7 +33,7 @@ export default (state = initialState, action) => {
         isLogged: true,
         user: {
           isAnonymous: true,
-          username: "Anonymous",
+          username: "anonymous",
         },
       };
     case "LOGOUT":

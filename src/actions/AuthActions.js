@@ -25,7 +25,12 @@ const _createUser = async (email, username, imageURI) => {
       .firestore()
       .collection("users")
       .doc(email)
-      .set({ email, username });
+      .set({ email, username })
+      .then(() => {
+        firebase.auth().currentUser.updateProfile({
+          displayName: username,
+        });
+      });
 
     return;
   }
@@ -45,7 +50,13 @@ const _createUser = async (email, username, imageURI) => {
             .firestore()
             .collection("users")
             .doc(email)
-            .set({ email, username, profilePictureURI: downloadURI });
+            .set({ email, username, profilePictureURI: downloadURI })
+            .then(() => {
+              firebase.auth().currentUser.updateProfile({
+                displayName: username,
+                photoURL: downloadURI,
+              });
+            });
         });
       });
   });
@@ -66,59 +77,50 @@ export const Login = (email, password, keepSigned, type) => {
       .signInWithEmailAndPassword(email, password)
       .then((current) => {
         console.log("logged in");
-        firebase
-          .firestore()
-          .collection("users")
-          .doc(email)
-          .get()
-          .then((doc) => {
-            dispatch({
-              type: "SET_LOADING",
-              payload: {
-                value: false,
-              },
-            });
+        dispatch({
+          type: "LOGIN",
+          payload: {
+            email,
+            password,
+            username: current.user.displayName,
+            profilePictureURI: current.user.photoURL,
+          },
+        });
 
-            if (doc.exists) {
-              console.log("firestore read successful.");
-              dispatch({
-                type: "LOGIN",
-                payload: {
-                  email,
-                  password,
-                  username: doc.data().username,
-                  profilePictureURI: doc.data().profilePictureURI,
-                },
-              });
-            }
+        console.log("verifing user.");
+        // login action is required multiple places,
+        // so to differentiate usage type is requried
+        if (!current.user.emailVerified && type != "again") {
+          dispatch(sendVerification());
+          console.log("verification failed, sending verification email.");
+        } else if (current.user.emailVerified) {
+          if (keepSigned) secureStorage.storeUser({ email, password });
+          console.log("verification successful");
 
-            console.log("verifing user.");
-            // login action is required multiple places,
-            // so to differentiate usage type is requried
-            if (!current.user.emailVerified && type != "again") {
-              dispatch(sendVerification());
-              console.log("verification failed, sending verification email.");
-            } else if (current.user.emailVerified) {
-              if (keepSigned) secureStorage.storeUser({ email, password });
-              console.log("verification successful");
-
-              dispatch({
-                type: "USER_VERIFIED",
-              });
-            } else {
-              Alert.alert(
-                "Login Failed",
-                "Possible reason, your email is not verified. "
-              );
-            }
+          dispatch({
+            type: "USER_VERIFIED",
           });
+        } else {
+          Alert.alert(
+            "Login Failed !!",
+            "Possible reason, your email is not verified. "
+          );
+        }
       })
       .catch((error) => {
         secureStorage.removeUser();
         dispatch({
           type: "LOGIN_FAILED",
         });
-        Alert.alert("Error !!", error.message);
+        if (
+          error.message ===
+          "There is no user record corresponding to this identifier. The user may have been deleted."
+        )
+          Alert.alert(
+            "Login Failed !!",
+            "There is no user record corresponding to this email. \n\nTip: \nPlease register yourself than login."
+          );
+        else Alert.alert("Login Failed !!", error.message);
       });
   };
 };
@@ -193,7 +195,16 @@ export const Signup = (
           },
         });
 
-        Alert.alert("Error !!", error.message);
+        if (
+          error.message ===
+          "The email address is already in use by another account."
+        )
+          Alert.alert(
+            "Registration Failed !!",
+            error.message +
+              "\n\nTip: \nIf you didn't register before then use 'Forget Password' to recover your account. "
+          );
+        else Alert.alert("Registration Failed !!", error.message);
       });
   };
 };
@@ -216,13 +227,6 @@ export const sendVerification = () => {
           type: "VERIFICATION_SENT",
         });
       });
-  };
-};
-export const Verified = () => {
-  return async (dispatch) => {
-    dispatch({
-      type: "USER_VERIFIED",
-    });
   };
 };
 export const AutoLogin = () => {
