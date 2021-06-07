@@ -22,7 +22,7 @@ import color from "../config/colors";
 import deptArray from "../utilities/DepartmentData";
 import {
   searchTeacher,
-  // setLoading,
+  serachByDept,
   showSelectedTeacherData,
 } from "../actions/DataActions";
 
@@ -42,23 +42,33 @@ function MainScreen(props) {
 
   //-------Handlers---------//
   const onChangeSearch = (query) => setSearchQuery(query);
+
   const onSubmitHandle = () => {
     teacherList.length = 0;
     const toFind = searchQuery.toLowerCase().split(" ").join("");
     dispatch(searchTeacher(toFind));
     setLoading(false);
   };
+
   const loadingHandler = (decision) => {
     setItemsBlur(decision);
     setLoading(decision);
   };
+
   const onShowHandler = (tdata) => {
     dispatch(showSelectedTeacherData(tdata));
+  };
+
+  const onCardPress = (deptcode) => {
+    teacherList.length = 0;
+    dispatch(serachByDept(deptcode));
+    setLoading(false);
   };
 
   return (
     <SafeAreaView style={styles.mainContainer}>
       <StatusBar backgroundColor={color.primary} />
+
       <View style={styles.mainView}>
         {showBackButton == true ? (
           <IconButton
@@ -140,7 +150,8 @@ function MainScreen(props) {
               <Card
                 onPress={() => {
                   loadingHandler(true);
-                  // item.onPress();
+                  showBackButton(true);
+                  onCardPress(item.code);
                 }}
                 style={styles.card}
               >

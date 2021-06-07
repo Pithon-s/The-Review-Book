@@ -9,8 +9,10 @@ import {
   Text,
 } from "react-native";
 import { List, Avatar, IconButton, TextInput } from "react-native-paper";
-import AntDesign from "react-native-vector-icons/AntDesign";
+import { AntDesign, Entypo } from "react-native-vector-icons";
+
 import { useSelector } from "react-redux";
+import colors from "../config/colors";
 import color from "../config/colors";
 
 function TeacherProfileScreen(props) {
@@ -53,7 +55,8 @@ function TeacherProfileScreen(props) {
 
   return (
     <View style={styles.maincontainer}>
-      <StatusBar backgroundColor={color.primary} />
+      <StatusBar barStyle="dark-content" backgroundColor={colors.white} />
+
       <View style={styles.imageDiv}>
         <IconButton
           icon="arrow-left"
@@ -66,71 +69,61 @@ function TeacherProfileScreen(props) {
           <Avatar.Image size={120} source={{ uri: teacherData.imgURL }} />
         </View>
 
-        <Text style={styles.title}>
-          {teacherData.fname + " " + teacherData.lname}
-        </Text>
-        <Text style={{ color: color.lightgrey, marginBottom: 20 }}>
-          {teacherData.dept + " Department"}
-        </Text>
+        <View style={{ alignItems: "center" }}>
+          <Text style={styles.title}>
+            {teacherData.fname + " " + teacherData.lname}
+          </Text>
+          <Text style={styles.emailView}>{teacherData.id}</Text>
+          <View
+            style={{
+              flexDirection: "row",
+              alignItems: "center",
+            }}
+          >
+            <Entypo name="location-pin" size={20} color={color.lightgrey} />
+            <Text style={styles.dept}>{teacherData.dept + " Department"}</Text>
+          </View>
+        </View>
+
+        <View style={styles.statContainer}>
+          <View style={styles.statsBox}>
+            <Text style={[styles.text, { fontSize: 24 }]}>
+              {teacherData.ratingCount}
+            </Text>
+            <Text style={styles.subText}>Reviews</Text>
+          </View>
+
+          <View
+            style={[
+              styles.statsBox,
+              {
+                borderColor: "#DFD8C8",
+                borderRightWidth: 1,
+                borderLeftWidth: 1,
+              },
+            ]}
+          >
+            <Text style={[styles.text, { fontSize: 24 }]}>
+              {teacherData.commentCount}
+            </Text>
+            <Text style={styles.subText}>Comments</Text>
+          </View>
+          <View style={styles.statsBox}>
+            <Text style={[styles.text, { fontSize: 24 }]}>
+              {parseFloat(teacherData.totalRating / teacherData.ratingCount)}
+            </Text>
+            <Text style={styles.subText}>Rating</Text>
+          </View>
+        </View>
       </View>
 
-      <ScrollView ref={scrollRef}>
-        <View style={styles.dataDiv}>
-          <View style={styles.statContainer}>
-            <View style={styles.statsBox}>
-              <Text style={[styles.text, { fontSize: 24 }]}>
-                {teacherData.ratingCount}
-              </Text>
-              <Text style={[styles.text, styles.subText]}>Reviews</Text>
-            </View>
-
-            <View
-              style={[
-                styles.statsBox,
-                {
-                  borderColor: "#DFD8C8",
-                  borderRightWidth: 1,
-                  borderLeftWidth: 1,
-                },
-              ]}
-            >
-              <Text style={[styles.text, { fontSize: 24 }]}>
-                {teacherData.commentCount}
-              </Text>
-              <Text style={[styles.text, styles.subText]}>Comments</Text>
-            </View>
+      <ScrollView ref={scrollRef} style={{ marginTop: 20 }}>
+        {!isAnonymous ? (
+          <View style={styles.ratingView}>
+            <Text style={{ fontSize: 22 }}>Tell us about your experience:</Text>
+            <Text>{handleRating()}</Text>
           </View>
-
-          <View style={styles.infoView}>
-            <View style={styles.innerInfoView}>
-              <Text style={[styles.Data, { fontWeight: "bold" }]}>
-                Average Rating:
-              </Text>
-              <View style={{ flexDirection: "row" }}>
-                <AntDesign name="star" size={26} color={color.primary} />
-                <Text style={styles.Data}>
-                  {parseFloat(
-                    teacherData.totalRating / teacherData.ratingCount
-                  )}
-                </Text>
-              </View>
-            </View>
-
-            <View style={styles.innerInfoView}>
-              <Text style={[styles.Data, { fontWeight: "bold" }]}>Email:</Text>
-              <Text style={styles.Data}>{teacherData.id}</Text>
-            </View>
-          </View>
-
-          {!isAnonymous ? (
-            <View style={styles.ratingView}>
-              <Text style={{ fontSize: 22 }}>
-                Tell us about your experience:
-              </Text>
-              <Text>{handleRating()}</Text>
-            </View>
-          ) : null}
-        </View>
+        ) : null}
 
         <View style={styles.commentDiv}>
           <View style={styles.commentTextInput}>
@@ -189,26 +182,33 @@ function TeacherProfileScreen(props) {
 
 const styles = StyleSheet.create({
   maincontainer: { flex: 1, backgroundColor: color.white },
+  text: { color: colors.white },
   imageDiv: {
-    height: Dimensions.get("screen").height * 0.3,
-    width: "100%",
+    height: Dimensions.get("screen").height * 0.5,
+    width: "95%",
     backgroundColor: color.primary,
     justifyContent: "space-around",
     alignItems: "center",
+    alignSelf: "center",
+    borderRadius: 25,
+    elevation: 1,
+    marginTop: 2,
   },
   dataDiv: {
-    height: Dimensions.get("screen").height * 0.4,
+    height: Dimensions.get("screen").height * 0.2,
     width: "100%",
     backgroundColor: color.white,
     borderTopLeftRadius: 25,
     borderTopRightRadius: 25,
   },
   commentDiv: {
-    width: "100%",
+    width: "95%",
     backgroundColor: color.lightgrey,
     paddingTop: 25,
-    borderTopLeftRadius: 25,
-    borderTopRightRadius: 25,
+    borderRadius: 25,
+    flex: 1,
+    height: Dimensions.get("screen").height * 0.3,
+    alignSelf: "center",
   },
   imageBackgroundDiv: {
     height: 130,
@@ -219,7 +219,25 @@ const styles = StyleSheet.create({
     borderRadius: 80,
     marginTop: 15,
   },
-  title: { color: color.white, fontSize: 24, fontWeight: "500" },
+  title: {
+    fontFamily: "Roboto",
+    color: color.white,
+    fontWeight: "200",
+    fontSize: 30,
+    textTransform: "capitalize",
+  },
+  emailView: {
+    color: color.lightgrey,
+
+    fontSize: 18,
+    marginVertical: 5,
+  },
+  dept: {
+    fontSize: 14,
+    color: color.lightgrey,
+
+    paddingLeft: 2,
+  },
   commentTitle: {
     fontSize: 24,
     paddingBottom: 15,
@@ -235,17 +253,18 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-around",
     marginTop: 5,
+    alignSelf: "flex-end",
   },
   statsBox: {
     alignItems: "center",
     flex: 1,
   },
   ratingView: {
-    width: "90%",
     alignSelf: "center",
-    //  backgroundColor: "gold",
+    //backgroundColor: "gold",
     alignItems: "center",
-    marginTop: 20,
+    padding: 20,
+    paddingBottom: 0,
   },
   Data: {
     fontSize: 20,
@@ -266,6 +285,9 @@ const styles = StyleSheet.create({
     elevation: 1,
     top: Dimensions.get("screen").height * 0.84,
     left: Dimensions.get("screen").width * 0.82,
+  },
+  subText: {
+    color: colors.lightgrey,
   },
 });
 export default TeacherProfileScreen;

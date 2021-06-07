@@ -42,3 +42,32 @@ export const showSelectedTeacherData = (data) => {
     dispatch({ type: "SHOW_DATA", Data: data });
   };
 };
+
+export const serachByDept = (deptCode) => {
+  return async (dispatch) => {
+    const data = [];
+    firebase
+      .firestore()
+      .collection("teachers")
+      .where("dept", "==", deptCode)
+      .get()
+      .then((querySnapshot) => {
+        querySnapshot.forEach((doc) => {
+          let temp = doc.data();
+          temp.id = doc.id;
+          data.push(temp);
+        });
+
+        console.log("Data fetched for server");
+      })
+      .catch((error) => {
+        console.log("Error getting documents: ", error.message);
+      })
+      .finally(() => {
+        dispatch({
+          type: "SEARCH_TEACHER",
+          newData: data,
+        });
+      });
+  };
+};
