@@ -4,22 +4,22 @@ import {
   Text,
   View,
   Image,
-  ScrollView,
   SafeAreaView,
+  Dimensions,
 } from "react-native";
-import { Card, Title, Button } from "react-native-paper";
+import { Button, List } from "react-native-paper";
 import { useDispatch, useSelector } from "react-redux";
+import { Entypo, Ionicons } from "@expo/vector-icons";
 
 import { Logout } from "../actions/AuthActions";
 import color from "../config/colors";
 
+const height = Dimensions.get("screen").height;
+const imageSize = 120;
+
 function ProfileScreen(props) {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.Auth.user);
-  const myData = {
-    title: "Department of Computer Science",
-    uri: require("../assets/dept.jpg"),
-  };
 
   //---------Handlers--------
   const handleEditProfile = () => console.log("edit profile pressed");
@@ -29,10 +29,36 @@ function ProfileScreen(props) {
 
   return (
     <SafeAreaView style={styles.container}>
-      <ScrollView showsVerticalScrollIndicator={false}>
-        <View style={styles.titlebar}></View>
-        <View style={{ alignSelf: "center" }}>
-          <View style={styles.profilePic}>
+      <View style={styles.topContainer}>
+        <Ionicons
+          name="information-circle-outline"
+          size={28}
+          color="#9BAFE8"
+          style={styles.infoIcon}
+          onPress={() => alert("info pressed")}
+        />
+
+        <View style={styles.info}>
+          <Text style={styles.title}>{user.username}</Text>
+          {!user.isAnonymous && (
+            <>
+              <Text style={styles.rollno}>
+                {user.email.substr(0, user.email.indexOf("@"))}
+              </Text>
+              <View
+                style={{
+                  flexDirection: "row",
+                  alignItems: "center",
+                }}
+              >
+                <Entypo name="location-pin" size={20} color={color.lightgrey} />
+                <Text style={styles.dept}>CS Department (TODO)</Text>
+              </View>
+            </>
+          )}
+        </View>
+        <View style={styles.profilePic}>
+          <View style={styles.profilePicContainer}>
             <Image
               source={
                 user.profilePictureURI
@@ -43,74 +69,52 @@ function ProfileScreen(props) {
               resizeMode="center"
             />
           </View>
-          <View style={styles.active} />
         </View>
-        <View style={styles.info}>
-          <Text
-            style={[
-              styles.text,
-              { fontWeight: "200", fontSize: 30, textTransform: "capitalize" },
-            ]}
-          >
-            {user.username}
-          </Text>
-          {!user.isAnonymous && (
-            <>
-              <Text
-                style={[
-                  styles.text,
-                  {
-                    fontSize: 18,
-                    color: "#AEB5BC",
-                    textTransform: "uppercase",
-                  },
-                ]}
-              >
-                {user.email.substr(0, user.email.indexOf("@"))}
-              </Text>
-              <Text style={[styles.text, { fontSize: 14, color: "#AEB5BC" }]}>
-                CS Department (TODO)
-              </Text>
-            </>
-          )}
+      </View>
+
+      <View style={styles.middleContainer}>
+        <View style={styles.details}>
+          <List.Item
+            title="200"
+            description="Total rated"
+            titleStyle={styles.listItemTitle}
+            descriptionStyle={styles.listItemDesc}
+            style={{ flex: 0.5 }}
+          />
+          <List.Item
+            title="123"
+            description="Total comments"
+            titleStyle={styles.listItemTitle}
+            descriptionStyle={styles.listItemDesc}
+            style={{ flex: 0.5 }}
+          />
         </View>
+      </View>
+      {/* {!user.isAnonymous && (
+        <Button
+          onPress={handleEditProfile}
+          color={color.primary}
+          style={{ width: 200, borderRadius: 50, alignSelf: "center" }}
+        >
+          Edit Profile
+        </Button>
+      )} */}
 
-        {!user.isAnonymous ? (
-          <Button
-            onPress={handleEditProfile}
-            color={color.primary}
-            style={{ width: 200, borderRadius: 50, alignSelf: "center" }}
-          >
-            Edit Profile
-          </Button>
-        ) : null}
-
-        <View style={styles.cardView}>
-          <Card onPress={() => console.log("pressed")} style={styles.card}>
-            <Card.Cover source={myData.uri} />
-            <Card.Content>
-              <Title
-                style={{
-                  color: color.primary,
-                  alignSelf: "center",
-                  marginTop: 15,
-                }}
-              >
-                {myData.title}
-              </Title>
-            </Card.Content>
-          </Card>
-        </View>
-
+      <View style={styles.bottomContainer}>
         <Button
           icon="logout"
           onPress={handleLogout}
           color="red"
-          style={{ width: 200, borderRadius: 50, alignSelf: "center" }}
+          style={{
+            borderRadius: 20,
+            alignSelf: "center",
+
+            width: "80%",
+          }}
         >
           Logout
         </Button>
-      </ScrollView>
+      </View>
     </SafeAreaView>
   );
 }
@@ -118,87 +122,82 @@ function ProfileScreen(props) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
   },
-  text: {
+  bottomContainer: {
+    paddingBottom: 10,
+    flex: 1,
+    justifyContent: "flex-end",
+  },
+  title: {
     fontFamily: "Roboto",
-    color: "black",
+    color: color.white,
+    fontWeight: "200",
+    fontSize: 30,
+    textTransform: "capitalize",
   },
-  subText: {
-    fontSize: 12,
+  rollno: {
+    color: color.lightgrey,
+    fontFamily: "Roboto",
+    fontSize: 18,
     textTransform: "uppercase",
-    fontWeight: "500",
-    color: "#AEB5BC",
+    marginVertical: 5,
   },
-  image: {
-    height: "100%",
-    width: "100%",
+  dept: {
+    fontSize: 14,
+    color: color.lightgrey,
+    fontFamily: "Roboto",
+    paddingLeft: 2,
   },
-  titlebar: {
+  details: {
     flexDirection: "row",
-    justifyContent: "space-between",
-    marginTop: 24,
-    marginHorizontal: 16,
-  },
-  profilePic: {
-    height: 120,
-    width: 120,
-    borderRadius: 100,
-    overflow: "hidden",
-    borderWidth: 1,
-    borderColor: "black",
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  active: {
-    backgroundColor: "#34FF89",
-    position: "absolute",
-    bottom: 85,
-    left: 1,
-    padding: 4,
-    height: 20,
-    width: 20,
-    borderRadius: 10,
-  },
-  add: {
-    backgroundColor: "#41444B",
-    bottom: 0,
-    right: 0,
-    height: 50,
-    width: 50,
-    borderRadius: 30,
-    position: "absolute",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  info: {
-    alignItems: "center",
-    alignSelf: "center",
-    justifyContent: "center",
-    width: "100%",
-    height: 100,
     justifyContent: "space-around",
   },
-  statContainer: {
-    flexDirection: "row",
+  listItemTitle: {
+    color: color.primary,
     alignSelf: "center",
-    marginTop: 12,
+    fontSize: 24,
+    fontWeight: "bold",
   },
-  statsBox: {
-    alignItems: "center",
-    flex: 1,
-  },
-  card: {
-    height: 270,
-    width: "95%",
-    marginBottom: 10,
+  listItemDesc: {
+    color: color.darkgrey,
     alignSelf: "center",
   },
-  cardView: {
-    marginTop: 30,
-    // backgroundColor: "tomato",
+  image: {
+    height: imageSize,
+    width: imageSize,
+    borderRadius: imageSize * 2,
+  },
+  profilePic: {
+    justifyContent: "flex-end",
+  },
+  profilePicContainer: {
+    backgroundColor: color.white,
+    borderRadius: imageSize / 2 + 5,
+    height: imageSize + 10,
+    width: imageSize + 10,
+    justifyContent: "center",
     alignItems: "center",
-    marginBottom: 15,
+    elevation: 10,
+  },
+  topContainer: {
+    backgroundColor: color.primary,
+    height: height * 0.3,
+    alignItems: "center",
+  },
+  middleContainer: {
+    paddingTop: imageSize / 2,
+    height: height * 0.25,
+  },
+  info: {
+    justifyContent: "center",
+    alignItems: "center",
+    height: height * 0.3 - imageSize / 2,
+  },
+  infoIcon: {
+    position: "absolute",
+    alignSelf: "flex-end",
+    right: 10,
+    top: 5,
   },
 });
 

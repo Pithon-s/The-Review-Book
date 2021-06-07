@@ -229,13 +229,6 @@ export const sendVerification = () => {
       });
   };
 };
-export const Verified = () => {
-  return async (dispatch) => {
-    dispatch({
-      type: "USER_VERIFIED",
-    });
-  };
-};
 export const AutoLogin = () => {
   return async (dispatch) => {
     const result = await secureStorage.readUser();
