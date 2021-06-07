@@ -16,16 +16,45 @@ import {
   Avatar,
   IconButton,
 } from "react-native-paper";
+import { useDispatch, useSelector } from "react-redux";
+
 import color from "../config/colors";
 import deptArray from "../utilities/DepartmentData";
+import {
+  searchTeacher,
+  // setLoading,
+  showSelectedTeacherData,
+} from "../actions/DataActions";
+
+function titleCase(string) {
+  return string[0].toUpperCase() + string.substr(1).toLowerCase();
+}
 
 function MainScreen(props) {
   const [searchQuery, setSearchQuery] = useState("");
-  const [itemsBlur, setItemsBlur] = useState(false);
-  const [isLoading, setLoading] = useState(false);
   const [showBackButton, setShowBackButton] = useState(false);
+  const [isLoading, setLoading] = useState(false);
+  const [itemsBlur, setItemsBlur] = useState(false);
 
+  //const isLoading = useSelector((state) => state.Data.isLoading);
+  const teacherList = useSelector((state) => state.Data.teachers);
+  const dispatch = useDispatch();
+
+  //-------Handlers---------//
   const onChangeSearch = (query) => setSearchQuery(query);
+  const onSubmitHandle = () => {
+    teacherList.length = 0;
+    const toFind = searchQuery.toLowerCase().split(" ").join("");
+    dispatch(searchTeacher(toFind));
+    setLoading(false);
+  };
+  const loadingHandler = (decision) => {
+    setItemsBlur(decision);
+    setLoading(decision);
+  };
+  const onShowHandler = (tdata) => {
+    dispatch(showSelectedTeacherData(tdata));
+  };
 
   return (
     <SafeAreaView style={styles.mainContainer}>
@@ -37,8 +66,7 @@ function MainScreen(props) {
             color={color.primary}
             size={30}
             onPress={() => {
-              setLoading(false);
-              setItemsBlur(false);
+              loadingHandler(false);
               setShowBackButton(false);
               setSearchQuery("");
             }}
@@ -52,17 +80,15 @@ function MainScreen(props) {
           value={searchQuery}
           style={styles.searchBar}
           onSubmitEditing={() => {
-            setLoading(false);
             setShowBackButton(true);
+            onSubmitHandle();
           }}
           onTextInput={() => {
             if (searchQuery === "") {
-              setItemsBlur(false);
-              setLoading(false);
+              loadingHandler(false);
               setShowBackButton(false);
             } else {
-              setItemsBlur(true);
-              setLoading(true);
+              loadingHandler(true);
               setShowBackButton(true);
             }
           }}
@@ -79,19 +105,23 @@ function MainScreen(props) {
             </>
           ) : (
             <FlatList
-              data={deptArray}
+              data={teacherList}
               keyExtractor={(key) => key.id.toString()}
               renderItem={({ item }) => (
                 <List.Item
-                  title="Naddem Gafoor"
-                  description="CS Department"
+                  title={
+                    (item.fname = titleCase(item.fname)) +
+                    " " +
+                    (item.lname = titleCase(item.lname))
+                  }
+                  description={item.dept + " Department"}
                   left={(props) => (
-                    <Avatar.Image
-                      size={60}
-                      source={{ uri: "https://picsum.photos/700" }}
-                    />
+                    <Avatar.Image size={60} source={{ uri: item.imgURL }} />
                   )}
-                  onPress={() => props.navigation.navigate("TeacherProfile")}
+                  onPress={() => {
+                    onShowHandler(item);
+                    props.navigation.navigate("TeacherProfile");
+                  }}
                   rippleColor={color.primaryLight}
                 />
               )}
@@ -109,8 +139,7 @@ function MainScreen(props) {
             renderItem={({ item }) => (
               <Card
                 onPress={() => {
-                  setItemsBlur(true);
-                  setLoading(true);
+                  loadingHandler(true);
                   // item.onPress();
                 }}
                 style={styles.card}

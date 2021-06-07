@@ -16,41 +16,8 @@ import color from "../config/colors";
 function TeacherProfileScreen(props) {
   const [total, setTotal] = useState(0);
   const isAnonymous = useSelector((state) => state.Auth.user.isAnonymous);
-  const teacherData = {
-    imgUrl: "https://picsum.photos/200/300",
-    name: "Nadeem Ghafoor",
-    department: "CS Department",
-    reviews: "85",
-    nComments: "113",
-    avgRating: "4.8",
-    email: "nadeem.cuilahore.edu.pk",
-    comments: [
-      {
-        id: 1,
-        username: "Muhammad Bilal",
-        comment: "good",
-        userImgUrl: "https://picsum.photos/200/300",
-      },
-      {
-        id: 2,
-        username: "Ali",
-        comment: "good",
-        userImgUrl: "https://picsum.photos/200/300",
-      },
-      {
-        id: 3,
-        username: "Ibrahim",
-        comment: "good",
-        userImgUrl: "https://picsum.photos/200/300",
-      },
-      {
-        id: 4,
-        username: "Haseeb",
-        comment: "good",
-        userImgUrl: "https://picsum.photos/200/300",
-      },
-    ],
-  };
+  const teacherData = useSelector((state) => state.Data.teacherData);
+
   const scrollRef = useRef();
 
   //----------Handlers------------
@@ -96,12 +63,14 @@ function TeacherProfileScreen(props) {
           style={{ alignSelf: "flex-start", position: "absolute" }}
         />
         <View style={styles.imageBackgroundDiv}>
-          <Avatar.Image size={120} source={{ uri: teacherData.imgUrl }} />
+          <Avatar.Image size={120} source={{ uri: teacherData.imgURL }} />
         </View>
 
-        <Text style={styles.title}>{teacherData.name}</Text>
+        <Text style={styles.title}>
+          {teacherData.fname + " " + teacherData.lname}
+        </Text>
         <Text style={{ color: color.lightgrey, marginBottom: 20 }}>
-          {teacherData.department}
+          {teacherData.dept + " Department"}
         </Text>
       </View>
 
@@ -110,7 +79,7 @@ function TeacherProfileScreen(props) {
           <View style={styles.statContainer}>
             <View style={styles.statsBox}>
               <Text style={[styles.text, { fontSize: 24 }]}>
-                {teacherData.reviews}
+                {teacherData.ratingCount}
               </Text>
               <Text style={[styles.text, styles.subText]}>Reviews</Text>
             </View>
@@ -126,7 +95,7 @@ function TeacherProfileScreen(props) {
               ]}
             >
               <Text style={[styles.text, { fontSize: 24 }]}>
-                {teacherData.nComments}
+                {teacherData.commentCount}
               </Text>
               <Text style={[styles.text, styles.subText]}>Comments</Text>
             </View>
@@ -139,13 +108,17 @@ function TeacherProfileScreen(props) {
               </Text>
               <View style={{ flexDirection: "row" }}>
                 <AntDesign name="star" size={26} color={color.primary} />
-                <Text style={styles.Data}> {teacherData.avgRating}</Text>
+                <Text style={styles.Data}>
+                  {parseFloat(
+                    teacherData.totalRating / teacherData.ratingCount
+                  )}
+                </Text>
               </View>
             </View>
 
             <View style={styles.innerInfoView}>
               <Text style={[styles.Data, { fontWeight: "bold" }]}>Email:</Text>
-              <Text style={styles.Data}>{teacherData.email}</Text>
+              <Text style={styles.Data}>{teacherData.id}</Text>
             </View>
           </View>
 
