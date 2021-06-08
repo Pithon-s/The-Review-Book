@@ -51,13 +51,13 @@ export default [
     id: 10,
     title: "Department of Mathematics",
     uri: require("../assets/Departments/Maths.jpg"),
-    code: "M",
+    code: "MA",
   },
   {
     id: 11,
     title: "Department of Chemistery",
     uri: require("../assets/Departments/Chemistry.jpg"),
-    code: "M",
+    code: "CE",
   },
   {
     id: 12,

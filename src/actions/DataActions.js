@@ -1,18 +1,29 @@
 import firebase from "firebase";
-import { useSelector } from "react-redux";
-
-export const searchTeacher = (toFind) => {
+import deptArray from "../utilities/DepartmentData";
+//-------Action to fetch data of specific searched teacher----//
+export const searchTeacher = (toFind, setLoading) => {
   return async (dispatch) => {
+    fname = toFind.split(" ")[0];
+    lname = toFind.replace(fname + " ", "");
+
+    //console.log(fname);
+    //console.log(lrname);
     const data = [];
     firebase
       .firestore()
       .collection("teachers")
-      .where("fname", "==", toFind)
+      .where("fname" || "lname", "==", fname || lname)
       .get()
       .then((querySnapshot) => {
         querySnapshot.forEach((doc) => {
           let temp = doc.data();
           temp.id = doc.id;
+          let found = deptArray.filter((element) => {
+            if (element.code === temp.dept) {
+              return element.title;
+            }
+          });
+          temp.dept = found[0].title;
           data.push(temp);
         });
 
@@ -26,6 +37,7 @@ export const searchTeacher = (toFind) => {
           type: "SEARCH_TEACHER",
           newData: data,
         });
+        setLoading(false);
       });
   };
 };
@@ -37,13 +49,40 @@ export const setLoading = (decision) => {
   };
 };
 
+//------------Action to pass selected teacher data in MainScreen to the TeacherProfileScreen
 export const showSelectedTeacherData = (data) => {
   return async (dispatch) => {
     dispatch({ type: "SHOW_DATA", Data: data });
   };
 };
-
-export const serachByDept = (deptCode) => {
+export const fetchTeacherData = (id) => {
+  return async (dispatch) => {
+    const data = [];
+    firebase
+      .firestore()
+      .collection("comments")
+      .doc(id)
+      .get()
+      .then((doc) => {
+        if (doc.exists) {
+          //console.log("Document data:", doc.data().comments);
+          dispatch({
+            type: "COMMENT_DATA",
+            newData: doc.data().comments,
+          });
+        } else {
+          dispatch({
+            type: "FAILED_COMMENT_DATA",
+          });
+        }
+      })
+      .catch((error) => {
+        console.log("Error getting documents: ", error.message);
+      })
+      .finally(() => {});
+  };
+};
+export const serachByDept = (deptCode, setLoading) => {
   return async (dispatch) => {
     const data = [];
     firebase
@@ -64,6 +103,7 @@ export const serachByDept = (deptCode) => {
         console.log("Error getting documents: ", error.message);
       })
       .finally(() => {
+        setLoading(false);
         dispatch({
           type: "SEARCH_TEACHER",
           newData: data,
