@@ -3,19 +3,24 @@ import deptArray from "../utilities/DepartmentData";
 //-------Action to fetch data of specific searched teacher----//
 export const searchTeacher = (toFind, setLoading) => {
   return async (dispatch) => {
-    fname = toFind.split(" ")[0];
-    lname = toFind.replace(fname + " ", "");
+    console.log(toFind);
 
-    //console.log(fname);
-    //console.log(lrname);
+    fname = toFind.substr(0, toFind.indexOf(" "));
+    lname = toFind.substr(toFind.indexOf(" ") + 1);
+
+    console.log(fname);
+    console.log(lname);
+
     const data = [];
     firebase
       .firestore()
       .collection("teachers")
       .where("fname" || "lname", "==", fname || lname)
+      //.where("fname", "==", toFind)
       .get()
       .then((querySnapshot) => {
         querySnapshot.forEach((doc) => {
+          console.log("inside");
           let temp = doc.data();
           temp.id = doc.id;
           let found = deptArray.filter((element) => {
@@ -26,7 +31,6 @@ export const searchTeacher = (toFind, setLoading) => {
           temp.dept = found[0].title;
           data.push(temp);
         });
-
         console.log("Data fetched for server");
       })
       .catch((error) => {
@@ -94,6 +98,12 @@ export const serachByDept = (deptCode, setLoading) => {
         querySnapshot.forEach((doc) => {
           let temp = doc.data();
           temp.id = doc.id;
+          let found = deptArray.filter((element) => {
+            if (element.code === temp.dept) {
+              return element.title;
+            }
+          });
+          temp.dept = found[0].title;
           data.push(temp);
         });
 
@@ -103,11 +113,11 @@ export const serachByDept = (deptCode, setLoading) => {
         console.log("Error getting documents: ", error.message);
       })
       .finally(() => {
-        setLoading(false);
         dispatch({
           type: "SEARCH_TEACHER",
           newData: data,
         });
+        setLoading(false);
       });
   };
 };
