@@ -38,6 +38,7 @@ function MainScreen(props) {
   const [isLoading, setLoading] = useState(false);
   const [itemsBlur, setItemsBlur] = useState(false);
 
+  const profileComments = useSelector((state) => state.Data.comments);
   //const isLoading = useSelector((state) => state.Data.isLoading);
   const teacherList = useSelector((state) => state.Data.teachers);
   const sID = useSelector((state) => state.Auth.user.email);
@@ -48,9 +49,9 @@ function MainScreen(props) {
 
   const onSubmitHandle = () => {
     teacherList.length = 0;
-    const toFind = searchQuery.toLowerCase().split(" ").join("");
-    dispatch(searchTeacher(toFind));
-    setLoading(false);
+    const toFind = searchQuery.toLowerCase();
+    dispatch(searchTeacher(toFind, setLoading));
+    // setLoading(false);
   };
 
   const loadingHandler = (decision) => {
@@ -59,14 +60,15 @@ function MainScreen(props) {
   };
 
   const onShowHandler = (tdata) => {
+    profileComments.length = 0;
+    dispatch(fetchTeacherData(tdata.id));
     dispatch(showSelectedTeacherData(tdata));
     dispatch(fetchTeacherRating(tdata.id, sID));
   };
 
   const onCardPress = (deptcode) => {
     teacherList.length = 0;
-    dispatch(serachByDept(deptcode));
-    setLoading(false);
+    dispatch(serachByDept(deptcode, setLoading));
   };
 
   return (
@@ -128,13 +130,12 @@ function MainScreen(props) {
                     " " +
                     (item.lname = titleCase(item.lname))
                   }
-                  description={item.dept + " Department"}
+                  description={item.dept}
                   left={(props) => (
                     <Avatar.Image size={60} source={{ uri: item.imgURL }} />
                   )}
                   onPress={() => {
                     onShowHandler(item);
-
                     props.navigation.navigate("TeacherProfile");
                   }}
                   rippleColor={color.primaryLight}
