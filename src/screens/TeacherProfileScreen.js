@@ -1,4 +1,4 @@
-import React, { useState, useRef, createRef } from "react";
+import React, { useState, useRef } from "react";
 import {
   View,
   StyleSheet,
@@ -25,7 +25,6 @@ function TeacherProfileScreen(props) {
   const userData = useSelector((state) => state.Auth.user);
   const rating = useSelector((state) => state.Data.rating);
 
-  const textInput = createRef();
   const scrollRef = useRef();
   const dispatch = useDispatch();
   //----------Handlers------------
@@ -36,7 +35,6 @@ function TeacherProfileScreen(props) {
       name: userData.username,
     };
     dispatch(sendComment(commentData, teacherData.id));
-    textInput.current.clear();
     console.log("press:" + commentData);
   };
 
@@ -76,7 +74,7 @@ function TeacherProfileScreen(props) {
                           dispatch(
                             setRating(i, teacherData.id, userData.email)
                           );
-                          //console.log(i);
+                          console.log(i);
                         },
                       },
                     ]
@@ -180,12 +178,8 @@ function TeacherProfileScreen(props) {
             },
           ]}
         >
-          {
-            //Comment Input AreaHere
-          }
           <View style={styles.commentTextInput}>
             <TextInput
-              ref={textInput}
               mode="flat"
               placeholder="Comment here"
               selectionColor={color.primary}
