@@ -13,8 +13,6 @@ const initialState = {
     // },
   ],
 
-  isLoading: false,
-  itemBlur: false,
   teacherData: {},
   comments: [
     {
@@ -33,16 +31,8 @@ export default (state = initialState, action) => {
       return {
         ...state,
         teachers: action.newData,
-        isLoading: false,
-        itemBlur: true,
       };
-    case "SET_LOADING":
-      console.log("DataReducer-> SET: " + action.Data);
-      return {
-        ...state,
-        isLoading: action.Data,
-        itemBlur: action.Data,
-      };
+
     case "SHOW_DATA":
       console.log("DataReducer-> Show DATA : " + action.Data);
       return {
