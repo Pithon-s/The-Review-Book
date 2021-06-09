@@ -130,6 +130,7 @@ function MainScreen(props) {
                   )}
                   onPress={() => {
                     onShowHandler(item);
+
                     props.navigation.navigate("TeacherProfile");
                   }}
                   rippleColor={color.primaryLight}

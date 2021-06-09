@@ -19,7 +19,7 @@ function TeacherProfileScreen(props) {
   const [total, setTotal] = useState(0);
   const isAnonymous = useSelector((state) => state.Auth.user.isAnonymous);
   const teacherData = useSelector((state) => state.Data.teacherData);
-
+  const profileComments = useSelector((state) => state.Data.comments);
   const scrollRef = useRef();
 
   //----------Handlers------------
@@ -38,16 +38,18 @@ function TeacherProfileScreen(props) {
     const ratingIcons = [];
     for (let i = 1; i <= 5; i++)
       ratingIcons.push(
-        <AntDesign
-          name="star"
-          size={26}
-          color={i <= total ? color.primary : color.darkgrey}
-          key={i}
-          onPress={() => {
-            setTotal(i);
-            console.log(i);
-          }}
-        />
+        <View style={{ marginLeft: 10 }}>
+          <AntDesign
+            name="star"
+            size={26}
+            color={i <= total ? color.primary : color.darkgrey}
+            key={i}
+            onPress={() => {
+              setTotal(i);
+              console.log(i);
+            }}
+          />
+        </View>
       );
 
     return ratingIcons;
@@ -63,7 +65,7 @@ function TeacherProfileScreen(props) {
           color={color.white}
           size={30}
           onPress={() => props.navigation.navigate("TabNavigator")}
-          style={{ alignSelf: "flex-start", position: "absolute" }}
+          style={{ alignSelf: "flex-start", position: "absolute", top: 3 }}
         />
         <View style={styles.imageBackgroundDiv}>
           <Avatar.Image size={120} source={{ uri: teacherData.imgURL }} />
@@ -81,7 +83,7 @@ function TeacherProfileScreen(props) {
             }}
           >
             <Entypo name="location-pin" size={20} color={color.lightgrey} />
-            <Text style={styles.dept}>{teacherData.dept + " Department"}</Text>
+            <Text style={styles.dept}>{teacherData.dept}</Text>
           </View>
         </View>
 
@@ -119,13 +121,30 @@ function TeacherProfileScreen(props) {
 
       <ScrollView ref={scrollRef} style={{ marginTop: 20 }}>
         {!isAnonymous ? (
-          <View style={styles.ratingView}>
+          <View style={[styles.ratingView, { paddingBottom: 20 }]}>
             <Text style={{ fontSize: 22 }}>Tell us about your experience:</Text>
-            <Text>{handleRating()}</Text>
+            <View
+              style={{
+                //backgroundColor: "orange",
+                flexDirection: "row",
+              }}
+            >
+              {handleRating()}
+            </View>
           </View>
         ) : null}
 
-        <View style={styles.commentDiv}>
+        <View
+          style={[
+            styles.commentDiv,
+            {
+              height:
+                profileComments.length === 0
+                  ? Dimensions.get("screen").height * 0.3
+                  : null,
+            },
+          ]}
+        >
           <View style={styles.commentTextInput}>
             <TextInput
               mode="flat"
@@ -151,17 +170,16 @@ function TeacherProfileScreen(props) {
               disabled={isAnonymous}
             />
           </View>
-
           <FlatList
-            data={teacherData.comments}
-            ListFooterComponent={() => <View style={{ height: 80 }} />}
-            keyExtractor={(key) => key.id.toString()}
+            data={profileComments}
+            ListFooterComponent={() => <View style={{ height: 20 }} />}
+            keyExtractor={(key) => key.imgURL.toString()}
             renderItem={({ item }) => (
               <List.Item
-                title={item.username}
-                description={item.comment}
+                title={item.name}
+                description={item.commentText}
                 left={(props) => (
-                  <Avatar.Image size={60} source={{ uri: item.userImgUrl }} />
+                  <Avatar.Image size={60} source={{ uri: item.imgURL }} />
                 )}
               />
             )}
@@ -207,7 +225,6 @@ const styles = StyleSheet.create({
     paddingTop: 25,
     borderRadius: 25,
     flex: 1,
-    height: Dimensions.get("screen").height * 0.3,
     alignSelf: "center",
   },
   imageBackgroundDiv: {
@@ -264,7 +281,6 @@ const styles = StyleSheet.create({
     //backgroundColor: "gold",
     alignItems: "center",
     padding: 20,
-    paddingBottom: 0,
   },
   Data: {
     fontSize: 20,

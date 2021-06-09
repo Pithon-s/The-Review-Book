@@ -47,7 +47,7 @@ export const fetchTeacherComments = (id) => {
     const data = [];
     firebase
       .firestore()
-      .collection("teachers")
+      .collection("comments")
       .where("dept", "==", deptCode)
       .get()
       .then((querySnapshot) => {

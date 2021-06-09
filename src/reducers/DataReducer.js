@@ -16,6 +16,13 @@ const initialState = {
   isLoading: false,
   itemBlur: false,
   teacherData: {},
+  comments: [
+    {
+      commentText: "",
+      imgURL: "",
+      name: "",
+    },
+  ],
 };
 
 export default (state = initialState, action) => {
@@ -41,7 +48,17 @@ export default (state = initialState, action) => {
         ...state,
         teacherData: action.Data,
       };
-
+    case "COMMENT_DATA":
+      console.log("DataReducer-> Comment Data : " + action.newData);
+      return {
+        ...state,
+        comments: action.newData,
+      };
+    case "FAILED_COMMENT_DATA":
+      console.log("DataReducer-> Failed Comment Data : ");
+      return {
+        ...state,
+      };
     default:
       return state;
   }
