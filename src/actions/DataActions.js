@@ -190,6 +190,7 @@ export const setRating = (ratingData, tId, sId) => {
           .doc(tId)
           .update({
             totalRating: firebase.firestore.FieldValue.increment(ratingData),
+            ratingCount: firebase.firestore.FieldValue.increment(1),
           })
           .then(() => {
             dispatch({ type: "RATING_SET", newData: ratingData });
