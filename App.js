@@ -13,6 +13,8 @@ import ProfileNavigation from "./src/navigations/ProfileNavigation";
 import Reducers from "./src/reducers";
 import { AutoLogin } from "./src/actions/AuthActions";
 
+// merging issue
+
 const firebaseConfig = () => {
   firebase.initializeApp({
     apiKey: "AIzaSyC6-BGVSAFcLsRSmBHSRPut5BO_s58QyZY",
