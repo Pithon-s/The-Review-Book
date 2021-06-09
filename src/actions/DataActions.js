@@ -82,6 +82,31 @@ export const fetchTeacherData = (id) => {
       .finally(() => {});
   };
 };
+export const fetchTeacherRating = (tId, sId) => {
+  return async (dispatch) => {
+    const data = [];
+    console.log("TID" + tId + " SID" + sId);
+    firebase
+      .firestore()
+      .collection("ratings")
+      .where("tEmail", "==", tId)
+      .where("sEmail", "==", sId)
+      .get()
+      .then((querySnapshot) => {
+        querySnapshot.forEach((doc) => {
+          console.log(doc.data());
+          dispatch({
+            type: "RATING_FETCHED",
+            newData: doc.data().rating,
+          });
+        });
+      })
+      .catch((error) => {
+        console.log("Error getting documents: ", error.message);
+      })
+      .finally(() => {});
+  };
+};
 export const serachByDept = (deptCode, setLoading) => {
   return async (dispatch) => {
     const data = [];
@@ -115,5 +140,63 @@ export const serachByDept = (deptCode, setLoading) => {
           newData: data,
         });
       });
+  };
+};
+
+export const sendComment = (commentData, id) => {
+  return async (dispatch) => {
+    //Teacher k emails pele se add krne pre ge comments collection me
+    firebase
+      .firestore()
+      .collection("comments")
+      .doc(id)
+      .update({
+        comments: firebase.firestore.FieldValue.arrayUnion(commentData),
+      })
+      .then(() => {
+        firebase
+          .firestore()
+          .collection("teachers")
+          .doc(id)
+          .update({
+            commentCount: firebase.firestore.FieldValue.increment(1),
+          })
+          .then(() => {
+            dispatch({ type: "COMMENT_SENT", newData: commentData });
+            console.log("Document successfully written!");
+          })
+          .catch((error) => console.log(error));
+      })
+      .catch((error) => console.log(error));
+  };
+};
+
+export const setRating = (ratingData, tId, sId) => {
+  return async (dispatch) => {
+    const data = {
+      sEmail: sId,
+      tEmail: tId,
+      rating: ratingData,
+    };
+    firebase
+      .firestore()
+      .collection("ratings")
+      .doc()
+      .set(data)
+      .then(() => {
+        firebase
+          .firestore()
+          .collection("teachers")
+          .doc(tId)
+          .update({
+            totalRating: firebase.firestore.FieldValue.increment(ratingData),
+          })
+          .then(() => {
+            dispatch({ type: "RATING_SET", newData: ratingData });
+            console.log("Document successfully written!");
+          })
+          .catch((error) => console.log(error));
+      })
+      .catch((error) => console.log(error));
   };
 };
