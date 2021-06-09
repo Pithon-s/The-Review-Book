@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, createRef } from "react";
 import {
   View,
   StyleSheet,
@@ -7,24 +7,37 @@ import {
   ScrollView,
   FlatList,
   Text,
+  Alert,
 } from "react-native";
 import { List, Avatar, IconButton, TextInput } from "react-native-paper";
 import { AntDesign, Entypo } from "react-native-vector-icons";
 
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import colors from "../config/colors";
 import color from "../config/colors";
+import { sendComment, setRating } from "../actions/DataActions";
 
 function TeacherProfileScreen(props) {
-  const [total, setTotal] = useState(0);
+  const [comment, setComment] = useState("");
   const isAnonymous = useSelector((state) => state.Auth.user.isAnonymous);
   const teacherData = useSelector((state) => state.Data.teacherData);
   const profileComments = useSelector((state) => state.Data.comments);
-  const scrollRef = useRef();
+  const userData = useSelector((state) => state.Auth.user);
+  const rating = useSelector((state) => state.Data.rating);
 
+  const textInput = createRef();
+  const scrollRef = useRef();
+  const dispatch = useDispatch();
   //----------Handlers------------
   const handleSend = () => {
-    console.log("press");
+    let commentData = {
+      commentText: comment,
+      imgURL: userData.profilePictureURI,
+      name: userData.username,
+    };
+    dispatch(sendComment(commentData, teacherData.id));
+    textInput.current.clear();
+    console.log("press:" + commentData);
   };
 
   const handleScroll = () => {
@@ -42,11 +55,33 @@ function TeacherProfileScreen(props) {
           <AntDesign
             name="star"
             size={26}
-            color={i <= total ? color.primary : color.darkgrey}
+            color={i <= rating ? color.primary : color.darkgrey}
             key={i}
             onPress={() => {
-              setTotal(i);
-              console.log(i);
+              rating == 0
+                ? Alert.alert(
+                    "Note!",
+                    "Are you sure you want to give this rating? You would not be able to change this.",
+                    [
+                      {
+                        text: "Cancel",
+                        onPress: () => {
+                          console.log("Cancel Pressed");
+                        },
+                        style: "cancel",
+                      },
+                      {
+                        text: "OK",
+                        onPress: () => {
+                          dispatch(
+                            setRating(i, teacherData.id, userData.email)
+                          );
+                          //console.log(i);
+                        },
+                      },
+                    ]
+                  )
+                : null;
             }}
           />
         </View>
@@ -145,8 +180,12 @@ function TeacherProfileScreen(props) {
             },
           ]}
         >
+          {
+            //Comment Input AreaHere
+          }
           <View style={styles.commentTextInput}>
             <TextInput
+              ref={textInput}
               mode="flat"
               placeholder="Comment here"
               selectionColor={color.primary}
@@ -160,6 +199,7 @@ function TeacherProfileScreen(props) {
               theme={{
                 colors: { primary: color.primary },
               }}
+              onChangeText={(text) => setComment(text)}
             />
             <IconButton
               icon="send"

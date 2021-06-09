@@ -24,6 +24,8 @@ import {
   searchTeacher,
   serachByDept,
   showSelectedTeacherData,
+  fetchTeacherData,
+  fetchTeacherRating,
 } from "../actions/DataActions";
 
 function titleCase(string) {
@@ -38,6 +40,7 @@ function MainScreen(props) {
 
   //const isLoading = useSelector((state) => state.Data.isLoading);
   const teacherList = useSelector((state) => state.Data.teachers);
+  const sID = useSelector((state) => state.Auth.user.email);
   const dispatch = useDispatch();
 
   //-------Handlers---------//
@@ -57,6 +60,7 @@ function MainScreen(props) {
 
   const onShowHandler = (tdata) => {
     dispatch(showSelectedTeacherData(tdata));
+    dispatch(fetchTeacherRating(tdata.id, sID));
   };
 
   const onCardPress = (deptcode) => {

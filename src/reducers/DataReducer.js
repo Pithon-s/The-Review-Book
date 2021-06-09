@@ -23,6 +23,7 @@ const initialState = {
       name: "",
     },
   ],
+  rating: 0,
 };
 
 export default (state = initialState, action) => {
@@ -47,17 +48,42 @@ export default (state = initialState, action) => {
       return {
         ...state,
         teacherData: action.Data,
+        rating: 0,
       };
     case "COMMENT_DATA":
       console.log("DataReducer-> Comment Data : " + action.newData);
       return {
         ...state,
-        comments: action.newData,
+        comments: action.newData.reverse(),
       };
     case "FAILED_COMMENT_DATA":
       console.log("DataReducer-> Failed Comment Data : ");
       return {
         ...state,
+      };
+    case "COMMENT_SENT":
+      console.log("DataReducer-> Comment sent : ");
+      state.teacherData.commentCount = state.teacherData.commentCount++;
+      return {
+        ...state,
+        teacherData: {
+          //isme msla ha
+          ...state.teacherData,
+          commentCount: state.teacherData.commentCount++,
+        },
+        comments: [action.newData, ...state.comments],
+      };
+    case "RATING_FETCHED":
+      console.log("DataReducer-> Rating Fetched : ");
+      return {
+        ...state,
+        rating: action.newData,
+      };
+    case "RATING_SET":
+      console.log("DataReducer-> Rating set : ");
+      return {
+        ...state,
+        rating: action.newData,
       };
     default:
       return state;
