@@ -66,14 +66,21 @@ export default (state = initialState, action) => {
       state.teacherData.commentCount = state.teacherData.commentCount++;
       return {
         ...state,
+        teacherData: {
+          //isme msla ha
+          ...state.teacherData,
+          commentCount: state.teacherData.commentCount++,
+        },
         comments: [action.newData, ...state.comments],
       };
     case "RATING_FETCHED":
+      console.log("DataReducer-> Rating Fetched : ");
       return {
         ...state,
         rating: action.newData,
       };
     case "RATING_SET":
+      console.log("DataReducer-> Rating set : ");
       return {
         ...state,
         rating: action.newData,
