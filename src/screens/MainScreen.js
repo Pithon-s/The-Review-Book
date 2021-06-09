@@ -150,7 +150,7 @@ function MainScreen(props) {
               <Card
                 onPress={() => {
                   loadingHandler(true);
-                  showBackButton(true);
+                  setShowBackButton(true);
                   onCardPress(item.code);
                 }}
                 style={styles.card}
