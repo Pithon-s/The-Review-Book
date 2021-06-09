@@ -83,6 +83,12 @@ export const serachByDept = (deptCode) => {
         querySnapshot.forEach((doc) => {
           let temp = doc.data();
           temp.id = doc.id;
+          let found = deptArray.filter((element) => {
+            if (element.code === temp.dept) {
+              return element.title;
+            }
+          });
+          temp.dept = found[0].title;
           data.push(temp);
         });
 
