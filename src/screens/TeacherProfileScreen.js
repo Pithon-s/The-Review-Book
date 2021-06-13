@@ -28,6 +28,7 @@ function TeacherProfileScreen(props) {
   const textInput = createRef();
   const scrollRef = useRef();
   const dispatch = useDispatch();
+
   //----------Handlers------------
   const handleSend = () => {
     let commentData = {
@@ -37,7 +38,6 @@ function TeacherProfileScreen(props) {
     };
     dispatch(sendComment(commentData, teacherData.id));
     textInput.current.clear();
-    console.log("press:" + commentData);
   };
 
   const handleScroll = () => {
@@ -61,13 +61,10 @@ function TeacherProfileScreen(props) {
               rating == 0
                 ? Alert.alert(
                     "Note!",
-                    "Are you sure you want to give this rating? You would not be able to change this.",
+                    "Once you rate you would not be able to change it.",
                     [
                       {
                         text: "Cancel",
-                        onPress: () => {
-                          console.log("Cancel Pressed");
-                        },
                         style: "cancel",
                       },
                       {
@@ -76,7 +73,6 @@ function TeacherProfileScreen(props) {
                           dispatch(
                             setRating(i, teacherData.id, userData.email)
                           );
-                          //console.log(i);
                         },
                       },
                     ]
@@ -147,7 +143,8 @@ function TeacherProfileScreen(props) {
           </View>
           <View style={styles.statsBox}>
             <Text style={[styles.text, { fontSize: 24 }]}>
-              {parseFloat(teacherData.totalRating / teacherData.ratingCount)}
+              {parseFloat(teacherData.totalRating / teacherData.ratingCount) ||
+                "0"}
             </Text>
             <Text style={styles.subText}>Rating</Text>
           </View>
@@ -160,7 +157,6 @@ function TeacherProfileScreen(props) {
             <Text style={{ fontSize: 22 }}>Tell us about your experience:</Text>
             <View
               style={{
-                //backgroundColor: "orange",
                 flexDirection: "row",
               }}
             >
@@ -180,9 +176,6 @@ function TeacherProfileScreen(props) {
             },
           ]}
         >
-          {
-            //Comment Input AreaHere
-          }
           <View style={styles.commentTextInput}>
             <TextInput
               ref={textInput}
@@ -213,7 +206,6 @@ function TeacherProfileScreen(props) {
           <FlatList
             data={profileComments}
             ListFooterComponent={() => <View style={{ height: 20 }} />}
-            keyExtractor={(key) => key.imgURL.toString()}
             renderItem={({ item }) => (
               <List.Item
                 title={item.name}
@@ -268,16 +260,11 @@ const styles = StyleSheet.create({
     alignSelf: "center",
   },
   imageBackgroundDiv: {
-    height: 130,
-    width: 130,
-    backgroundColor: color.white,
-    justifyContent: "center",
-    alignItems: "center",
+    elevation: 15,
     borderRadius: 80,
     marginTop: 15,
   },
   title: {
-    fontFamily: "Roboto",
     color: color.white,
     fontWeight: "200",
     fontSize: 30,
@@ -285,14 +272,12 @@ const styles = StyleSheet.create({
   },
   emailView: {
     color: color.lightgrey,
-
     fontSize: 18,
     marginVertical: 5,
   },
   dept: {
     fontSize: 14,
     color: color.lightgrey,
-
     paddingLeft: 2,
   },
   commentTitle: {
@@ -318,7 +303,6 @@ const styles = StyleSheet.create({
   },
   ratingView: {
     alignSelf: "center",
-    //backgroundColor: "gold",
     alignItems: "center",
     padding: 20,
   },
@@ -328,7 +312,6 @@ const styles = StyleSheet.create({
   },
   infoView: {
     padding: 25,
-    // backgroundColor: "dodgerblue",
     justifyContent: "space-around",
     height: 150,
   },

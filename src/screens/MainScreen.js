@@ -39,24 +39,25 @@ function MainScreen(props) {
   const [itemsBlur, setItemsBlur] = useState(false);
 
   const profileComments = useSelector((state) => state.Data.comments);
-  //const isLoading = useSelector((state) => state.Data.isLoading);
   const teacherList = useSelector((state) => state.Data.teachers);
   const sID = useSelector((state) => state.Auth.user.email);
   const dispatch = useDispatch();
 
   //-------Handlers---------//
-  const onChangeSearch = (query) => setSearchQuery(query);
+  const onChangeSearch = (query) => {
+    if (query.slice(-1) === " ") onSubmitHandle();
+    setSearchQuery(query);
+  };
 
   const onSubmitHandle = () => {
+    setLoading(true);
     teacherList.length = 0;
     const toFind = searchQuery.toLowerCase();
     dispatch(searchTeacher(toFind, setLoading));
-    // setLoading(false);
   };
 
   const loadingHandler = (decision) => {
     setItemsBlur(decision);
-    setLoading(decision);
   };
 
   const onShowHandler = (tdata) => {
@@ -68,6 +69,7 @@ function MainScreen(props) {
 
   const onCardPress = (deptcode) => {
     teacherList.length = 0;
+    setLoading(true);
     dispatch(serachByDept(deptcode, setLoading));
   };
 
@@ -115,11 +117,8 @@ function MainScreen(props) {
 
       <View style={styles.cardView}>
         {itemsBlur == true ? (
-          isLoading == true ? (
-            <>
-              <ActivityIndicator animating={true} color={color.primary} />
-            </>
-          ) : (
+          <>
+            <ActivityIndicator animating={isLoading} color={color.primary} />
             <FlatList
               data={teacherList}
               keyExtractor={(key) => key.id.toString()}
@@ -142,7 +141,7 @@ function MainScreen(props) {
                 />
               )}
             />
-          )
+          </>
         ) : (
           <FlatList
             data={deptArray}
