@@ -11,8 +11,7 @@ export const searchTeacher = (toFind, setLoading) => {
     firebase
       .firestore()
       .collection("teachers")
-      .where("fname", "==", fname)
-      .where("lname", "==", lname)
+      .where("fname", "==", fname || "lname", "==", lname)
       .get()
       .then((snapshot) => {
         snapshot.forEach((doc) => {
