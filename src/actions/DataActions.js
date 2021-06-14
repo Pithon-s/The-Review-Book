@@ -6,16 +6,15 @@ export const searchTeacher = (toFind, setLoading) => {
   return async (dispatch) => {
     fname = toFind.split(" ")[0];
     lname = toFind.replace(fname + " ", "");
-    console.log(fname);
-    console.log(lname);
     const data = [];
-    console.log("hehe");
+
     firebase
       .firestore()
       .collection("teachers")
-      .where("fname", "==", "nadeem")
-      .get((snapshot) => {
-        console.log("hehehe");
+      .where("fname", "==", fname)
+      .where("lname", "==", lname)
+      .get()
+      .then((snapshot) => {
         snapshot.forEach((doc) => {
           let temp = doc.data();
           temp.id = doc.id;
@@ -25,7 +24,7 @@ export const searchTeacher = (toFind, setLoading) => {
             }
           });
           temp.dept = found[0].title;
-          console.log(doc.data());
+          // console.log(doc.data());
           data.push(temp);
         });
       })
