@@ -1,5 +1,4 @@
 import firebase from "firebase";
-
 import deptArray from "../utilities/DepartmentData";
 
 // Action to fetch data of specific searched teacher
@@ -14,9 +13,8 @@ export const searchTeacher = (toFind, setLoading) => {
       .firestore()
       .collection("teachers")
       .where("fname" || "lname", "==", fname || lname)
-      .get()
-      .then((querySnapshot) => {
-        querySnapshot.forEach((doc) => {
+      .get((snapshot) => {
+        snapshot.forEach((doc) => {
           let temp = doc.data();
           temp.id = doc.id;
           let found = deptArray.filter((element) => {
@@ -50,7 +48,31 @@ export const setLoading = (decision) => {
 // Action to pass selected teacher data in MainScreen to the TeacherProfileScreen
 export const showSelectedTeacherData = (data) => {
   return async (dispatch) => {
-    dispatch({ type: "SHOW_DATA", Data: data });
+    // console.log(data);
+    firebase
+      .firestore()
+      .collection("teachers")
+      .doc(data)
+      .onSnapshot((snapshot) => {
+        if (snapshot.exists) {
+          // console.log(snapshot.data());
+          let temp = snapshot.data();
+          temp.id = snapshot.id;
+          let found = deptArray.filter((element) => {
+            if (element.code === temp.dept) {
+              return element.title;
+            }
+          });
+          temp.dept = found[0].title;
+          dispatch({ type: "SHOW_DATA", Data: temp });
+        }
+      })
+      .catch((error) => {
+        console.log("Error getting documents: ", error.message);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   };
 };
 
@@ -150,7 +172,7 @@ export const sendComment = (commentData, id) => {
             commentCount: firebase.firestore.FieldValue.increment(1),
           })
           .then(() => {
-            dispatch({ type: "COMMENT_SENT", newData: commentData });
+            dispatch({ type: "COMMENT_SENT" });
           })
           .catch((error) => console.log(error));
       })
