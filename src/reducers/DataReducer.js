@@ -44,14 +44,8 @@ export default (state = initialState, action) => {
         ...state,
       };
     case "COMMENT_SENT":
-      state.teacherData.commentCount = state.teacherData.commentCount++;
       return {
         ...state,
-        teacherData: {
-          ...state.teacherData,
-          commentCount: state.teacherData.commentCount++,
-        },
-        comments: [action.newData, ...state.comments],
       };
     case "RATING_FETCHED":
       return {

@@ -63,7 +63,7 @@ function LoginScreen({ navigation }) {
         </View>
         <View style={styles.fieldContainer}>
           <TextInput
-            mode="outlined"
+            mode="flatlined"
             label="Enter your email"
             value={email}
             onChangeText={(email) => {
@@ -84,7 +84,7 @@ function LoginScreen({ navigation }) {
           </HelperText>
 
           <TextInput
-            mode="outlined"
+            mode="flatlined"
             label="Enter your password"
             value={password}
             right={
@@ -191,7 +191,7 @@ function LoginScreen({ navigation }) {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "#F4F4F4",
+    backgroundColor: "white",
   },
   button: {
     borderRadius: 20,

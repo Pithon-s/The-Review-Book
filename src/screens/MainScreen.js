@@ -63,7 +63,7 @@ function MainScreen(props) {
   const onShowHandler = (tdata) => {
     profileComments.length = 0;
     dispatch(fetchTeacherData(tdata.id));
-    dispatch(showSelectedTeacherData(tdata));
+    dispatch(showSelectedTeacherData(tdata.id));
     dispatch(fetchTeacherRating(tdata.id, sID));
   };
 
