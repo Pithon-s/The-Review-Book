@@ -32,7 +32,6 @@ export default (state = initialState, action) => {
       return {
         ...state,
         teacherData: action.Data,
-        rating: 0,
       };
     case "COMMENT_DATA":
       return {
