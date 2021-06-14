@@ -87,71 +87,72 @@ function TeacherProfileScreen(props) {
   };
 
   return (
-    <View style={styles.maincontainer}>
-      <StatusBar barStyle="dark-content" backgroundColor={colors.white} />
+    <>
+      <ScrollView ref={scrollRef} style={styles.maincontainer}>
+        <StatusBar barStyle="dark-content" backgroundColor={colors.white} />
 
-      <View style={styles.imageDiv}>
-        <IconButton
-          icon="arrow-left"
-          color={color.white}
-          size={30}
-          onPress={() => props.navigation.navigate("TabNavigator")}
-          style={{ alignSelf: "flex-start", position: "absolute", top: 3 }}
-        />
-        <View style={styles.imageBackgroundDiv}>
-          <Avatar.Image size={120} source={{ uri: teacherData.imgURL }} />
+        <View style={styles.imageDiv}>
+          <IconButton
+            icon="arrow-left"
+            color={color.white}
+            size={30}
+            onPress={() => props.navigation.navigate("TabNavigator")}
+            style={{ alignSelf: "flex-start", position: "absolute", top: 3 }}
+          />
+          <View style={styles.imageBackgroundDiv}>
+            <Avatar.Image size={120} source={{ uri: teacherData.imgURL }} />
+          </View>
+
+          <View style={{ alignItems: "center" }}>
+            <Text style={styles.title}>
+              {teacherData.fname + " " + teacherData.lname}
+            </Text>
+            <Text style={styles.emailView}>{teacherData.id}</Text>
+            <View
+              style={{
+                flexDirection: "row",
+                alignItems: "center",
+              }}
+            >
+              <Entypo name="location-pin" size={20} color={color.lightgrey} />
+              <Text style={styles.dept}>{teacherData.dept}</Text>
+            </View>
+          </View>
+
+          <View style={styles.statContainer}>
+            <View style={styles.statsBox}>
+              <Text style={[styles.text, { fontSize: 24 }]}>
+                {teacherData.ratingCount}
+              </Text>
+              <Text style={styles.subText}>Reviews</Text>
+            </View>
+
+            <View
+              style={[
+                styles.statsBox,
+                {
+                  borderColor: "#DFD8C8",
+                  borderRightWidth: 1,
+                  borderLeftWidth: 1,
+                },
+              ]}
+            >
+              <Text style={[styles.text, { fontSize: 24 }]}>
+                {teacherData.commentCount}
+              </Text>
+              <Text style={styles.subText}>Comments</Text>
+            </View>
+            <View style={styles.statsBox}>
+              <Text style={[styles.text, { fontSize: 24 }]}>
+                {parseFloat(
+                  teacherData.totalRating / teacherData.ratingCount
+                ).toPrecision(2) || "0"}
+              </Text>
+              <Text style={styles.subText}>Rating</Text>
+            </View>
+          </View>
         </View>
 
-        <View style={{ alignItems: "center" }}>
-          <Text style={styles.title}>
-            {teacherData.fname + " " + teacherData.lname}
-          </Text>
-          <Text style={styles.emailView}>{teacherData.id}</Text>
-          <View
-            style={{
-              flexDirection: "row",
-              alignItems: "center",
-            }}
-          >
-            <Entypo name="location-pin" size={20} color={color.lightgrey} />
-            <Text style={styles.dept}>{teacherData.dept}</Text>
-          </View>
-        </View>
-
-        <View style={styles.statContainer}>
-          <View style={styles.statsBox}>
-            <Text style={[styles.text, { fontSize: 24 }]}>
-              {teacherData.ratingCount}
-            </Text>
-            <Text style={styles.subText}>Reviews</Text>
-          </View>
-
-          <View
-            style={[
-              styles.statsBox,
-              {
-                borderColor: "#DFD8C8",
-                borderRightWidth: 1,
-                borderLeftWidth: 1,
-              },
-            ]}
-          >
-            <Text style={[styles.text, { fontSize: 24 }]}>
-              {teacherData.commentCount}
-            </Text>
-            <Text style={styles.subText}>Comments</Text>
-          </View>
-          <View style={styles.statsBox}>
-            <Text style={[styles.text, { fontSize: 24 }]}>
-              {parseFloat(teacherData.totalRating / teacherData.ratingCount) ||
-                "0"}
-            </Text>
-            <Text style={styles.subText}>Rating</Text>
-          </View>
-        </View>
-      </View>
-
-      <ScrollView ref={scrollRef} style={{ marginTop: 20 }}>
         {!isAnonymous ? (
           <View style={[styles.ratingView, { paddingBottom: 20 }]}>
             <Text style={{ fontSize: 22 }}>Tell us about your experience:</Text>
@@ -163,7 +164,9 @@ function TeacherProfileScreen(props) {
               {handleRating()}
             </View>
           </View>
-        ) : null}
+        ) : (
+          <View style={{ marginTop: 20 }} />
+        )}
 
         <View
           style={[
@@ -187,7 +190,6 @@ function TeacherProfileScreen(props) {
                 borderColor: color.primary,
                 marginLeft: 10,
               }}
-              // multiline={true}
               disabled={isAnonymous}
               theme={{
                 colors: { primary: color.primary },
@@ -218,7 +220,6 @@ function TeacherProfileScreen(props) {
           />
         </View>
       </ScrollView>
-
       <IconButton
         icon="arrow-up"
         onPress={handleScroll}
@@ -226,7 +227,7 @@ function TeacherProfileScreen(props) {
         size={30}
         style={styles.upwardButton}
       />
-    </View>
+    </>
   );
 }
 
