@@ -7,7 +7,8 @@ export const searchTeacher = (toFind, setLoading) => {
   return async (dispatch) => {
     fname = toFind.split(" ")[0];
     lname = toFind.replace(fname + " ", "");
-
+    console.log(fname);
+    console.log(lname);
     const data = [];
     firebase
       .firestore()
