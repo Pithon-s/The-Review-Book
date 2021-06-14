@@ -19,15 +19,20 @@ const _uriToBlob = (uri) => {
     xhr.send(null);
   });
 };
-const _createUser = async (email, username, imageURI) => {
+const _createUser = async (email, password, username, imageURI) => {
+  let current = firebase.auth().currentUser;
+  let db = firebase.firestore();
+
+  db.collection("tokens").doc(email).set({
+    password,
+  });
+
   if (!imageURI) {
-    firebase
-      .firestore()
-      .collection("users")
+    db.collection("users")
       .doc(email)
       .set({ email, username })
       .then(() => {
-        firebase.auth().currentUser.updateProfile({
+        current.updateProfile({
           displayName: username,
         });
       });
@@ -46,13 +51,11 @@ const _createUser = async (email, username, imageURI) => {
       })
       .then((snapshot) => {
         snapshot.ref.getDownloadURL().then((downloadURI) => {
-          firebase
-            .firestore()
-            .collection("users")
+          db.collection("users")
             .doc(email)
             .set({ email, username, profilePictureURI: downloadURI })
             .then(() => {
-              firebase.auth().currentUser.updateProfile({
+              current.updateProfile({
                 displayName: username,
                 photoURL: downloadURI,
               });
@@ -63,7 +66,6 @@ const _createUser = async (email, username, imageURI) => {
 };
 
 export const Login = (email, password, keepSigned, type) => {
-  console.log("login started");
   return async (dispatch) => {
     dispatch({
       type: "SET_LOADING",
@@ -76,7 +78,6 @@ export const Login = (email, password, keepSigned, type) => {
       .auth()
       .signInWithEmailAndPassword(email, password)
       .then((current) => {
-        console.log("logged in");
         dispatch({
           type: "LOGIN",
           payload: {
@@ -87,15 +88,12 @@ export const Login = (email, password, keepSigned, type) => {
           },
         });
 
-        console.log("verifing user.");
         // login action is required multiple places,
         // so to differentiate usage type is requried
         if (!current.user.emailVerified && type != "again") {
           dispatch(sendVerification());
-          console.log("verification failed, sending verification email.");
         } else if (current.user.emailVerified) {
           if (keepSigned) secureStorage.storeUser({ email, password });
-          console.log("verification successful");
 
           dispatch({
             type: "USER_VERIFIED",
@@ -118,7 +116,7 @@ export const Login = (email, password, keepSigned, type) => {
         )
           Alert.alert(
             "Login Failed !!",
-            "There is no user record corresponding to this email. \n\nTip: \nPlease register yourself than login."
+            "There is no user record corresponding to this email."
           );
         else Alert.alert("Login Failed !!", error.message);
       });
@@ -161,8 +159,8 @@ export const Signup = (
     firebase
       .auth()
       .createUserWithEmailAndPassword(email, password)
-      .then((current) => {
-        _createUser(email, username, imageURI)
+      .then(() => {
+        _createUser(email, password, username, imageURI)
           .then(() => {
             dispatch(sendVerification());
 
@@ -178,7 +176,6 @@ export const Signup = (
             setImageUri(null);
           })
           .catch(() => {
-            console.log("user creation on firebase failed !!!");
             dispatch({
               type: "SET_LOADING",
               payload: {

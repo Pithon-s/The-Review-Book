@@ -28,6 +28,7 @@ function TeacherProfileScreen(props) {
   const textInput = createRef();
   const scrollRef = useRef();
   const dispatch = useDispatch();
+
   //----------Handlers------------
   const handleSend = () => {
     let commentData = {
@@ -37,7 +38,6 @@ function TeacherProfileScreen(props) {
     };
     dispatch(sendComment(commentData, teacherData.id));
     textInput.current.clear();
-    console.log("press:" + commentData);
   };
 
   const handleScroll = () => {
@@ -61,13 +61,10 @@ function TeacherProfileScreen(props) {
               rating == 0
                 ? Alert.alert(
                     "Note!",
-                    "Are you sure you want to give this rating? You would not be able to change this.",
+                    "Once you rate you would not be able to change it.",
                     [
                       {
                         text: "Cancel",
-                        onPress: () => {
-                          console.log("Cancel Pressed");
-                        },
                         style: "cancel",
                       },
                       {
@@ -76,7 +73,6 @@ function TeacherProfileScreen(props) {
                           dispatch(
                             setRating(i, teacherData.id, userData.email)
                           );
-                          //console.log(i);
                         },
                       },
                     ]
@@ -91,83 +87,86 @@ function TeacherProfileScreen(props) {
   };
 
   return (
-    <View style={styles.maincontainer}>
-      <StatusBar barStyle="dark-content" backgroundColor={colors.white} />
+    <>
+      <ScrollView ref={scrollRef} style={styles.maincontainer}>
+        <StatusBar barStyle="dark-content" backgroundColor={colors.white} />
 
-      <View style={styles.imageDiv}>
-        <IconButton
-          icon="arrow-left"
-          color={color.white}
-          size={30}
-          onPress={() => props.navigation.navigate("TabNavigator")}
-          style={{ alignSelf: "flex-start", position: "absolute", top: 3 }}
-        />
-        <View style={styles.imageBackgroundDiv}>
-          <Avatar.Image size={120} source={{ uri: teacherData.imgURL }} />
+        <View style={styles.imageDiv}>
+          <IconButton
+            icon="arrow-left"
+            color={color.white}
+            size={30}
+            onPress={() => props.navigation.navigate("TabNavigator")}
+            style={{ alignSelf: "flex-start", position: "absolute", top: 3 }}
+          />
+          <View style={styles.imageBackgroundDiv}>
+            <Avatar.Image size={120} source={{ uri: teacherData.imgURL }} />
+          </View>
+
+          <View style={{ alignItems: "center" }}>
+            <Text style={styles.title}>
+              {teacherData.fname + " " + teacherData.lname}
+            </Text>
+            <Text style={styles.emailView}>{teacherData.id}</Text>
+            <View
+              style={{
+                flexDirection: "row",
+                alignItems: "center",
+              }}
+            >
+              <Entypo name="location-pin" size={20} color={color.lightgrey} />
+              <Text style={styles.dept}>{teacherData.dept}</Text>
+            </View>
+          </View>
+
+          <View style={styles.statContainer}>
+            <View style={styles.statsBox}>
+              <Text style={[styles.text, { fontSize: 24 }]}>
+                {teacherData.ratingCount}
+              </Text>
+              <Text style={styles.subText}>Reviews</Text>
+            </View>
+
+            <View
+              style={[
+                styles.statsBox,
+                {
+                  borderColor: "#DFD8C8",
+                  borderRightWidth: 1,
+                  borderLeftWidth: 1,
+                },
+              ]}
+            >
+              <Text style={[styles.text, { fontSize: 24 }]}>
+                {teacherData.commentCount}
+              </Text>
+              <Text style={styles.subText}>Comments</Text>
+            </View>
+            <View style={styles.statsBox}>
+              <Text style={[styles.text, { fontSize: 24 }]}>
+                {parseFloat(
+                  teacherData.totalRating / teacherData.ratingCount
+                ).toPrecision(2) || "0"}
+              </Text>
+              <Text style={styles.subText}>Rating</Text>
+            </View>
+          </View>
         </View>
 
-        <View style={{ alignItems: "center" }}>
-          <Text style={styles.title}>
-            {teacherData.fname + " " + teacherData.lname}
-          </Text>
-          <Text style={styles.emailView}>{teacherData.id}</Text>
-          <View
-            style={{
-              flexDirection: "row",
-              alignItems: "center",
-            }}
-          >
-            <Entypo name="location-pin" size={20} color={color.lightgrey} />
-            <Text style={styles.dept}>{teacherData.dept}</Text>
-          </View>
-        </View>
-
-        <View style={styles.statContainer}>
-          <View style={styles.statsBox}>
-            <Text style={[styles.text, { fontSize: 24 }]}>
-              {teacherData.ratingCount}
-            </Text>
-            <Text style={styles.subText}>Reviews</Text>
-          </View>
-
-          <View
-            style={[
-              styles.statsBox,
-              {
-                borderColor: "#DFD8C8",
-                borderRightWidth: 1,
-                borderLeftWidth: 1,
-              },
-            ]}
-          >
-            <Text style={[styles.text, { fontSize: 24 }]}>
-              {teacherData.commentCount}
-            </Text>
-            <Text style={styles.subText}>Comments</Text>
-          </View>
-          <View style={styles.statsBox}>
-            <Text style={[styles.text, { fontSize: 24 }]}>
-              {parseFloat(teacherData.totalRating / teacherData.ratingCount)}
-            </Text>
-            <Text style={styles.subText}>Rating</Text>
-          </View>
-        </View>
-      </View>
-
-      <ScrollView ref={scrollRef} style={{ marginTop: 20 }}>
         {!isAnonymous ? (
           <View style={[styles.ratingView, { paddingBottom: 20 }]}>
             <Text style={{ fontSize: 22 }}>Tell us about your experience:</Text>
             <View
               style={{
-                //backgroundColor: "orange",
                 flexDirection: "row",
               }}
             >
               {handleRating()}
             </View>
           </View>
-        ) : null}
+        ) : (
+          <View style={{ marginTop: 20 }} />
+        )}
 
         <View
           style={[
@@ -180,9 +179,6 @@ function TeacherProfileScreen(props) {
             },
           ]}
         >
-          {
-            //Comment Input AreaHere
-          }
           <View style={styles.commentTextInput}>
             <TextInput
               ref={textInput}
@@ -194,7 +190,6 @@ function TeacherProfileScreen(props) {
                 borderColor: color.primary,
                 marginLeft: 10,
               }}
-              // multiline={true}
               disabled={isAnonymous}
               theme={{
                 colors: { primary: color.primary },
@@ -213,7 +208,6 @@ function TeacherProfileScreen(props) {
           <FlatList
             data={profileComments}
             ListFooterComponent={() => <View style={{ height: 20 }} />}
-            keyExtractor={(key) => key.imgURL.toString()}
             renderItem={({ item }) => (
               <List.Item
                 title={item.name}
@@ -226,7 +220,6 @@ function TeacherProfileScreen(props) {
           />
         </View>
       </ScrollView>
-
       <IconButton
         icon="arrow-up"
         onPress={handleScroll}
@@ -234,7 +227,7 @@ function TeacherProfileScreen(props) {
         size={30}
         style={styles.upwardButton}
       />
-    </View>
+    </>
   );
 }
 
@@ -268,16 +261,11 @@ const styles = StyleSheet.create({
     alignSelf: "center",
   },
   imageBackgroundDiv: {
-    height: 130,
-    width: 130,
-    backgroundColor: color.white,
-    justifyContent: "center",
-    alignItems: "center",
+    elevation: 15,
     borderRadius: 80,
     marginTop: 15,
   },
   title: {
-    fontFamily: "Roboto",
     color: color.white,
     fontWeight: "200",
     fontSize: 30,
@@ -285,14 +273,12 @@ const styles = StyleSheet.create({
   },
   emailView: {
     color: color.lightgrey,
-
     fontSize: 18,
     marginVertical: 5,
   },
   dept: {
     fontSize: 14,
     color: color.lightgrey,
-
     paddingLeft: 2,
   },
   commentTitle: {
@@ -318,7 +304,6 @@ const styles = StyleSheet.create({
   },
   ratingView: {
     alignSelf: "center",
-    //backgroundColor: "gold",
     alignItems: "center",
     padding: 20,
   },
@@ -328,7 +313,6 @@ const styles = StyleSheet.create({
   },
   infoView: {
     padding: 25,
-    // backgroundColor: "dodgerblue",
     justifyContent: "space-around",
     height: 150,
   },

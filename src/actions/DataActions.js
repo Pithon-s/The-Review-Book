@@ -1,21 +1,20 @@
 import firebase from "firebase";
 import deptArray from "../utilities/DepartmentData";
-//-------Action to fetch data of specific searched teacher----//
+
+// Action to fetch data of specific searched teacher
 export const searchTeacher = (toFind, setLoading) => {
   return async (dispatch) => {
     fname = toFind.split(" ")[0];
     lname = toFind.replace(fname + " ", "");
-
-    //console.log(fname);
-    //console.log(lrname);
+    console.log(fname);
+    console.log(lname);
     const data = [];
     firebase
       .firestore()
       .collection("teachers")
       .where("fname" || "lname", "==", fname || lname)
-      .get()
-      .then((querySnapshot) => {
-        querySnapshot.forEach((doc) => {
+      .get((snapshot) => {
+        snapshot.forEach((doc) => {
           let temp = doc.data();
           temp.id = doc.id;
           let found = deptArray.filter((element) => {
@@ -26,8 +25,6 @@ export const searchTeacher = (toFind, setLoading) => {
           temp.dept = found[0].title;
           data.push(temp);
         });
-
-        console.log("Data fetched for server");
       })
       .catch((error) => {
         console.log("Error getting documents: ", error.message);
@@ -44,31 +41,52 @@ export const searchTeacher = (toFind, setLoading) => {
 
 export const setLoading = (decision) => {
   return async (dispatch) => {
-    console.log("Loading set: " + decision);
     dispatch({ type: "SET_LOADING", Data: decision });
   };
 };
 
-//------------Action to pass selected teacher data in MainScreen to the TeacherProfileScreen
+// Action to pass selected teacher data in MainScreen to the TeacherProfileScreen
 export const showSelectedTeacherData = (data) => {
   return async (dispatch) => {
-    dispatch({ type: "SHOW_DATA", Data: data });
+    // console.log(data);
+    firebase
+      .firestore()
+      .collection("teachers")
+      .doc(data)
+      .onSnapshot((snapshot) => {
+        if (snapshot.exists) {
+          // console.log(snapshot.data());
+          let temp = snapshot.data();
+          temp.id = snapshot.id;
+          let found = deptArray.filter((element) => {
+            if (element.code === temp.dept) {
+              return element.title;
+            }
+          });
+          temp.dept = found[0].title;
+          dispatch({ type: "SHOW_DATA", Data: temp });
+        }
+      })
+      .catch((error) => {
+        console.log("Error getting documents: ", error.message);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   };
 };
+
 export const fetchTeacherData = (id) => {
   return async (dispatch) => {
-    const data = [];
     firebase
       .firestore()
       .collection("comments")
       .doc(id)
-      .get()
-      .then((doc) => {
-        if (doc.exists) {
-          //console.log("Document data:", doc.data().comments);
+      .onSnapshot((snapshot) => {
+        if (snapshot.exists) {
           dispatch({
             type: "COMMENT_DATA",
-            newData: doc.data().comments,
+            newData: snapshot.data().comments,
           });
         } else {
           dispatch({
@@ -78,23 +96,19 @@ export const fetchTeacherData = (id) => {
       })
       .catch((error) => {
         console.log("Error getting documents: ", error.message);
-      })
-      .finally(() => {});
+      });
   };
 };
+
 export const fetchTeacherRating = (tId, sId) => {
   return async (dispatch) => {
-    const data = [];
-    console.log("TID" + tId + " SID" + sId);
     firebase
       .firestore()
       .collection("ratings")
       .where("tEmail", "==", tId)
       .where("sEmail", "==", sId)
-      .get()
-      .then((querySnapshot) => {
-        querySnapshot.forEach((doc) => {
-          console.log(doc.data());
+      .onSnapshot((snapshot) => {
+        snapshot.forEach((doc) => {
           dispatch({
             type: "RATING_FETCHED",
             newData: doc.data().rating,
@@ -103,8 +117,7 @@ export const fetchTeacherRating = (tId, sId) => {
       })
       .catch((error) => {
         console.log("Error getting documents: ", error.message);
-      })
-      .finally(() => {});
+      });
   };
 };
 export const serachByDept = (deptCode, setLoading) => {
@@ -127,8 +140,6 @@ export const serachByDept = (deptCode, setLoading) => {
           temp.dept = found[0].title;
           data.push(temp);
         });
-
-        console.log("Data fetched for server");
       })
       .catch((error) => {
         console.log("Error getting documents: ", error.message);
@@ -145,7 +156,6 @@ export const serachByDept = (deptCode, setLoading) => {
 
 export const sendComment = (commentData, id) => {
   return async (dispatch) => {
-    //Teacher k emails pele se add krne pre ge comments collection me
     firebase
       .firestore()
       .collection("comments")
@@ -162,8 +172,7 @@ export const sendComment = (commentData, id) => {
             commentCount: firebase.firestore.FieldValue.increment(1),
           })
           .then(() => {
-            dispatch({ type: "COMMENT_SENT", newData: commentData });
-            console.log("Document successfully written!");
+            dispatch({ type: "COMMENT_SENT" });
           })
           .catch((error) => console.log(error));
       })
@@ -194,7 +203,6 @@ export const setRating = (ratingData, tId, sId) => {
           })
           .then(() => {
             dispatch({ type: "RATING_SET", newData: ratingData });
-            console.log("Document successfully written!");
           })
           .catch((error) => console.log(error));
       })
