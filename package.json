@@ -33,7 +33,10 @@
     "react-redux": "^7.2.4",
     "redux": "^4.1.0",
     "redux-thunk": "^2.3.0",
-    "yup": "^0.32.9"
+    "yup": "^0.32.9",
+    "expo-updates": "~0.5.4",
+    "expo-notifications": "~0.11.6",
+    "expo-splash-screen": "~0.10.2"
   },
   "devDependencies": {
     "@babel/core": "~7.9.0"
