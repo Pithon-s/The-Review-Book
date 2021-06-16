@@ -2,12 +2,16 @@ firebase
 formik
 react-native-paper
 react-native-vector-icons
+react-native-screens
 
 expo-app-loading
 expo-secure-store
 expo-status-bar
 expo-image-picker
 expo-permissions
+expo-splash-screen
+expo-notifications
+expo-updates
 
 redux
 redux-thunk

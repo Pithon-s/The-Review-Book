@@ -5,13 +5,11 @@ import LoginScreen from "../screens/LoginScreen";
 import RegisterScreen from "../screens/RegisterScreen";
 import ForgotPasswordScreen from "../screens/ForgotPasswordScreen";
 import colors from "../config/colors";
-import EmailVerificationScreen from "../screens/EmailVerificationScreen";
 
 const stack = createStackNavigator();
 const AuthNavigation = () => (
   <stack.Navigator
     screenOptions={{ headerShown: false }}
-    // initialRouteName="Register"
     initialRouteName="Login"
   >
     <stack.Screen name="Login" component={LoginScreen} />

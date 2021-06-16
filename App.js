@@ -1,5 +1,4 @@
 import { NavigationContainer } from "@react-navigation/native";
-import { LogBox } from "react-native";
 import React from "react";
 import firebase from "firebase";
 import AppLoading from "expo-app-loading";
@@ -12,8 +11,6 @@ import AuthNavigation from "./src/navigations/AuthNavigation";
 import ProfileNavigation from "./src/navigations/ProfileNavigation";
 import Reducers from "./src/reducers";
 import { AutoLogin } from "./src/actions/AuthActions";
-
-// merging issue
 
 const firebaseConfig = () => {
   firebase.initializeApp({
@@ -55,7 +52,6 @@ const NavigationImp = () => {
 };
 
 export default function App() {
-  LogBox.ignoreLogs([""]);
   const store = createStore(Reducers, applyMiddleware(thunk));
 
   return (
