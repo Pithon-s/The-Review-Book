@@ -1,5 +1,12 @@
 import React, { useState } from "react";
-import { View, StyleSheet, Dimensions, Text, ScrollView } from "react-native";
+import {
+  View,
+  StyleSheet,
+  Dimensions,
+  Text,
+  ScrollView,
+  Image,
+} from "react-native";
 import { StatusBar } from "expo-status-bar";
 import { Button, TextInput, HelperText, Provider } from "react-native-paper";
 import { useDispatch, useSelector } from "react-redux";
@@ -47,10 +54,16 @@ function LoginScreen({ navigation }) {
         <EmailVerificationScreen />
 
         <StatusBar style="light" backgroundColor={colors.primary} />
-        <View style={styles.logoContainer}></View>
+        <View style={styles.logoContainer}>
+          <Image
+            source={require("../assets/logo_blue.png")}
+            style={styles.logo}
+            resizeMode="center"
+          />
+        </View>
         <View style={styles.fieldContainer}>
           <TextInput
-            mode="outlined"
+            mode="flatlined"
             label="Enter your email"
             value={email}
             onChangeText={(email) => {
@@ -71,7 +84,7 @@ function LoginScreen({ navigation }) {
           </HelperText>
 
           <TextInput
-            mode="outlined"
+            mode="flatlined"
             label="Enter your password"
             value={password}
             right={
@@ -178,7 +191,7 @@ function LoginScreen({ navigation }) {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "#F4F4F4",
+    backgroundColor: "white",
   },
   button: {
     borderRadius: 20,
@@ -190,11 +203,10 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
   },
   logoContainer: {
-    height: height * 0.25,
-    justifyContent: "center",
+    height: height * 0.3,
+    justifyContent: "flex-end",
     alignItems: "center",
   },
-
   fieldContainer: {
     justifyContent: "center",
     height: height * 0.4,
@@ -203,7 +215,7 @@ const styles = StyleSheet.create({
   },
   bottomContainer: {
     justifyContent: "center",
-    height: height * 0.3,
+    height: height * 0.25,
     width: "90%",
     alignSelf: "center",
   },
@@ -229,6 +241,10 @@ const styles = StyleSheet.create({
     backgroundColor: colors.darkgrey,
     height: 0.7,
     flex: 1,
+  },
+  logo: {
+    height: 150,
+    width: 200,
   },
 });
 

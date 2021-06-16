@@ -72,7 +72,7 @@ function ProfileScreen(props) {
         </View>
       </View>
 
-      <View style={styles.middleContainer}>
+      {/* <View style={styles.middleContainer}>
         <View style={styles.details}>
           <List.Item
             title="200"
@@ -89,16 +89,7 @@ function ProfileScreen(props) {
             style={{ flex: 0.5 }}
           />
         </View>
-      </View>
-      {/* {!user.isAnonymous && (
-        <Button
-          onPress={handleEditProfile}
-          color={color.primary}
-          style={{ width: 200, borderRadius: 50, alignSelf: "center" }}
-        >
-          Edit Profile
-        </Button>
-      )} */}
+      </View> */}
 
       <View style={styles.bottomContainer}>
         <Button
