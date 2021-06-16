@@ -20,11 +20,12 @@
       "supportsTablet": true
     },
     "android": {
+	"package": "the.review.book",
+	"versionCode": 1,
       "adaptiveIcon": {
         "foregroundImage": "./src/assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
       },
-      "package": "the.review.book"
     },
     "web": {
       "favicon": "./src/assets/favicon.png"
