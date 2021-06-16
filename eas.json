@@ -7,7 +7,7 @@
       "preview": {
         "workflow": "managed",
         "buildType": "apk"
-      },
+      }
     }
   }
 }
