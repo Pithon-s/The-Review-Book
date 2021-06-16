@@ -137,8 +137,8 @@ function MainScreen(props) {
                   title={item.name}
                   left={(props) => (
                     <Avatar.Icon
-                      size={55}
-                      icon="clipboard-account-outline"
+                      size={50}
+                      icon="magnify"
                       color={color.primary}
                       style={{
                         backgroundColor: color.white,
