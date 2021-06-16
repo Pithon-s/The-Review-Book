@@ -1,7 +1,5 @@
 const initialState = {
   teachers: [],
-  isLoading: false,
-  itemBlur: false,
   teacherData: {},
   comments: [
     {
@@ -19,14 +17,6 @@ export default (state = initialState, action) => {
       return {
         ...state,
         teachers: action.newData,
-        isLoading: false,
-        itemBlur: true,
-      };
-    case "SET_LOADING":
-      return {
-        ...state,
-        isLoading: action.Data,
-        itemBlur: action.Data,
       };
     case "SHOW_DATA":
       return {

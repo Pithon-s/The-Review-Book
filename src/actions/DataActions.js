@@ -40,12 +40,6 @@ export const searchTeacher = (toFind, setLoading) => {
   };
 };
 
-export const setLoading = (decision) => {
-  return async (dispatch) => {
-    dispatch({ type: "SET_LOADING", Data: decision });
-  };
-};
-
 // Action to pass selected teacher data in MainScreen to the TeacherProfileScreen
 export const showSelectedTeacherData = (data) => {
   return async (dispatch) => {
