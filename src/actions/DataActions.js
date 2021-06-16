@@ -6,14 +6,14 @@ export const searchTeacher = (toFind, setLoading) => {
   return async (dispatch) => {
     fname = toFind.split(" ")[0];
     lname = toFind.replace(fname + " ", "");
-    console.log(fname);
-    console.log(lname);
     const data = [];
+
     firebase
       .firestore()
       .collection("teachers")
-      .where("fname" || "lname", "==", fname || lname)
-      .get((snapshot) => {
+      .where("fname", "==", fname || "lname", "==", lname)
+      .get()
+      .then((snapshot) => {
         snapshot.forEach((doc) => {
           let temp = doc.data();
           temp.id = doc.id;
@@ -23,6 +23,7 @@ export const searchTeacher = (toFind, setLoading) => {
             }
           });
           temp.dept = found[0].title;
+          // console.log(doc.data());
           data.push(temp);
         });
       })
@@ -36,12 +37,6 @@ export const searchTeacher = (toFind, setLoading) => {
         });
         setLoading(false);
       });
-  };
-};
-
-export const setLoading = (decision) => {
-  return async (dispatch) => {
-    dispatch({ type: "SET_LOADING", Data: decision });
   };
 };
 
