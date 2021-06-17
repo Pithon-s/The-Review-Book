@@ -6,6 +6,7 @@ const initialState = {
       commentText: "",
       imgURL: "",
       name: "",
+      timeStamp: "",
     },
   ],
   list: [],
@@ -24,11 +25,15 @@ export default (state = initialState, action) => {
         ...state,
         teachers: action.newData,
       };
-
+    case "COMMENT_SENT":
+      return {
+        ...state,
+      };
     case "SHOW_DATA":
       return {
         ...state,
         teacherData: action.Data,
+        rating: state.rating,
       };
     case "COMMENT_DATA":
       return {
@@ -36,10 +41,6 @@ export default (state = initialState, action) => {
         comments: action.newData.reverse(),
       };
     case "FAILED_COMMENT_DATA":
-      return {
-        ...state,
-      };
-    case "COMMENT_SENT":
       return {
         ...state,
       };
