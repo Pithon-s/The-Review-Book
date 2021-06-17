@@ -34,6 +34,8 @@ export default (state = initialState, action) => {
         user: {
           isAnonymous: true,
           username: "anonymous",
+          profilePictureURI:
+            "https://firebasestorage.googleapis.com/v0/b/the-review-book-f2959.appspot.com/o/assets%2Fuser.png?alt=media&token=e009d53b-3f86-4187-90bf-7ccb8e8caffc",
         },
       };
     case "LOGOUT":

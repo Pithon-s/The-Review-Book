@@ -1,15 +1,23 @@
 import React from "react";
-import { View, Text, StyleSheet, Dimensions } from "react-native";
+import { View, Text, StyleSheet, Dimensions, ScrollView } from "react-native";
 import { Button } from "react-native-paper";
 
 import colors from "../config/colors";
 import PopUpDialog from "../components/PopUpDialog";
 
-const height = Dimensions.get("screen").height;
 const width = Dimensions.get("screen").width;
 
-function AgreementScreen({ isVisible, setIsVisible }) {
+const terms = [
+  "Abusive language and disrespectful comments are strictly prohibited.",
+  "If a user has given single or same stars to every teacher then it will be considered as spam and fake.",
+  "Fake ratings will be notified and deleted immediately by the admin panel.",
+  "In case of violation of any rule, the individual would be responsible for the consequences and his/her account would be suspended immediately.",
+  "Be humble, honest and always respect your teachers.",
+];
+
+function AgreementScreen({ isVisible, setIsVisible, setIsAgree }) {
   const handleContinue = () => {
+    setIsAgree(true);
     setIsVisible(false);
   };
 
@@ -22,14 +30,29 @@ function AgreementScreen({ isVisible, setIsVisible }) {
       onDismiss={() => setIsVisible(false)}
     >
       <View style={styles.container}>
-        <View style={styles.bottomContainer}>
+        <ScrollView style={styles.textContainer}>
           <Text style={styles.msgText}>
-            {"1. Koi bakchodi ni krni. " +
-              "\n2. Yaki karo gai hum uni ko shekayat laga den gai. " +
-              "\n3. Uni waly tumhari degree kha jain gai. " +
-              "\n4. Abba ka paisa barbad. "}
+            • Abusive language and disrespectful comments are strictly
+            prohibited.
           </Text>
-
+          <Text style={styles.msgText}>
+            • If a user has given single or same stars to every teacher then it
+            will be considered as spam and fake.
+          </Text>
+          <Text style={styles.msgText}>
+            • Fake ratings will be notified and deleted immediately by the admin
+            panel.
+          </Text>
+          <Text style={styles.msgText}>
+            • In case of violation of any rule, the individual would be
+            responsible for the consequences and his/her account would be
+            suspended immediately.
+          </Text>
+          <Text style={styles.msgText}>
+            • Be humble, honest and always respect your teachers.
+          </Text>
+        </ScrollView>
+        <View style={styles.buttonContainer}>
           <Button
             mode="contained"
             onPress={handleContinue}
@@ -38,7 +61,7 @@ function AgreementScreen({ isVisible, setIsVisible }) {
               colors: { primary: colors.primary },
             }}
           >
-            continue
+            i agree
           </Button>
         </View>
       </View>
@@ -49,20 +72,25 @@ function AgreementScreen({ isVisible, setIsVisible }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 15,
+    paddingTop: 40,
+    width: width * 0.85,
+    padding: 10,
   },
   button: {
     borderRadius: 20,
   },
-  bottomContainer: {
-    paddingTop: 60,
-    flex: 1,
-    width: width * 0.8,
+  buttonContainer: {
+    flex: 0.15,
+    justifyContent: "center",
+  },
+  textContainer: {
+    flex: 0.85,
+    overflow: "hidden",
   },
   msgText: {
-    color: colors.darkgrey,
+    color: "#262626",
     fontSize: 16,
-    marginBottom: 40,
+    marginBottom: 10,
   },
 });
 

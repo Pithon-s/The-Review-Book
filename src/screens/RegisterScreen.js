@@ -3,7 +3,7 @@ import { View, StyleSheet, Dimensions, ScrollView } from "react-native";
 import { Button, Provider, HelperText, TextInput } from "react-native-paper";
 import { Formik } from "formik";
 import { useDispatch, useSelector } from "react-redux";
-import { Entypo, Ionicons } from "@expo/vector-icons";
+import { Ionicons } from "@expo/vector-icons";
 
 import ImagePicker from "../components/ImagePicker";
 import FormTextInput from "../components/common/FormTextInput";
@@ -54,7 +54,11 @@ function RegisterScreen({ navigation }) {
     <Provider>
       <View style={styles.container}>
         <EmailVerificationScreen />
-        <AgreementScreen isVisible={showTerms} setIsVisible={setShowTerms} />
+        <AgreementScreen
+          isVisible={showTerms}
+          setIsVisible={setShowTerms}
+          setIsAgree={setIsAgree}
+        />
 
         <View style={styles.topContainer}>
           <View style={styles.iconContainer}>
@@ -175,8 +179,8 @@ function RegisterScreen({ navigation }) {
                     style={{ marginVertical: 10 }}
                     descriptionComp={
                       <TextWithTouchable
-                        description="Agree to "
-                        touchableDescription="term and conditions"
+                        description="I agree to "
+                        touchableDescription="terms and conditions"
                         handlePress={() => setShowTerms(true)}
                       />
                     }

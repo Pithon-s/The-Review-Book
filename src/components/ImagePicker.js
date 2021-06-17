@@ -1,5 +1,5 @@
 import React from "react";
-import { View, StyleSheet, Alert, TouchableOpacity } from "react-native";
+import { View, Alert, TouchableOpacity } from "react-native";
 import { Avatar } from "react-native-paper";
 import * as imagePicker from "expo-image-picker";
 
@@ -88,12 +88,5 @@ function ImagePicker({ imageUri, setImageUri }) {
     </TouchableOpacity>
   );
 }
-
-const styles = StyleSheet.create({
-  image: {
-    width: "100%",
-    height: "100%",
-  },
-});
 
 export default ImagePicker;

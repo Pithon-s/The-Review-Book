@@ -191,7 +191,7 @@ function LoginScreen({ navigation }) {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "white",
+    flex: 1,
   },
   button: {
     borderRadius: 20,

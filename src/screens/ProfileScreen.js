@@ -7,7 +7,7 @@ import {
   SafeAreaView,
   Dimensions,
 } from "react-native";
-import { Button, List } from "react-native-paper";
+import { Button } from "react-native-paper";
 import { useDispatch, useSelector } from "react-redux";
 import { Entypo, Ionicons } from "@expo/vector-icons";
 
@@ -17,12 +17,11 @@ import color from "../config/colors";
 const height = Dimensions.get("screen").height;
 const imageSize = 120;
 
-function ProfileScreen(props) {
+function ProfileScreen() {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.Auth.user);
 
   //---------Handlers--------
-  const handleEditProfile = () => console.log("edit profile pressed");
   const handleLogout = () => {
     dispatch(Logout());
   };
@@ -60,36 +59,13 @@ function ProfileScreen(props) {
         <View style={styles.profilePic}>
           <View style={styles.profilePicContainer}>
             <Image
-              source={
-                user.profilePictureURI
-                  ? { uri: user.profilePictureURI }
-                  : require("../assets/user.png")
-              }
+              source={{ uri: user.profilePictureURI }}
               style={styles.image}
               resizeMode="center"
             />
           </View>
         </View>
       </View>
-
-      {/* <View style={styles.middleContainer}>
-        <View style={styles.details}>
-          <List.Item
-            title="200"
-            description="Total rated"
-            titleStyle={styles.listItemTitle}
-            descriptionStyle={styles.listItemDesc}
-            style={{ flex: 0.5 }}
-          />
-          <List.Item
-            title="123"
-            description="Total comments"
-            titleStyle={styles.listItemTitle}
-            descriptionStyle={styles.listItemDesc}
-            style={{ flex: 0.5 }}
-          />
-        </View>
-      </View> */}
 
       <View style={styles.bottomContainer}>
         <Button
@@ -99,7 +75,6 @@ function ProfileScreen(props) {
           style={{
             borderRadius: 20,
             alignSelf: "center",
-
             width: "80%",
           }}
         >
@@ -154,21 +129,22 @@ const styles = StyleSheet.create({
     alignSelf: "center",
   },
   image: {
-    height: imageSize,
-    width: imageSize,
-    borderRadius: imageSize * 2,
+    height: "100%",
+    width: "100%",
+    resizeMode: "cover",
   },
   profilePic: {
     justifyContent: "flex-end",
   },
   profilePicContainer: {
-    backgroundColor: color.white,
-    borderRadius: imageSize / 2 + 5,
-    height: imageSize + 10,
-    width: imageSize + 10,
-    justifyContent: "center",
-    alignItems: "center",
+    borderWidth: 6,
+    backgroundColor: color.lightgrey,
+    borderColor: color.lightgrey,
+    borderRadius: imageSize / 2,
+    height: imageSize,
+    width: imageSize,
     elevation: 10,
+    overflow: "hidden",
   },
   topContainer: {
     backgroundColor: color.primary,
