@@ -1,17 +1,33 @@
 import firebase from "firebase";
 import deptArray from "../utilities/DepartmentData";
 
+export const fetchTeachersList = () => {
+  return async (dispatch) => {
+    firebase
+      .firestore()
+      .collection("teacherslist")
+      .doc("list")
+      .get()
+      .then((doc) => {
+        console.log("DATa:" + doc.data().data);
+
+        if (doc.exists) {
+          dispatch({ type: "FETCHLIST", Data: doc.data().data });
+        }
+      })
+      .catch((err) => console.log(err.message));
+  };
+};
 // Action to fetch data of specific searched teacher
 export const searchTeacher = (toFind, setLoading) => {
   return async (dispatch) => {
     fname = toFind.split(" ")[0];
     lname = toFind.replace(fname + " ", "");
     const data = [];
-
     firebase
       .firestore()
       .collection("teachers")
-      .where("fname", "==", fname || "lname", "==", lname)
+      .where("fname" || "lname", "==", fname || lname)
       .get()
       .then((snapshot) => {
         snapshot.forEach((doc) => {
@@ -31,10 +47,13 @@ export const searchTeacher = (toFind, setLoading) => {
         console.log("Error getting documents: ", error.message);
       })
       .finally(() => {
-        dispatch({
-          type: "SEARCH_TEACHER",
-          newData: data,
-        });
+        if (data.length == 0) {
+        } else {
+          dispatch({
+            type: "SEARCH_TEACHER",
+            newData: data,
+          });
+        }
         setLoading(false);
       });
   };

@@ -28,10 +28,6 @@ import {
   fetchTeacherRating,
 } from "../actions/DataActions";
 
-function titleCase(string) {
-  return string[0].toUpperCase() + string.substr(1).toLowerCase();
-}
-
 function MainScreen(props) {
   const [searchQuery, setSearchQuery] = useState("");
   const [showBackButton, setShowBackButton] = useState(false);
@@ -39,21 +35,36 @@ function MainScreen(props) {
   const [itemsBlur, setItemsBlur] = useState(false);
 
   const profileComments = useSelector((state) => state.Data.comments);
-  const teacherList = useSelector((state) => state.Data.teachers);
+  const [teacherList, setTeacherList] = useState([]);
+  const list = useSelector((state) => state.Data.list);
   const sID = useSelector((state) => state.Auth.user.email);
   const dispatch = useDispatch();
 
   //-------Handlers---------//
   const onChangeSearch = (query) => {
+    if (searchQuery.length == 0) {
+      setTeacherList([]);
+    }
     if (query.slice(-1) === " ") onSubmitHandle();
     setSearchQuery(query);
   };
 
   const onSubmitHandle = () => {
     setLoading(true);
-    teacherList.length = 0;
     const toFind = searchQuery.toLowerCase();
-    dispatch(searchTeacher(toFind, setLoading));
+
+    //TODO need to neat coding on this portion
+    setTeacherList(
+      list.filter((v) => (v = v.name.toLowerCase().includes(toFind)))
+    );
+
+    //console.log("list:" + teacherList + teacherList.length);
+    //TODO need to fix the loading timing
+    setLoading(false);
+
+    if (teacherList.length < 0) {
+      // TODO if the filter fail then print msg
+    }
   };
 
   const loadingHandler = (decision) => {
@@ -68,7 +79,6 @@ function MainScreen(props) {
   };
 
   const onCardPress = (deptcode) => {
-    teacherList.length = 0;
     setLoading(true);
     dispatch(serachByDept(deptcode, setLoading));
   };
@@ -124,14 +134,18 @@ function MainScreen(props) {
               keyExtractor={(key) => key.id.toString()}
               renderItem={({ item }) => (
                 <List.Item
-                  title={
-                    (item.fname = titleCase(item.fname)) +
-                    " " +
-                    (item.lname = titleCase(item.lname))
-                  }
-                  description={item.dept}
+                  title={item.name}
                   left={(props) => (
-                    <Avatar.Image size={60} source={{ uri: item.imgURL }} />
+                    <Avatar.Icon
+                      size={50}
+                      icon="magnify"
+                      color={color.primary}
+                      style={{
+                        backgroundColor: color.white,
+                        borderColor: color.primary,
+                        borderWidth: 0.1,
+                      }}
+                    />
                   )}
                   onPress={() => {
                     onShowHandler(item);

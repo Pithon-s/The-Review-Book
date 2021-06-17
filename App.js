@@ -12,6 +12,7 @@ import AuthNavigation from "./src/navigations/AuthNavigation";
 import ProfileNavigation from "./src/navigations/ProfileNavigation";
 import Reducers from "./src/reducers";
 import { AutoLogin } from "./src/actions/AuthActions";
+import { fetchTeachersList } from "./src/actions/DataActions";
 
 const firebaseConfig = () => {
   firebase.initializeApp({
@@ -33,6 +34,7 @@ const NavigationImp = () => {
   const authUser = async () => {
     firebaseConfig();
     dispatch(AutoLogin());
+    dispatch(fetchTeachersList());
   };
 
   if (!isReady) {

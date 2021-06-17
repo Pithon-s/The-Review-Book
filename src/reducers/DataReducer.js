@@ -8,16 +8,23 @@ const initialState = {
       name: "",
     },
   ],
+  list: [],
   rating: 0,
 };
 
 export default (state = initialState, action) => {
   switch (action.type) {
+    case "FETCHLIST":
+      return {
+        ...state,
+        list: action.Data,
+      };
     case "SEARCH_TEACHER":
       return {
         ...state,
         teachers: action.newData,
       };
+
     case "SHOW_DATA":
       return {
         ...state,
