@@ -5,6 +5,7 @@ import AppLoading from "expo-app-loading";
 import { Provider, useDispatch, useSelector } from "react-redux";
 import { createStore, applyMiddleware } from "redux";
 import thunk from "redux-thunk";
+import { LogBox } from "react-native";
 
 import NavigationTheme from "./src/navigations/NavigationTheme";
 import AuthNavigation from "./src/navigations/AuthNavigation";
@@ -53,6 +54,10 @@ const NavigationImp = () => {
 
 export default function App() {
   const store = createStore(Reducers, applyMiddleware(thunk));
+  LogBox.ignoreLogs([
+    "Setting a timer for a long period of time",
+    "missing keys for items",
+  ]);
 
   return (
     <Provider store={store}>
