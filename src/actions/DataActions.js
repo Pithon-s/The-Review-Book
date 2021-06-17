@@ -1,19 +1,35 @@
 import firebase from "firebase";
 import deptArray from "../utilities/DepartmentData";
 
+export const fetchTeachersList = () => {
+  return async (dispatch) => {
+    firebase
+      .firestore()
+      .collection("teacherslist")
+      .doc("list")
+      .get()
+      .then((doc) => {
+        console.log("DATa:" + doc.data().data);
+
+        if (doc.exists) {
+          dispatch({ type: "FETCHLIST", Data: doc.data().data });
+        }
+      })
+      .catch((err) => console.log(err.message));
+  };
+};
 // Action to fetch data of specific searched teacher
 export const searchTeacher = (toFind, setLoading) => {
   return async (dispatch) => {
     fname = toFind.split(" ")[0];
     lname = toFind.replace(fname + " ", "");
-    console.log(fname);
-    console.log(lname);
     const data = [];
     firebase
       .firestore()
       .collection("teachers")
       .where("fname" || "lname", "==", fname || lname)
-      .get((snapshot) => {
+      .get()
+      .then((snapshot) => {
         snapshot.forEach((doc) => {
           let temp = doc.data();
           temp.id = doc.id;
@@ -23,6 +39,7 @@ export const searchTeacher = (toFind, setLoading) => {
             }
           });
           temp.dept = found[0].title;
+          // console.log(doc.data());
           data.push(temp);
         });
       })
@@ -30,23 +47,20 @@ export const searchTeacher = (toFind, setLoading) => {
         console.log("Error getting documents: ", error.message);
       })
       .finally(() => {
-        dispatch({
-          type: "SEARCH_TEACHER",
-          newData: data,
-        });
+        if (data.length == 0) {
+        } else {
+          dispatch({
+            type: "SEARCH_TEACHER",
+            newData: data,
+          });
+        }
         setLoading(false);
       });
   };
 };
 
-export const setLoading = (decision) => {
-  return async (dispatch) => {
-    dispatch({ type: "SET_LOADING", Data: decision });
-  };
-};
-
 // Action to pass selected teacher data in MainScreen to the TeacherProfileScreen
-export const showSelectedTeacherData = (data) => {
+export const showSelectedTeacherData = (data, navigation) => {
   return async (dispatch) => {
     // console.log(data);
     firebase
@@ -65,6 +79,7 @@ export const showSelectedTeacherData = (data) => {
           });
           temp.dept = found[0].title;
           dispatch({ type: "SHOW_DATA", Data: temp });
+          navigation.navigate("TeacherProfile");
         }
       })
       .catch((error) => {
@@ -83,7 +98,9 @@ export const fetchTeacherData = (id) => {
       .collection("comments")
       .doc(id)
       .onSnapshot((snapshot) => {
+        //snapshot.data().comments.map((e) => console.log(e));
         if (snapshot.exists) {
+          console.log();
           dispatch({
             type: "COMMENT_DATA",
             newData: snapshot.data().comments,
@@ -186,6 +203,8 @@ export const setRating = (ratingData, tId, sId) => {
       sEmail: sId,
       tEmail: tId,
       rating: ratingData,
+      timeStamp:
+        new Date().toLocaleDateString() + " " + new Date().toLocaleTimeString(),
     };
     firebase
       .firestore()

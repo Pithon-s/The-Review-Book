@@ -28,32 +28,41 @@ import {
   fetchTeacherRating,
 } from "../actions/DataActions";
 
-function titleCase(string) {
-  return string[0].toUpperCase() + string.substr(1).toLowerCase();
-}
-
 function MainScreen(props) {
   const [searchQuery, setSearchQuery] = useState("");
   const [showBackButton, setShowBackButton] = useState(false);
   const [isLoading, setLoading] = useState(false);
   const [itemsBlur, setItemsBlur] = useState(false);
+  const [isFound, setFound] = useState(false);
+  const [searchType, setSearchType] = useState("search");
 
   const profileComments = useSelector((state) => state.Data.comments);
-  const teacherList = useSelector((state) => state.Data.teachers);
+  const [teacherList, setTeacherList] = useState([]);
+  const list = useSelector((state) => state.Data.list);
+  const deptList = useSelector((state) => state.Data.teachers);
   const sID = useSelector((state) => state.Auth.user.email);
   const dispatch = useDispatch();
 
   //-------Handlers---------//
   const onChangeSearch = (query) => {
-    if (query.slice(-1) === " ") onSubmitHandle();
+    if (searchQuery.length == 0) {
+      setTeacherList([]);
+      setSearchType("search");
+    }
+    handleFilter();
     setSearchQuery(query);
   };
 
-  const onSubmitHandle = () => {
-    setLoading(true);
-    teacherList.length = 0;
+  const handleFilter = () => {
     const toFind = searchQuery.toLowerCase();
-    dispatch(searchTeacher(toFind, setLoading));
+    setTeacherList(
+      list.filter((v) => (v = v.name.toLowerCase().includes(toFind)))
+    );
+  };
+  const onSubmitHandle = () => {
+    if (teacherList.length < 0) {
+      // TODO if the filter fail then print msg
+    }
   };
 
   const loadingHandler = (decision) => {
@@ -63,12 +72,13 @@ function MainScreen(props) {
   const onShowHandler = (tdata) => {
     profileComments.length = 0;
     dispatch(fetchTeacherData(tdata.id));
-    dispatch(showSelectedTeacherData(tdata.id));
+    dispatch(showSelectedTeacherData(tdata.id, props.navigation));
     dispatch(fetchTeacherRating(tdata.id, sID));
   };
 
   const onCardPress = (deptcode) => {
     teacherList.length = 0;
+    setSearchType("byDept");
     setLoading(true);
     dispatch(serachByDept(deptcode, setLoading));
   };
@@ -120,22 +130,29 @@ function MainScreen(props) {
           <>
             <ActivityIndicator animating={isLoading} color={color.primary} />
             <FlatList
-              data={teacherList}
+              data={searchType === "search" ? teacherList : deptList}
               keyExtractor={(key) => key.id.toString()}
               renderItem={({ item }) => (
                 <List.Item
-                  title={
-                    (item.fname = titleCase(item.fname)) +
-                    " " +
-                    (item.lname = titleCase(item.lname))
+                  title={item.name}
+                  left={(props) =>
+                    searchType === "search" ? (
+                      <Avatar.Icon
+                        size={50}
+                        icon="magnify"
+                        color={color.primary}
+                        style={{
+                          backgroundColor: color.white,
+                          borderColor: color.primary,
+                          borderWidth: 0.1,
+                        }}
+                      />
+                    ) : (
+                      <Avatar.Image size={50} source={{ uri: item.imgURL }} />
+                    )
                   }
-                  description={item.dept}
-                  left={(props) => (
-                    <Avatar.Image size={60} source={{ uri: item.imgURL }} />
-                  )}
                   onPress={() => {
                     onShowHandler(item);
-                    props.navigation.navigate("TeacherProfile");
                   }}
                   rippleColor={color.primaryLight}
                 />

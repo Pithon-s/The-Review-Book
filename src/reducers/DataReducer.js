@@ -6,24 +6,34 @@ const initialState = {
       commentText: "",
       imgURL: "",
       name: "",
+      timeStamp: "",
     },
   ],
+  list: [],
   rating: 0,
 };
 
 export default (state = initialState, action) => {
   switch (action.type) {
+    case "FETCHLIST":
+      return {
+        ...state,
+        list: action.Data,
+      };
     case "SEARCH_TEACHER":
       return {
         ...state,
         teachers: action.newData,
       };
-
+    case "COMMENT_SENT":
+      return {
+        ...state,
+      };
     case "SHOW_DATA":
       return {
         ...state,
         teacherData: action.Data,
-        rating: 0,
+        rating: state.rating,
       };
     case "COMMENT_DATA":
       return {
@@ -33,11 +43,6 @@ export default (state = initialState, action) => {
     case "FAILED_COMMENT_DATA":
       return {
         ...state,
-      };
-    case "COMMENT_SENT":
-      return {
-        ...state,
-        comments: [action.newData, ...state.comments],
       };
     case "RATING_FETCHED":
       return {
