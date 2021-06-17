@@ -9,11 +9,7 @@ export const fetchTeachersList = () => {
       .doc("list")
       .get()
       .then((doc) => {
-        console.log("DATa:" + doc.data().data);
-
-        if (doc.exists) {
-          dispatch({ type: "FETCHLIST", Data: doc.data().data });
-        }
+        if (doc.exists) dispatch({ type: "FETCHLIST", Data: doc.data().data });
       })
       .catch((err) => console.log(err.message));
   };
@@ -34,18 +30,13 @@ export const searchTeacher = (toFind, setLoading) => {
           let temp = doc.data();
           temp.id = doc.id;
           let found = deptArray.filter((element) => {
-            if (element.code === temp.dept) {
-              return element.title;
-            }
+            if (element.code === temp.dept) return element.title;
           });
           temp.dept = found[0].title;
-          // console.log(doc.data());
           data.push(temp);
         });
       })
-      .catch((error) => {
-        console.log("Error getting documents: ", error.message);
-      })
+      .catch((error) => console.log(error.message))
       .finally(() => {
         if (data.length == 0) {
         } else {
@@ -62,29 +53,23 @@ export const searchTeacher = (toFind, setLoading) => {
 // Action to pass selected teacher data in MainScreen to the TeacherProfileScreen
 export const showSelectedTeacherData = (data, navigation) => {
   return async (dispatch) => {
-    // console.log(data);
     firebase
       .firestore()
       .collection("teachers")
       .doc(data)
       .onSnapshot((snapshot) => {
         if (snapshot.exists) {
-          // console.log(snapshot.data());
           let temp = snapshot.data();
           temp.id = snapshot.id;
           let found = deptArray.filter((element) => {
-            if (element.code === temp.dept) {
-              return element.title;
-            }
+            if (element.code === temp.dept) return element.title;
           });
           temp.dept = found[0].title;
           dispatch({ type: "SHOW_DATA", Data: temp });
           navigation.navigate("TeacherProfile");
         }
       })
-      .catch((error) => {
-        console.log("Error getting documents: ", error.message);
-      })
+      .catch((error) => console.log(error.message))
       .finally(() => {
         setLoading(false);
       });
@@ -98,9 +83,7 @@ export const fetchTeacherData = (id) => {
       .collection("comments")
       .doc(id)
       .onSnapshot((snapshot) => {
-        //snapshot.data().comments.map((e) => console.log(e));
         if (snapshot.exists) {
-          console.log();
           dispatch({
             type: "COMMENT_DATA",
             newData: snapshot.data().comments,
@@ -111,9 +94,7 @@ export const fetchTeacherData = (id) => {
           });
         }
       })
-      .catch((error) => {
-        console.log("Error getting documents: ", error.message);
-      });
+      .catch((error) => console.log(error.message));
   };
 };
 
@@ -132,9 +113,7 @@ export const fetchTeacherRating = (tId, sId) => {
           });
         });
       })
-      .catch((error) => {
-        console.log("Error getting documents: ", error.message);
-      });
+      .catch((error) => console.log(error.message));
   };
 };
 export const serachByDept = (deptCode, setLoading) => {
@@ -150,17 +129,13 @@ export const serachByDept = (deptCode, setLoading) => {
           let temp = doc.data();
           temp.id = doc.id;
           let found = deptArray.filter((element) => {
-            if (element.code === temp.dept) {
-              return element.title;
-            }
+            if (element.code === temp.dept) return element.title;
           });
           temp.dept = found[0].title;
           data.push(temp);
         });
       })
-      .catch((error) => {
-        console.log("Error getting documents: ", error.message);
-      })
+      .catch((error) => console.log(error.message))
       .finally(() => {
         setLoading(false);
         dispatch({
@@ -191,9 +166,9 @@ export const sendComment = (commentData, id) => {
           .then(() => {
             dispatch({ type: "COMMENT_SENT" });
           })
-          .catch((error) => console.log(error));
+          .catch((error) => console.log(error.message));
       })
-      .catch((error) => console.log(error));
+      .catch((error) => console.log(error.message));
   };
 };
 
@@ -223,8 +198,8 @@ export const setRating = (ratingData, tId, sId) => {
           .then(() => {
             dispatch({ type: "RATING_SET", newData: ratingData });
           })
-          .catch((error) => console.log(error));
+          .catch((error) => console.log(error.message));
       })
-      .catch((error) => console.log(error));
+      .catch((error) => console.log(error.message));
   };
 };

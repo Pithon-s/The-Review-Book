@@ -5,9 +5,9 @@ import {
   Dimensions,
   Text,
   ScrollView,
+  StatusBar,
   Image,
 } from "react-native";
-import { StatusBar } from "expo-status-bar";
 import { Button, TextInput, HelperText, Provider } from "react-native-paper";
 import { useDispatch, useSelector } from "react-redux";
 import { Ionicons } from "@expo/vector-icons";
@@ -213,6 +213,7 @@ const styles = StyleSheet.create({
     width: "90%",
     alignSelf: "center",
   },
+
   bottomContainer: {
     justifyContent: "center",
     height: height * 0.25,
