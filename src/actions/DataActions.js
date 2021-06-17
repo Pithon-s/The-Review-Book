@@ -60,7 +60,7 @@ export const searchTeacher = (toFind, setLoading) => {
 };
 
 // Action to pass selected teacher data in MainScreen to the TeacherProfileScreen
-export const showSelectedTeacherData = (data) => {
+export const showSelectedTeacherData = (data, navigation) => {
   return async (dispatch) => {
     // console.log(data);
     firebase
@@ -79,6 +79,7 @@ export const showSelectedTeacherData = (data) => {
           });
           temp.dept = found[0].title;
           dispatch({ type: "SHOW_DATA", Data: temp });
+          navigation.navigate("TeacherProfile");
         }
       })
       .catch((error) => {
@@ -97,7 +98,9 @@ export const fetchTeacherData = (id) => {
       .collection("comments")
       .doc(id)
       .onSnapshot((snapshot) => {
+        //snapshot.data().comments.map((e) => console.log(e));
         if (snapshot.exists) {
+          console.log();
           dispatch({
             type: "COMMENT_DATA",
             newData: snapshot.data().comments,
@@ -200,6 +203,8 @@ export const setRating = (ratingData, tId, sId) => {
       sEmail: sId,
       tEmail: tId,
       rating: ratingData,
+      timeStamp:
+        new Date().toLocaleDateString() + " " + new Date().toLocaleTimeString(),
     };
     firebase
       .firestore()

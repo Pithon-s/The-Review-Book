@@ -9,7 +9,13 @@ import {
   Text,
   Alert,
 } from "react-native";
-import { List, Avatar, IconButton, TextInput } from "react-native-paper";
+import {
+  List,
+  Avatar,
+  IconButton,
+  TextInput,
+  Caption,
+} from "react-native-paper";
 import { AntDesign, Entypo } from "react-native-vector-icons";
 
 import { useDispatch, useSelector } from "react-redux";
@@ -35,7 +41,10 @@ function TeacherProfileScreen(props) {
       commentText: comment,
       imgURL: userData.profilePictureURI,
       name: userData.username,
+      timeStamp:
+        new Date().toLocaleDateString() + " " + new Date().toLocaleTimeString(),
     };
+
     dispatch(sendComment(commentData, teacherData.id));
     textInput.current.clear();
   };
@@ -104,9 +113,7 @@ function TeacherProfileScreen(props) {
           </View>
 
           <View style={{ alignItems: "center" }}>
-            <Text style={styles.title}>
-              {teacherData.fname + " " + teacherData.lname}
-            </Text>
+            <Text style={styles.title}>{teacherData.name}</Text>
             <Text style={styles.emailView}>{teacherData.id}</Text>
             <View
               style={{
@@ -215,6 +222,10 @@ function TeacherProfileScreen(props) {
                 left={(props) => (
                   <Avatar.Image size={60} source={{ uri: item.imgURL }} />
                 )}
+                //style={{ height: 50 }}
+                right={(props) => (
+                  <Caption style={styles.timeStamp}>{item.timeStamp}</Caption>
+                )}
               />
             )}
           />
@@ -268,7 +279,7 @@ const styles = StyleSheet.create({
   title: {
     color: color.white,
     fontWeight: "200",
-    fontSize: 30,
+    fontSize: 24,
     textTransform: "capitalize",
   },
   emailView: {
@@ -328,6 +339,9 @@ const styles = StyleSheet.create({
   },
   subText: {
     color: colors.lightgrey,
+  },
+  timeStamp: {
+    fontSize: 12,
   },
 });
 export default TeacherProfileScreen;
