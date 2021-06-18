@@ -26,7 +26,6 @@ import {
   fetchTeacherData,
   fetchTeacherRating,
 } from "../actions/DataActions";
-import colors from "../config/colors";
 
 function MainScreen(props) {
   const [searchQuery, setSearchQuery] = useState("");
