@@ -58,9 +58,9 @@ export default function App() {
   const store = createStore(Reducers, applyMiddleware(thunk));
   LogBox.ignoreLogs([
     "Setting a timer for a long period of time",
-    "missing keys for items",
-    "Unhandled promise rejection",
-    "VirtualizedLists should never be nested inside",
+    // "missing keys for items",
+    // "Unhandled promise rejection",
+    // "VirtualizedLists should never be nested inside",
   ]);
 
   return (
