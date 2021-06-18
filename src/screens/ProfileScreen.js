@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   StyleSheet,
   Text,
@@ -7,106 +7,102 @@ import {
   SafeAreaView,
   Dimensions,
 } from "react-native";
-import { Button, List } from "react-native-paper";
+import { Button, Provider } from "react-native-paper";
 import { useDispatch, useSelector } from "react-redux";
 import { Entypo, Ionicons } from "@expo/vector-icons";
 
 import { Logout } from "../actions/AuthActions";
 import color from "../config/colors";
+import AboutUsScreen from "./AboutUsScreen";
 
 const height = Dimensions.get("screen").height;
 const imageSize = 120;
 
-function ProfileScreen(props) {
+function ProfileScreen() {
+  const [aboutUsVisible, setAboutUsVisible] = useState(false);
   const dispatch = useDispatch();
   const user = useSelector((state) => state.Auth.user);
 
   //---------Handlers--------
-  const handleEditProfile = () => console.log("edit profile pressed");
   const handleLogout = () => {
     dispatch(Logout());
   };
 
   return (
-    <SafeAreaView style={styles.container}>
-      <View style={styles.topContainer}>
-        <Ionicons
-          name="information-circle-outline"
-          size={28}
-          color="#9BAFE8"
-          style={styles.infoIcon}
-          onPress={() => alert("info pressed")}
+    <Provider>
+      <SafeAreaView style={styles.container}>
+        <AboutUsScreen
+          isVisible={aboutUsVisible}
+          setIsVisible={setAboutUsVisible}
         />
 
-        <View style={styles.info}>
-          <Text style={styles.title}>{user.username}</Text>
-          {!user.isAnonymous && (
-            <>
-              <Text style={styles.rollno}>
-                {user.email.substr(0, user.email.indexOf("@"))}
-              </Text>
-              <View
-                style={{
-                  flexDirection: "row",
-                  alignItems: "center",
-                }}
-              >
-                <Entypo name="location-pin" size={20} color={color.lightgrey} />
-                <Text style={styles.dept}>CS Department (TODO)</Text>
-              </View>
-            </>
-          )}
-        </View>
-        <View style={styles.profilePic}>
-          <View style={styles.profilePicContainer}>
-            <Image
-              source={
-                user.profilePictureURI
-                  ? { uri: user.profilePictureURI }
-                  : require("../assets/user.png")
-              }
-              style={styles.image}
-              resizeMode="center"
-            />
+        <View style={styles.topContainer}>
+          <Button
+            mode="contained"
+            onPress={() => setAboutUsVisible(true)}
+            style={styles.aboutUs}
+            icon={() => (
+              <Ionicons
+                name="information-circle-outline"
+                size={20}
+                color="#9BAFE8"
+                style={{ left: 7 }}
+              />
+            )}
+          >
+            <Text style={{ color: "#9BAFE8", fontSize: 12 }}>about us</Text>
+          </Button>
+
+          <View style={styles.info}>
+            <Text style={styles.title}>{user.username}</Text>
+            {!user.isAnonymous && (
+              <>
+                <Text style={styles.rollno}>
+                  {user.email.substr(0, user.email.indexOf("@"))}
+                </Text>
+                <View
+                  style={{
+                    flexDirection: "row",
+                    alignItems: "center",
+                  }}
+                >
+                  <Entypo
+                    name="location-pin"
+                    size={20}
+                    color={color.lightgrey}
+                  />
+                  <Text style={styles.dept}>CS Department (TODO)</Text>
+                </View>
+              </>
+            )}
+          </View>
+          <View style={styles.profilePic}>
+            <View style={styles.profilePicContainer}>
+              <Image
+                source={{ uri: user.profilePictureURI }}
+                style={styles.image}
+                resizeMode="center"
+              />
+            </View>
           </View>
         </View>
-      </View>
 
-      {/* <View style={styles.middleContainer}>
-        <View style={styles.details}>
-          <List.Item
-            title="200"
-            description="Total rated"
-            titleStyle={styles.listItemTitle}
-            descriptionStyle={styles.listItemDesc}
-            style={{ flex: 0.5 }}
-          />
-          <List.Item
-            title="123"
-            description="Total comments"
-            titleStyle={styles.listItemTitle}
-            descriptionStyle={styles.listItemDesc}
-            style={{ flex: 0.5 }}
-          />
+        <View style={styles.bottomContainer}>
+          <Button
+            icon="logout"
+            onPress={handleLogout}
+            color="red"
+            style={{
+              borderRadius: 20,
+              alignSelf: "center",
+              width: "80%",
+            }}
+          >
+            Logout
+          </Button>
         </View>
-      </View> */}
-
-      <View style={styles.bottomContainer}>
-        <Button
-          icon="logout"
-          onPress={handleLogout}
-          color="red"
-          style={{
-            borderRadius: 20,
-            alignSelf: "center",
-
-            width: "80%",
-          }}
-        >
-          Logout
-        </Button>
-      </View>
-    </SafeAreaView>
+      </SafeAreaView>
+    </Provider>
   );
 }
 
@@ -154,21 +150,22 @@ const styles = StyleSheet.create({
     alignSelf: "center",
   },
   image: {
-    height: imageSize,
-    width: imageSize,
-    borderRadius: imageSize * 2,
+    height: "100%",
+    width: "100%",
+    resizeMode: "cover",
   },
   profilePic: {
     justifyContent: "flex-end",
   },
   profilePicContainer: {
-    backgroundColor: color.white,
-    borderRadius: imageSize / 2 + 5,
-    height: imageSize + 10,
-    width: imageSize + 10,
-    justifyContent: "center",
-    alignItems: "center",
+    borderWidth: 6,
+    backgroundColor: color.lightgrey,
+    borderColor: color.lightgrey,
+    borderRadius: imageSize / 2,
+    height: imageSize,
+    width: imageSize,
     elevation: 10,
+    overflow: "hidden",
   },
   topContainer: {
     backgroundColor: color.primary,
@@ -184,11 +181,11 @@ const styles = StyleSheet.create({
     alignItems: "center",
     height: height * 0.3 - imageSize / 2,
   },
-  infoIcon: {
+  aboutUs: {
+    backgroundColor: color.primary,
     position: "absolute",
     alignSelf: "flex-end",
-    right: 10,
-    top: 5,
+    elevation: 0,
   },
 });
 

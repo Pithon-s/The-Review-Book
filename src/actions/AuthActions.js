@@ -34,6 +34,8 @@ const _createUser = async (email, password, username, imageURI) => {
       .then(() => {
         current.updateProfile({
           displayName: username,
+          photoURL:
+            "https://firebasestorage.googleapis.com/v0/b/the-review-book-f2959.appspot.com/o/assets%2Fuser.png?alt=media&token=e009d53b-3f86-4187-90bf-7ccb8e8caffc",
         });
       });
 
@@ -207,10 +209,16 @@ export const Signup = (
 };
 export const Logout = () => {
   return async (dispatch) => {
-    secureStorage.removeUser();
-    dispatch({
-      type: "LOGOUT",
-    });
+    firebase
+      .auth()
+      .signOut()
+      .then(() => {
+        secureStorage.removeUser();
+        dispatch({
+          type: "LOGOUT",
+        });
+      })
+      .catch((error) => console.log(error));
   };
 };
 

@@ -8,6 +8,7 @@ const height = Dimensions.get("screen").height;
 
 function PopUpDialog({
   title,
+  flexVal = 0.85,
   children,
   icon,
   iconSize = 70,
@@ -24,7 +25,7 @@ function PopUpDialog({
           alignSelf: "center",
         }}
       >
-        <View style={styles.container}>
+        <View style={[styles.container, { flex: flexVal }]}>
           <View style={styles.topContainer}>
             <Text style={styles.topTitle}>{title}</Text>
             <View
@@ -54,7 +55,6 @@ function PopUpDialog({
 
 const styles = StyleSheet.create({
   container: {
-    flex: 0.85,
     backgroundColor: colors.white,
   },
   topContainer: {

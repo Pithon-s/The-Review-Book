@@ -1,11 +1,11 @@
 import { NavigationContainer } from "@react-navigation/native";
-import { LogBox } from "react-native";
 import React from "react";
 import firebase from "firebase";
 import AppLoading from "expo-app-loading";
 import { Provider, useDispatch, useSelector } from "react-redux";
 import { createStore, applyMiddleware } from "redux";
 import thunk from "redux-thunk";
+import { LogBox } from "react-native";
 
 import NavigationTheme from "./src/navigations/NavigationTheme";
 import AuthNavigation from "./src/navigations/AuthNavigation";
@@ -13,8 +13,6 @@ import ProfileNavigation from "./src/navigations/ProfileNavigation";
 import Reducers from "./src/reducers";
 import { AutoLogin } from "./src/actions/AuthActions";
 import { fetchTeachersList } from "./src/actions/DataActions";
-
-// merging issue
 
 const firebaseConfig = () => {
   firebase.initializeApp({
@@ -57,8 +55,13 @@ const NavigationImp = () => {
 };
 
 export default function App() {
-  LogBox.ignoreLogs([""]);
   const store = createStore(Reducers, applyMiddleware(thunk));
+  LogBox.ignoreLogs([
+    "Setting a timer for a long period of time",
+    "missing keys for items",
+    "Unhandled promise rejection",
+    "VirtualizedLists should never be nested inside",
+  ]);
 
   return (
     <Provider store={store}>
