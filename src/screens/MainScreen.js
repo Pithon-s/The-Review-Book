@@ -21,7 +21,6 @@ import { useDispatch, useSelector } from "react-redux";
 import color from "../config/colors";
 import deptArray from "../utilities/DepartmentData";
 import {
-  searchTeacher,
   serachByDept,
   showSelectedTeacherData,
   fetchTeacherData,

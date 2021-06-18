@@ -31,6 +31,8 @@ function TeacherProfileScreen(props) {
   const userData = useSelector((state) => state.Auth.user);
   const rating = useSelector((state) => state.Data.rating);
 
+  let id = 0;
+
   const textInput = createRef();
   const scrollRef = useRef();
   const dispatch = useDispatch();
@@ -215,6 +217,10 @@ function TeacherProfileScreen(props) {
           <FlatList
             data={profileComments}
             ListFooterComponent={() => <View style={{ height: 20 }} />}
+            keyExtractor={() => {
+              id++;
+              return id.toString();
+            }}
             scrollEnabled={false}
             renderItem={({ item }) => (
               <List.Item

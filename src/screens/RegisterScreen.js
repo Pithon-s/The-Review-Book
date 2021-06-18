@@ -76,7 +76,14 @@ function RegisterScreen({ navigation }) {
               }}
               onSubmit={handleSubmit}
             >
-              {({ handleSubmit, setFieldValue, values, touched }) => (
+              {({
+                handleSubmit,
+                setFieldValue,
+                handleChange,
+                setFieldTouched,
+                values,
+                touched,
+              }) => (
                 <View style={styles.inputs}>
                   <FormTextInput
                     mode="flat"
