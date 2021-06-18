@@ -56,7 +56,13 @@ const NavigationImp = () => {
 
 export default function App() {
   const store = createStore(Reducers, applyMiddleware(thunk));
-  LogBox.ignoreAllLogs();
+  LogBox.ignoreLogs([
+    "Setting a timer for a long period of time",
+    "VirtualizedLists should never be nested inside",
+    'Each child in a list should have a unique "key" prop',
+    "undefined is not a function (near '...}).catch(function (error) {...')",
+    "Function Query.where() called with invalid data",
+  ]);
 
   return (
     <Provider store={store}>
