@@ -56,12 +56,7 @@ const NavigationImp = () => {
 
 export default function App() {
   const store = createStore(Reducers, applyMiddleware(thunk));
-  LogBox.ignoreLogs([
-    "Setting a timer for a long period of time",
-    "VirtualizedLists should never be nested inside",
-    'Each child in a list should have a unique "key" prop',
-    "undefined is not a function (near '...}).catch(function (error) {...')",
-  ]);
+  LogBox.ignoreAllLogs();
 
   return (
     <Provider store={store}>

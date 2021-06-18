@@ -30,10 +30,13 @@ function AboutUsScreen({ isVisible, setIsVisible }) {
           <Text style={styles.msgText}>
             {`The core purpose of this application is to assist students of CUI. \nApplication gathers and contains the experiences of the students with their faculty members. Reviewbook will help students in finding their supervisors, mentors, etc. Furthermore students will now no need to waste time in Facebook groups while asking about the teachers. \n\nWe, as the developers and founders of “The Review Book” will always expect the positive impact of this platform on our prestigious institute. \n\nLet’s make promise to ourselves that we’ll use this platform positively for the betterment and assistance ofstudents.`}
           </Text>
-          {/* <Text style={styles.msgText}>
-            {"Contact us: \ninfo.thereviewbook@gmail.com"}
-          </Text> */}
-          <Text style={styles.msgText}>{"Best Regards \nTeam Reviewbook"}</Text>
+
+          <Text
+            style={[styles.msgText, { fontWeight: "bold", marginBottom: 0 }]}
+          >
+            Best Regards:
+          </Text>
+          <Text style={styles.msgText}>Team Reviewbook</Text>
         </ScrollView>
         <View style={styles.buttonContainer}>
           <Button
