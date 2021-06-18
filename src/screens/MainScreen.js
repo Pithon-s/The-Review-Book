@@ -27,6 +27,7 @@ import {
   fetchTeacherData,
   fetchTeacherRating,
 } from "../actions/DataActions";
+import colors from "../config/colors";
 
 function MainScreen(props) {
   const [searchQuery, setSearchQuery] = useState("");
@@ -125,7 +126,12 @@ function MainScreen(props) {
         />
       </View>
 
-      <View style={styles.cardView}>
+      <View
+        style={[
+          styles.cardView,
+          itemsBlur ? { paddingBottom: 130 } : { paddingBottom: 15 },
+        ]}
+      >
         {itemsBlur == true ? (
           <>
             <ActivityIndicator animating={isLoading} color={color.primary} />

@@ -215,6 +215,7 @@ function TeacherProfileScreen(props) {
           <FlatList
             data={profileComments}
             ListFooterComponent={() => <View style={{ height: 20 }} />}
+            scrollEnabled={false}
             renderItem={({ item }) => (
               <List.Item
                 title={item.name}
@@ -222,7 +223,6 @@ function TeacherProfileScreen(props) {
                 left={(props) => (
                   <Avatar.Image size={60} source={{ uri: item.imgURL }} />
                 )}
-                //style={{ height: 50 }}
                 right={(props) => (
                   <Caption style={styles.timeStamp}>{item.timeStamp}</Caption>
                 )}
