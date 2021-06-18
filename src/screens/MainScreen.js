@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
   StyleSheet,
@@ -127,7 +127,9 @@ function MainScreen(props) {
       <View
         style={[
           styles.cardView,
-          itemsBlur ? { paddingBottom: 130 } : { paddingBottom: 15 },
+          itemsBlur
+            ? { paddingBottom: Dimensions.get("screen").height * 0.17 }
+            : { paddingBottom: 15 },
         ]}
       >
         {itemsBlur == true ? (

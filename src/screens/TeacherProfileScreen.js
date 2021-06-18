@@ -1,4 +1,4 @@
-import React, { useState, useRef, createRef } from "react";
+import React, { useState, useRef, createRef, useEffect } from "react";
 import {
   View,
   StyleSheet,
@@ -60,6 +60,7 @@ function TeacherProfileScreen(props) {
 
   const handleRating = () => {
     const ratingIcons = [];
+    let id = 0;
     for (let i = 1; i <= 5; i++)
       ratingIcons.push(
         <View style={{ marginLeft: 10 }}>
@@ -67,7 +68,7 @@ function TeacherProfileScreen(props) {
             name="star"
             size={26}
             color={i <= rating ? color.primary : color.darkgrey}
-            key={i}
+            key={id++}
             onPress={() => {
               rating == 0
                 ? Alert.alert(
@@ -107,7 +108,9 @@ function TeacherProfileScreen(props) {
             icon="arrow-left"
             color={color.white}
             size={30}
-            onPress={() => props.navigation.navigate("TabNavigator")}
+            onPress={() => {
+              props.navigation.navigate("TabNavigator");
+            }}
             style={{ alignSelf: "flex-start", position: "absolute", top: 3 }}
           />
           <View style={styles.imageBackgroundDiv}>
