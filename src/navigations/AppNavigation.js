@@ -11,7 +11,6 @@ const AppNavigator = () => (
     initialRouteName="Home"
     shifting={true}
     activeColor={color.white}
-    inactiveColor={color.secondary}
     barStyle={{ backgroundColor: color.secondary }}
   >
     <Tab.Screen

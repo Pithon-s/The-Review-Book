@@ -21,7 +21,7 @@ export const setLocalRating = () => {
   };
 };
 // Action to pass selected teacher data in MainScreen to the TeacherProfileScreen
-export const showSelectedTeacherData = (data, navigation) => {
+export const showSelectedTeacherData = (data, navigation, setLoading) => {
   return async (dispatch) => {
     firebase
       .firestore()
@@ -39,6 +39,7 @@ export const showSelectedTeacherData = (data, navigation) => {
             type: "SHOW_DATA",
             Data: { teacherData: temp },
           });
+          setLoading(false);
           navigation.navigate("TeacherProfile");
         }
       })
@@ -170,5 +171,11 @@ export const setRating = (ratingData, tId, sId) => {
           .catch((error) => console.log(error.message));
       })
       .catch((error) => console.log(error.message));
+  };
+};
+
+export const clearTeachers = () => {
+  return async (dispatch) => {
+    dispatch({ type: "CLEAR_TEACHERS" });
   };
 };

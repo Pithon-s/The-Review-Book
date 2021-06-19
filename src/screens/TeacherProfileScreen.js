@@ -109,7 +109,7 @@ function TeacherProfileScreen(props) {
             color={color.white}
             size={30}
             onPress={() => {
-              props.navigation.navigate("TabNavigator");
+              props.navigation.navigate("SearchScreen");
             }}
             style={{ alignSelf: "flex-start", position: "absolute", top: 3 }}
           />
@@ -118,7 +118,14 @@ function TeacherProfileScreen(props) {
           </View>
 
           <View style={{ alignItems: "center" }}>
-            <Text style={styles.title}>{teacherData.name}</Text>
+            <Text
+              style={[
+                styles.title,
+                { fontSize: teacherData.name.length > 20 ? 20 : 24 },
+              ]}
+            >
+              {teacherData.name}
+            </Text>
             <Text style={styles.emailView}>{teacherData.id}</Text>
             <View
               style={{
@@ -262,7 +269,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     alignSelf: "center",
     borderRadius: 25,
-    elevation: 1,
+    elevation: 7,
     marginTop: 2,
   },
   dataDiv: {
@@ -287,8 +294,6 @@ const styles = StyleSheet.create({
   },
   title: {
     color: color.white,
-    fontWeight: "200",
-    fontSize: 24,
     textTransform: "capitalize",
   },
   emailView: {
