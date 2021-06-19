@@ -9,7 +9,7 @@ import {
 } from "react-native";
 import { Button, Provider } from "react-native-paper";
 import { useDispatch, useSelector } from "react-redux";
-import { Entypo, Ionicons } from "@expo/vector-icons";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 import { Logout } from "../actions/AuthActions";
 import color from "../config/colors";
@@ -37,22 +37,6 @@ function ProfileScreen() {
         />
 
         <View style={styles.topContainer}>
-          <Button
-            mode="contained"
-            onPress={() => setAboutUsVisible(true)}
-            style={styles.aboutUs}
-            icon={() => (
-              <Ionicons
-                name="information-circle-outline"
-                size={20}
-                color="#9BAFE8"
-                style={{ left: 7 }}
-              />
-            )}
-          >
-            <Text style={{ color: "#9BAFE8", fontSize: 12 }}>about us</Text>
-          </Button>
-
           <View style={styles.info}>
             <Text style={styles.title}>{user.username}</Text>
             {!user.isAnonymous && (
@@ -60,18 +44,19 @@ function ProfileScreen() {
                 <Text style={styles.rollno}>
                   {user.email.substr(0, user.email.indexOf("@"))}
                 </Text>
+
                 <View
                   style={{
                     flexDirection: "row",
                     alignItems: "center",
                   }}
                 >
-                  <Entypo
-                    name="location-pin"
+                  <MaterialCommunityIcons
+                    name="email"
                     size={20}
                     color={color.lightgrey}
                   />
-                  <Text style={styles.dept}>CS Department (TODO)</Text>
+                  <Text style={styles.email}>{user.email}</Text>
                 </View>
               </>
             )}
@@ -88,6 +73,19 @@ function ProfileScreen() {
         </View>
 
         <View style={styles.bottomContainer}>
+          <Button
+            icon="information-outline"
+            onPress={() => setAboutUsVisible(true)}
+            color={color.primary}
+            style={{
+              borderRadius: 20,
+              alignSelf: "center",
+              width: "80%",
+            }}
+          >
+            about us
+          </Button>
+
           <Button
             icon="logout"
             onPress={handleLogout}
@@ -116,7 +114,6 @@ const styles = StyleSheet.create({
     justifyContent: "flex-end",
   },
   title: {
-    fontFamily: "Roboto",
     color: color.white,
     fontWeight: "200",
     fontSize: 30,
@@ -124,16 +121,14 @@ const styles = StyleSheet.create({
   },
   rollno: {
     color: color.lightgrey,
-    fontFamily: "Roboto",
     fontSize: 18,
     textTransform: "uppercase",
     marginVertical: 5,
   },
-  dept: {
+  email: {
     fontSize: 14,
     color: color.lightgrey,
-    fontFamily: "Roboto",
-    paddingLeft: 2,
+    paddingLeft: 5,
   },
   details: {
     flexDirection: "row",

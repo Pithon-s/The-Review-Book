@@ -51,6 +51,11 @@ export default (state = initialState, action) => {
         ...state,
         rating: 0,
       };
+    case "CLEAR_TEACHERS":
+      return {
+        ...state,
+        teachers: [],
+      };
     default:
       return state;
   }

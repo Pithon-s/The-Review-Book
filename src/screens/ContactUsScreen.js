@@ -7,43 +7,48 @@ import PopUpDialog from "../components/PopUpDialog";
 
 const width = Dimensions.get("screen").width;
 
-function AgreementScreen({ isVisible, setIsVisible, setIsAgree }) {
+function ContactUsScreen({ isVisible, setIsVisible }) {
   const handleContinue = () => {
-    setIsAgree(true);
     setIsVisible(false);
   };
 
   return (
     <PopUpDialog
-      icon={require("../assets/terms.png")}
-      roundIcon={false}
-      flexVal={0.9}
+      icon={require("../assets/email.png")}
+      iconSize={80}
+      flexVal={0.87}
       visible={isVisible}
-      title="Terms and Conditions"
+      title="Contact Us"
       onDismiss={() => setIsVisible(false)}
     >
       <View style={styles.container}>
         <ScrollView style={styles.textContainer}>
-          <Text style={styles.msgText}>
-            • Abusive language and disrespectful comments are strictly
-            prohibited.
+          <Text
+            style={[
+              styles.msgText,
+              { textAlign: "center", fontWeight: "bold", marginTop: 10 },
+            ]}
+          >
+            {"Want To Get In Touch?"}
           </Text>
-          <Text style={styles.msgText}>
-            • If a user has given single or same stars to every teacher then it
-            will be considered as spam and fake.
+
+          <Text style={[styles.msgText, { textAlign: "center" }]}>
+            We'd love to hear from you. Here's how you can reach us...
           </Text>
-          <Text style={styles.msgText}>
-            • Fake ratings will be notified and deleted immediately by the admin
-            panel.
+
+          <Text
+            style={[styles.msgText, { fontWeight: "bold", marginBottom: 0 }]}
+          >
+            {"\nEmail:"}
           </Text>
-          <Text style={styles.msgText}>
-            • In case of violation of any rule, the individual would be
-            responsible for the consequences and his/her account would be
-            suspended immediately.
+          <Text style={styles.msgText}>info.thereviewbook@gmail.com</Text>
+
+          <Text
+            style={[styles.msgText, { fontWeight: "bold", marginBottom: 0 }]}
+          >
+            Best Regards:
           </Text>
-          <Text style={styles.msgText}>
-            • Be humble, honest and always respect your teachers.
-          </Text>
+          <Text style={styles.msgText}>Team Reviewbook</Text>
         </ScrollView>
         <View style={styles.buttonContainer}>
           <Button
@@ -54,7 +59,7 @@ function AgreementScreen({ isVisible, setIsVisible, setIsAgree }) {
               colors: { primary: colors.primary },
             }}
           >
-            i agree
+            close
           </Button>
         </View>
       </View>
@@ -67,7 +72,7 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingTop: 40,
     width: width * 0.85,
-    paddingHorizontal: 20,
+    paddingHorizontal: 15,
   },
   button: {
     borderRadius: 20,
@@ -81,10 +86,11 @@ const styles = StyleSheet.create({
     overflow: "hidden",
   },
   msgText: {
+    textAlign: "justify",
     color: "#262626",
     fontSize: 16,
-    marginBottom: 10,
+    marginBottom: 15,
   },
 });
 
-export default AgreementScreen;
+export default ContactUsScreen;
