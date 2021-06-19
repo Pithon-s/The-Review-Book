@@ -85,7 +85,7 @@ function SearchScreen({ route, navigation }) {
 
         <TextInput
           placeholder="Search..."
-          // autoFocus={true}
+          autoFocus={true}
           ref={searchRef}
           onChangeText={onChangeSearch}
           value={searchQuery}
