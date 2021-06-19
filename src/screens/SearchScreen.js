@@ -1,12 +1,13 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   View,
   StyleSheet,
   SafeAreaView,
   StatusBar,
   FlatList,
+  TextInput,
 } from "react-native";
-import { Searchbar, ActivityIndicator, List, Avatar } from "react-native-paper";
+import { ActivityIndicator, List, Avatar } from "react-native-paper";
 import { useDispatch, useSelector } from "react-redux";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 
@@ -28,6 +29,7 @@ function SearchScreen({ route, navigation }) {
   const [isFound, setFound] = useState(false);
   const [searchType, setSearchType] = useState(type);
   const [teacherList, setTeacherList] = useState([]);
+  const searchRef = useRef();
 
   const profileComments = useSelector((state) => state.Data.comments);
   const list = useSelector((state) => state.Data.list);
@@ -35,6 +37,7 @@ function SearchScreen({ route, navigation }) {
   const sID = useSelector((state) => state.Auth.user.email);
 
   useEffect(() => {
+    searchRef.current.focus();
     dispatch(clearTeachers());
 
     if (searchType === "byDept") {
@@ -59,11 +62,6 @@ function SearchScreen({ route, navigation }) {
       list.filter((v) => (v = v.name.toLowerCase().includes(toFind)))
     );
   };
-  const onSubmitHandle = () => {
-    if (teacherList.length < 0) {
-      // TODO if the filter fail then print msg
-    }
-  };
 
   const onShowHandler = (tdata) => {
     setLoading(true);
@@ -82,22 +80,16 @@ function SearchScreen({ route, navigation }) {
           name="arrow-left"
           size={28}
           color={color.primary}
-          onPress={() => {
-            navigation.navigate("TabNavigator");
-          }}
+          onPress={() => navigation.navigate("TabNavigator")}
         />
 
-        <Searchbar
-          placeholder="Search"
-          autoFocus={true}
+        <TextInput
+          placeholder="Search..."
+          // autoFocus={true}
+          ref={searchRef}
           onChangeText={onChangeSearch}
           value={searchQuery}
           style={styles.searchBar}
-          onSubmitEditing={() => {
-            onSubmitHandle();
-          }}
-          iconColor={color.primary}
-          onTouchCancel={() => console.log(searchQuery)}
         />
       </View>
 
@@ -126,9 +118,7 @@ function SearchScreen({ route, navigation }) {
                     <Avatar.Image size={50} source={{ uri: item.imgURL }} />
                   )
                 }
-                onPress={() => {
-                  onShowHandler(item);
-                }}
+                onPress={() => onShowHandler(item)}
                 rippleColor={color.primaryLight}
               />
             )}
@@ -153,6 +143,9 @@ const styles = StyleSheet.create({
   searchBar: {
     borderRadius: 20,
     flex: 0.98,
+    height: 45,
+    elevation: 1.5,
+    paddingLeft: 10,
   },
   cardView: {
     flex: 1,
