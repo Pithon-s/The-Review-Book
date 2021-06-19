@@ -5,8 +5,10 @@ import {
   SafeAreaView,
   StatusBar,
   FlatList,
+  Image,
 } from "react-native";
-import { Searchbar, Card, Title } from "react-native-paper";
+import { IconButton, Card, Title } from "react-native-paper";
+import colors from "../config/colors";
 
 import color from "../config/colors";
 import deptArray from "../utilities/DepartmentData";
@@ -17,7 +19,7 @@ function MainScreen({ navigation }) {
       <StatusBar backgroundColor={color.primary} />
 
       <View style={styles.mainView}>
-        <Searchbar
+        {/* <Searchbar
           placeholder="Search..."
           placeholderTextColor={color.darkgrey}
           style={styles.searchBar}
@@ -25,6 +27,27 @@ function MainScreen({ navigation }) {
             navigation.navigate("SearchScreen", { type: "search", code: "" })
           }
           iconColor={color.primary}
+        /> */}
+        <View style={styles.logoContainer}>
+          <Image
+            source={require("../assets/logo_blue.png")}
+            style={styles.logo}
+            resizeMode="center"
+          />
+        </View>
+        <Title style={styles.title}>The Review Book</Title>
+        <IconButton
+          size={35}
+          icon="magnify"
+          color={color.primary}
+          style={{
+            backgroundColor: color.white,
+            borderColor: color.primary,
+            borderWidth: 0.1,
+          }}
+          onPress={() =>
+            navigation.navigate("SearchScreen", { type: "search", code: "" })
+          }
         />
       </View>
 
@@ -61,7 +84,12 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
   },
   mainView: {
-    paddingVertical: 10,
+    paddingVertical: 5,
+    width: "100%",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    alignSelf: "center",
   },
   searchBar: {
     borderRadius: 20,
@@ -73,5 +101,13 @@ const styles = StyleSheet.create({
     height: 270,
     marginBottom: 10,
   },
+  title: {
+    fontSize: 26,
+    textAlign: "center",
+    alignSelf: "center",
+    color: colors.primary,
+  },
+  logoContainer: { height: 50, width: 50 },
+  logo: { height: "100%", width: "100%" },
 });
 export default MainScreen;

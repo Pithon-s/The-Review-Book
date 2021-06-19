@@ -89,6 +89,7 @@ function SearchScreen({ route, navigation }) {
           onChangeText={onChangeSearch}
           value={searchQuery}
           style={styles.searchBar}
+          autoFocus={true}
         />
       </View>
 
