@@ -22,8 +22,8 @@ export default timeSince = (date) => {
   interval = seconds / 3600;
   if (interval > 1)
     return Math.floor(interval) > 1
-      ? Math.floor(interval) + "hours ago"
-      : Math.floor(interval) + "hour ago";
+      ? Math.floor(interval) + " hours ago"
+      : Math.floor(interval) + " hour ago";
 
   interval = seconds / 60;
   if (interval > 1)
