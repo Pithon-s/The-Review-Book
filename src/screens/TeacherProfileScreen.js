@@ -20,6 +20,7 @@ import { useDispatch, useSelector } from "react-redux";
 import colors from "../config/colors";
 import color from "../config/colors";
 import { sendComment, setRating } from "../actions/DataActions";
+import timeSince from "../utilities/timeSince";
 
 const height = Dimensions.get("screen").height;
 const width = Dimensions.get("screen").width;
@@ -40,15 +41,17 @@ function TeacherProfileScreen(props) {
 
   //----------Handlers------------
   const handleSend = () => {
+    if (!comment) return;
+
     let commentData = {
       commentText: comment,
       imgURL: userData.profilePictureURI,
       name: userData.username,
-      timeStamp:
-        new Date().toLocaleDateString() + " " + new Date().toLocaleTimeString(),
+      timeStamp: Date.now(),
     };
 
     dispatch(sendComment(commentData, teacherData.id));
+    setComment("");
     textInput.current.clear();
   };
 
@@ -241,7 +244,9 @@ function TeacherProfileScreen(props) {
                   <View style={styles.commentTitle}>
                     <Text style={{ fontSize: 16 }}>{item.name}</Text>
                     <Text style={{ fontSize: 12, color: color.darkgrey }}>
-                      {item.timeStamp.substr(0, item.timeStamp.indexOf(" "))}
+                      {/* {item.timeStamp.substr(0, item.timeStamp.indexOf(" "))} */}
+                      {timeSince(item.timeStamp)}
+                      {/* {timeSince(new Date(Date.now()))} */}
                     </Text>
                   </View>
                 }
