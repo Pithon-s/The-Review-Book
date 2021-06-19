@@ -16,7 +16,7 @@ function ContactUsScreen({ isVisible, setIsVisible }) {
     <PopUpDialog
       icon={require("../assets/email.png")}
       iconSize={80}
-      flexVal={0.85}
+      flexVal={0.87}
       visible={isVisible}
       title="Contact Us"
       onDismiss={() => setIsVisible(false)}

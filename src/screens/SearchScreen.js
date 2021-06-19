@@ -37,10 +37,10 @@ function SearchScreen({ route, navigation }) {
   const sID = useSelector((state) => state.Auth.user.email);
 
   useEffect(() => {
-    searchRef.current.focus();
     dispatch(clearTeachers());
 
-    if (searchType === "byDept") {
+    if (searchType == "search") searchRef.current.focus();
+    else {
       teacherList.length = 0;
       setLoading(true);
       dispatch(serachByDept(deptcode, setLoading));
@@ -85,7 +85,6 @@ function SearchScreen({ route, navigation }) {
 
         <TextInput
           placeholder="Search..."
-          autoFocus={true}
           ref={searchRef}
           onChangeText={onChangeSearch}
           value={searchQuery}
@@ -99,6 +98,8 @@ function SearchScreen({ route, navigation }) {
           <FlatList
             data={searchType === "search" ? teacherList : deptList}
             keyExtractor={(key) => key.id.toString()}
+            ListFooterComponent={<View style={{ height: 10 }} />}
+            showsVerticalScrollIndicator={false}
             renderItem={({ item }) => (
               <List.Item
                 title={item.name}
@@ -144,7 +145,8 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     flex: 0.98,
     height: 45,
-    elevation: 1.5,
+    backgroundColor: color.white,
+    elevation: 2,
     paddingLeft: 10,
   },
   cardView: {

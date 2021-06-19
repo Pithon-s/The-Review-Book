@@ -1,4 +1,4 @@
-import React, { useState, useRef, createRef, useEffect } from "react";
+import React, { useState, useRef, createRef } from "react";
 import {
   View,
   StyleSheet,
@@ -9,19 +9,20 @@ import {
   Text,
   Alert,
 } from "react-native";
+import { List, Avatar, IconButton, TextInput } from "react-native-paper";
 import {
-  List,
-  Avatar,
-  IconButton,
-  TextInput,
-  Caption,
-} from "react-native-paper";
-import { AntDesign, Entypo } from "react-native-vector-icons";
+  AntDesign,
+  Entypo,
+  MaterialCommunityIcons,
+} from "react-native-vector-icons";
 
 import { useDispatch, useSelector } from "react-redux";
 import colors from "../config/colors";
 import color from "../config/colors";
 import { sendComment, setRating } from "../actions/DataActions";
+
+const height = Dimensions.get("screen").height;
+const width = Dimensions.get("screen").width;
 
 function TeacherProfileScreen(props) {
   const [comment, setComment] = useState("");
@@ -100,7 +101,11 @@ function TeacherProfileScreen(props) {
 
   return (
     <>
-      <ScrollView ref={scrollRef} style={styles.maincontainer}>
+      <ScrollView
+        ref={scrollRef}
+        style={styles.maincontainer}
+        showsVerticalScrollIndicator={false}
+      >
         <StatusBar barStyle="dark-content" backgroundColor={colors.white} />
 
         <View style={styles.imageDiv}>
@@ -165,7 +170,7 @@ function TeacherProfileScreen(props) {
               <Text style={[styles.text, { fontSize: 24 }]}>
                 {parseFloat(
                   teacherData.totalRating / teacherData.ratingCount
-                ).toPrecision(2) || "0"}
+                ).toPrecision(2)}
               </Text>
               <Text style={styles.subText}>Rating</Text>
             </View>
@@ -174,7 +179,9 @@ function TeacherProfileScreen(props) {
 
         {!isAnonymous ? (
           <View style={[styles.ratingView, { paddingBottom: 20 }]}>
-            <Text style={{ fontSize: 22 }}>Tell us about your experience:</Text>
+            <Text style={{ fontSize: 22, color: color.darkgrey }}>
+              Tell us about your experience:
+            </Text>
             <View
               style={{
                 flexDirection: "row",
@@ -191,10 +198,7 @@ function TeacherProfileScreen(props) {
           style={[
             styles.commentDiv,
             {
-              height:
-                profileComments.length === 0
-                  ? Dimensions.get("screen").height * 0.3
-                  : null,
+              height: profileComments.length === 0 ? height * 0.3 : null,
             },
           ]}
         >
@@ -202,18 +206,17 @@ function TeacherProfileScreen(props) {
             <TextInput
               ref={textInput}
               mode="flat"
-              placeholder="Comment here"
-              selectionColor={color.primary}
-              style={{
-                width: "75%",
-                borderColor: color.primary,
-                marginLeft: 10,
-              }}
+              placeholder="Comment here..."
               disabled={isAnonymous}
+              onChangeText={(text) => setComment(text)}
+              style={{
+                flex: 1,
+                marginLeft: 10,
+                backgroundColor: "transparent",
+              }}
               theme={{
                 colors: { primary: color.primary },
               }}
-              onChangeText={(text) => setComment(text)}
             />
             <IconButton
               icon="send"
@@ -234,58 +237,59 @@ function TeacherProfileScreen(props) {
             scrollEnabled={false}
             renderItem={({ item }) => (
               <List.Item
-                title={item.name}
+                title={
+                  <View style={styles.commentTitle}>
+                    <Text style={{ fontSize: 16 }}>{item.name}</Text>
+                    <Text style={{ fontSize: 12, color: color.darkgrey }}>
+                      {item.timeStamp.substr(0, item.timeStamp.indexOf(" "))}
+                    </Text>
+                  </View>
+                }
                 description={item.commentText}
-                left={(props) => (
+                descriptionStyle={{ fontSize: 16 }}
+                descriptionNumberOfLines={4}
+                left={() => (
                   <Avatar.Image size={60} source={{ uri: item.imgURL }} />
-                )}
-                right={(props) => (
-                  <Caption style={styles.timeStamp}>{item.timeStamp}</Caption>
                 )}
               />
             )}
           />
         </View>
+        <View style={{ height: 20 }} />
       </ScrollView>
-      <IconButton
-        icon="arrow-up"
+
+      <MaterialCommunityIcons
+        name="arrow-up"
         onPress={handleScroll}
-        color={color.white}
         size={30}
         style={styles.upwardButton}
+        color={color.white}
       />
     </>
   );
 }
 
 const styles = StyleSheet.create({
-  maincontainer: { flex: 1, backgroundColor: color.white },
-  text: { color: colors.white },
+  maincontainer: {
+    flex: 1,
+    width: "100%",
+    paddingHorizontal: 10,
+  },
+  text: {
+    color: colors.white,
+  },
   imageDiv: {
-    height: Dimensions.get("screen").height * 0.5,
-    width: "95%",
+    height: height * 0.5,
     backgroundColor: color.primary,
     justifyContent: "space-around",
     alignItems: "center",
-    alignSelf: "center",
     borderRadius: 25,
     elevation: 7,
-    marginTop: 2,
-  },
-  dataDiv: {
-    height: Dimensions.get("screen").height * 0.2,
-    width: "100%",
-    backgroundColor: color.white,
-    borderTopLeftRadius: 25,
-    borderTopRightRadius: 25,
   },
   commentDiv: {
-    width: "95%",
     backgroundColor: color.lightgrey,
-    paddingTop: 25,
+    paddingTop: 20,
     borderRadius: 25,
-    flex: 1,
-    alignSelf: "center",
   },
   imageBackgroundDiv: {
     elevation: 15,
@@ -306,56 +310,40 @@ const styles = StyleSheet.create({
     color: color.lightgrey,
     paddingLeft: 2,
   },
-  commentTitle: {
-    fontSize: 24,
-    paddingBottom: 15,
-    marginLeft: 15,
-  },
   commentTextInput: {
     flexDirection: "row",
-    justifyContent: "space-around",
     alignItems: "center",
     marginBottom: 25,
+  },
+  commentTitle: {
+    width: width * 0.7,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
   },
   statContainer: {
     flexDirection: "row",
     justifyContent: "space-around",
-    marginTop: 5,
-    alignSelf: "flex-end",
   },
   statsBox: {
     alignItems: "center",
     flex: 1,
   },
   ratingView: {
-    alignSelf: "center",
     alignItems: "center",
     padding: 20,
   },
-  Data: {
-    fontSize: 20,
-    fontWeight: "900",
-  },
-  infoView: {
-    padding: 25,
-    justifyContent: "space-around",
-    height: 150,
-  },
-  innerInfoView: { flexDirection: "row", justifyContent: "space-between" },
   upwardButton: {
     position: "absolute",
-    alignSelf: "center",
     backgroundColor: color.primary,
-    borderRadius: 22,
-    elevation: 1,
-    top: Dimensions.get("screen").height * 0.84,
-    left: Dimensions.get("screen").width * 0.82,
+    padding: 5,
+    borderRadius: 20,
+    bottom: 15,
+    right: 15,
   },
   subText: {
     color: colors.lightgrey,
   },
-  timeStamp: {
-    fontSize: 12,
-  },
 });
+
 export default TeacherProfileScreen;

@@ -18,7 +18,8 @@ function MainScreen({ navigation }) {
 
       <View style={styles.mainView}>
         <Searchbar
-          placeholder="Search"
+          placeholder="Search..."
+          placeholderTextColor={color.darkgrey}
           style={styles.searchBar}
           onTouchStart={() =>
             navigation.navigate("SearchScreen", { type: "search", code: "" })
@@ -31,6 +32,7 @@ function MainScreen({ navigation }) {
         <FlatList
           data={deptArray}
           keyExtractor={(key) => key.id.toString()}
+          showsVerticalScrollIndicator={false}
           renderItem={({ item }) => (
             <Card
               onPress={() => {
