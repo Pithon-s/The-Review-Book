@@ -20,29 +20,21 @@ export default (state = initialState, action) => {
         ...state,
         list: action.Data,
       };
+    case "SHOW_DATA":
+      return {
+        ...state,
+        teacherData: action.Data.teacherData,
+        rating: state.rating,
+      };
     case "SEARCH_TEACHER":
       return {
         ...state,
         teachers: action.newData,
       };
-    case "COMMENT_SENT":
-      return {
-        ...state,
-      };
-    case "SHOW_DATA":
-      return {
-        ...state,
-        teacherData: action.Data,
-        rating: state.rating,
-      };
     case "COMMENT_DATA":
       return {
         ...state,
         comments: action.newData.reverse(),
-      };
-    case "FAILED_COMMENT_DATA":
-      return {
-        ...state,
       };
     case "RATING_FETCHED":
       return {
@@ -53,6 +45,11 @@ export default (state = initialState, action) => {
       return {
         ...state,
         rating: action.newData,
+      };
+    case "ZERO_RATING":
+      return {
+        ...state,
+        rating: 0,
       };
     default:
       return state;

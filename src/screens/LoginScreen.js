@@ -7,6 +7,7 @@ import {
   ScrollView,
   StatusBar,
   Image,
+  Alert,
 } from "react-native";
 import { Button, TextInput, HelperText, Provider } from "react-native-paper";
 import { useDispatch, useSelector } from "react-redux";
@@ -45,7 +46,17 @@ function LoginScreen({ navigation }) {
   };
 
   const handleAnonymous = () => {
-    dispatch(AnonymousLogin(setAnonymousLoading));
+    Alert.alert(
+      "Limitations",
+      "You will only be able to read reviews and view teachers profile.",
+      [
+        { text: "Cancel" },
+        {
+          text: "Continue",
+          onPress: () => dispatch(AnonymousLogin(setAnonymousLoading)),
+        },
+      ]
+    );
   };
 
   return (
@@ -203,7 +214,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
   },
   logoContainer: {
-    height: height * 0.3,
+    height: height < 650 ? height * 0.3 : height * 0.25,
     justifyContent: "flex-end",
     alignItems: "center",
   },
@@ -213,7 +224,6 @@ const styles = StyleSheet.create({
     width: "90%",
     alignSelf: "center",
   },
-
   bottomContainer: {
     justifyContent: "center",
     height: height * 0.25,

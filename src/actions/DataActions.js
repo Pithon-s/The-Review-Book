@@ -15,41 +15,11 @@ export const fetchTeachersList = () => {
   };
 };
 // Action to fetch data of specific searched teacher
-export const searchTeacher = (toFind, setLoading) => {
+export const setLocalRating = () => {
   return async (dispatch) => {
-    fname = toFind.split(" ")[0];
-    lname = toFind.replace(fname + " ", "");
-    const data = [];
-    firebase
-      .firestore()
-      .collection("teachers")
-      .where("fname" || "lname", "==", fname || lname)
-      .get()
-      .then((snapshot) => {
-        snapshot.forEach((doc) => {
-          let temp = doc.data();
-          temp.id = doc.id;
-          let found = deptArray.filter((element) => {
-            if (element.code === temp.dept) return element.title;
-          });
-          temp.dept = found[0].title;
-          data.push(temp);
-        });
-      })
-      .catch((error) => console.log(error.message))
-      .finally(() => {
-        if (data.length == 0) {
-        } else {
-          dispatch({
-            type: "SEARCH_TEACHER",
-            newData: data,
-          });
-        }
-        setLoading(false);
-      });
+    dispatch({ type: "ZERO_RATING" });
   };
 };
-
 // Action to pass selected teacher data in MainScreen to the TeacherProfileScreen
 export const showSelectedTeacherData = (data, navigation) => {
   return async (dispatch) => {
@@ -65,7 +35,10 @@ export const showSelectedTeacherData = (data, navigation) => {
             if (element.code === temp.dept) return element.title;
           });
           temp.dept = found[0].title;
-          dispatch({ type: "SHOW_DATA", Data: temp });
+          dispatch({
+            type: "SHOW_DATA",
+            Data: { teacherData: temp },
+          });
           navigation.navigate("TeacherProfile");
         }
       })
@@ -88,10 +61,6 @@ export const fetchTeacherData = (id) => {
             type: "COMMENT_DATA",
             newData: snapshot.data().comments,
           });
-        } else {
-          dispatch({
-            type: "FAILED_COMMENT_DATA",
-          });
         }
       })
       .catch((error) => console.log(error.message));
@@ -106,6 +75,9 @@ export const fetchTeacherRating = (tId, sId) => {
       .where("tEmail", "==", tId)
       .where("sEmail", "==", sId)
       .onSnapshot((snapshot) => {
+        dispatch({
+          type: "ZERO_RATING",
+        });
         snapshot.forEach((doc) => {
           dispatch({
             type: "RATING_FETCHED",
@@ -162,9 +134,6 @@ export const sendComment = (commentData, id) => {
           .doc(id)
           .update({
             commentCount: firebase.firestore.FieldValue.increment(1),
-          })
-          .then(() => {
-            dispatch({ type: "COMMENT_SENT" });
           })
           .catch((error) => console.log(error.message));
       })

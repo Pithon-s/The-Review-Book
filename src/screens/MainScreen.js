@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
   StyleSheet,
@@ -21,7 +21,6 @@ import { useDispatch, useSelector } from "react-redux";
 import color from "../config/colors";
 import deptArray from "../utilities/DepartmentData";
 import {
-  searchTeacher,
   serachByDept,
   showSelectedTeacherData,
   fetchTeacherData,
@@ -125,7 +124,14 @@ function MainScreen(props) {
         />
       </View>
 
-      <View style={styles.cardView}>
+      <View
+        style={[
+          styles.cardView,
+          itemsBlur
+            ? { paddingBottom: Dimensions.get("screen").height * 0.17 }
+            : { paddingBottom: 15 },
+        ]}
+      >
         {itemsBlur == true ? (
           <>
             <ActivityIndicator animating={isLoading} color={color.primary} />

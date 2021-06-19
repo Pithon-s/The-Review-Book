@@ -22,6 +22,7 @@ const AuthNavigation = () => (
         headerTintColor: colors.white,
         headerTitleStyle: {
           fontSize: 24,
+          width: "65%",
         },
       }}
       component={RegisterScreen}

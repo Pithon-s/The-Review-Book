@@ -1,9 +1,16 @@
 import React, { useState } from "react";
-import { View, StyleSheet, Dimensions, ScrollView } from "react-native";
+import {
+  View,
+  StyleSheet,
+  Dimensions,
+  ScrollView,
+  Pressable,
+  Text,
+} from "react-native";
 import { Button, Provider, HelperText, TextInput } from "react-native-paper";
 import { Formik } from "formik";
 import { useDispatch, useSelector } from "react-redux";
-import { Ionicons } from "@expo/vector-icons";
+import { Ionicons, MaterialIcons } from "@expo/vector-icons";
 
 import ImagePicker from "../components/ImagePicker";
 import FormTextInput from "../components/common/FormTextInput";
@@ -14,6 +21,7 @@ import validateEmail from "../utilities/validateEmail";
 import CheckboxWithDesc from "../components/CheckboxWithDesc";
 import TextWithTouchable from "../components/TextWithTouchable";
 import AgreementScreen from "./AgreementScreen";
+import ContactUsScreen from "./ContactUsScreen";
 
 const height = Dimensions.get("screen").height;
 const iconSize = 95;
@@ -24,6 +32,8 @@ function RegisterScreen({ navigation }) {
   const [showTerms, setShowTerms] = useState(false);
   const [isInvalidEmail, setIsInvalidEmail] = useState(true);
   const [showPassword, setShowPassword] = useState(false);
+  const [showContactUs, setShowContactUs] = useState(false);
+  const [pressableColor, setPressableColor] = useState("#9BAFE8");
 
   const isLoading = useSelector((state) => state.Auth.isLoading);
   const dispatch = useDispatch();
@@ -59,8 +69,24 @@ function RegisterScreen({ navigation }) {
           setIsVisible={setShowTerms}
           setIsAgree={setIsAgree}
         />
+        <ContactUsScreen
+          isVisible={showContactUs}
+          setIsVisible={setShowContactUs}
+        />
 
         <View style={styles.topContainer}>
+          <Pressable
+            onPress={() => setShowContactUs(true)}
+            onPressIn={() => setPressableColor(colors.white)}
+            onPressOut={() => setPressableColor("#9BAFE8")}
+            style={styles.contactUs}
+          >
+            <MaterialIcons name="email" size={20} color={pressableColor} />
+            <Text style={{ color: pressableColor, fontSize: 14 }}>
+              Contact Us
+            </Text>
+          </Pressable>
+
           <View style={styles.iconContainer}>
             <ImagePicker imageUri={imageUri} setImageUri={setImageUri} />
           </View>
@@ -76,7 +102,14 @@ function RegisterScreen({ navigation }) {
               }}
               onSubmit={handleSubmit}
             >
-              {({ handleSubmit, setFieldValue, values, touched }) => (
+              {({
+                handleSubmit,
+                setFieldValue,
+                handleChange,
+                setFieldTouched,
+                values,
+                touched,
+              }) => (
                 <View style={styles.inputs}>
                   <FormTextInput
                     mode="flat"
@@ -222,6 +255,13 @@ function RegisterScreen({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+  },
+  contactUs: {
+    position: "absolute",
+    alignSelf: "flex-end",
+    alignItems: "center",
+    top: 10,
+    right: 10,
   },
   button: {
     borderRadius: 20,
