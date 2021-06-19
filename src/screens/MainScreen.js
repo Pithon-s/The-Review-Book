@@ -19,25 +19,18 @@ function MainScreen({ navigation }) {
       <StatusBar backgroundColor={color.primary} />
 
       <View style={styles.mainView}>
-        {/* <Searchbar
-          placeholder="Search..."
-          placeholderTextColor={color.darkgrey}
-          style={styles.searchBar}
-          onTouchStart={() =>
-            navigation.navigate("SearchScreen", { type: "search", code: "" })
-          }
-          iconColor={color.primary}
-        /> */}
-        <View style={styles.logoContainer}>
-          <Image
-            source={require("../assets/logo_blue.png")}
-            style={styles.logo}
-            resizeMode="center"
-          />
+        <View style={{ flexDirection: "row" }}>
+          <View style={styles.logoContainer}>
+            <Image
+              source={require("../assets/logo_blue.png")}
+              style={styles.logo}
+              resizeMode="center"
+            />
+          </View>
+          <Title style={styles.title}>The Review Book</Title>
         </View>
-        <Title style={styles.title}>The Review Book</Title>
         <IconButton
-          size={35}
+          size={30}
           icon="magnify"
           color={color.primary}
           style={{
@@ -102,12 +95,14 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   title: {
-    fontSize: 26,
+    fontSize: 22,
     textAlign: "center",
     alignSelf: "center",
     color: colors.primary,
+    fontWeight: "900",
+    marginLeft: 5,
   },
-  logoContainer: { height: 50, width: 50 },
-  logo: { height: "100%", width: "100%" },
+  logoContainer: { height: 35, width: 35 },
+  logo: { height: "100%", width: "100%", flexDirection: "row" },
 });
 export default MainScreen;
