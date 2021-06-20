@@ -15,7 +15,7 @@ export default [
     id: 4,
     title: "Department of Chemical Engineering",
     uri: require("../assets/Departments/ChemicalEngineering.jpg"),
-    code: "CE",
+    code: "CEE",
   },
   {
     id: 5,
