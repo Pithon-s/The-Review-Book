@@ -19,7 +19,7 @@ function MainScreen({ navigation }) {
       <StatusBar backgroundColor={color.primary} />
 
       <View style={styles.mainView}>
-        <View style={{ flexDirection: "row" }}>
+        <View style={{ flexDirection: "row", alignItems: "center" }}>
           <View style={styles.logoContainer}>
             <Image
               source={require("../assets/logo_blue.png")}
@@ -49,6 +49,7 @@ function MainScreen({ navigation }) {
           data={deptArray}
           keyExtractor={(key) => key.id.toString()}
           showsVerticalScrollIndicator={false}
+          ListHeaderComponent={<View style={{ height: 10 }} />}
           renderItem={({ item }) => (
             <Card
               onPress={() => {
@@ -73,36 +74,38 @@ function MainScreen({ navigation }) {
 const styles = StyleSheet.create({
   mainContainer: {
     flex: 1,
-    width: "100%",
-    paddingHorizontal: 10,
   },
   mainView: {
-    paddingVertical: 5,
-    width: "100%",
+    backgroundColor: color.white,
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    alignSelf: "center",
+    elevation: 5,
   },
   searchBar: {
     borderRadius: 20,
   },
   cardView: {
     flex: 1,
+    paddingHorizontal: 10,
   },
   card: {
     height: 270,
     marginBottom: 10,
   },
   title: {
-    fontSize: 22,
-    textAlign: "center",
-    alignSelf: "center",
+    fontSize: 20,
     color: colors.primary,
-    fontWeight: "900",
-    marginLeft: 5,
   },
-  logoContainer: { height: 35, width: 35 },
-  logo: { height: "100%", width: "100%", flexDirection: "row" },
+  logoContainer: {
+    height: 40,
+    width: 40,
+    marginLeft: 15,
+    marginRight: 10,
+  },
+  logo: {
+    height: "100%",
+    width: "100%",
+  },
 });
 export default MainScreen;

@@ -94,42 +94,41 @@ function SearchScreen({ route, navigation }) {
       </View>
 
       <View style={styles.cardView}>
-        <>
-          <ActivityIndicator animating={isLoading} color={color.primary} />
-          <FlatList
-            data={searchType === "search" ? teacherList : deptList}
-            keyExtractor={(key) => key.id.toString()}
-            ListFooterComponent={<View style={{ height: 10 }} />}
-            showsVerticalScrollIndicator={false}
-            renderItem={({ item }) => (
-              <List.Item
-                title={item.name}
-                left={() =>
-                  searchType === "search" ? (
-                    <Avatar.Icon
-                      size={50}
-                      icon="magnify"
-                      color={color.primary}
-                      style={{
-                        backgroundColor: color.white,
-                        borderColor: color.primary,
-                        borderWidth: 0.1,
-                      }}
-                    />
-                  ) : (
-                    <Avatar.Image size={50} source={{ uri: item.imgURL }} />
-                  )
-                }
-                onPress={() => onShowHandler(item)}
-                rippleColor={color.primaryLight}
-              />
-            )}
-          />
-        </>
+        <ActivityIndicator animating={isLoading} color={color.primary} />
+        <FlatList
+          data={searchType === "search" ? teacherList : deptList}
+          keyExtractor={(key) => key.id.toString()}
+          ListFooterComponent={<View style={{ height: 10 }} />}
+          showsVerticalScrollIndicator={false}
+          renderItem={({ item }) => (
+            <List.Item
+              title={item.name}
+              left={() =>
+                searchType === "search" ? (
+                  <Avatar.Icon
+                    size={50}
+                    icon="magnify"
+                    color={color.primary}
+                    style={{
+                      backgroundColor: color.white,
+                      borderColor: color.primary,
+                      borderWidth: 0.1,
+                    }}
+                  />
+                ) : (
+                  <Avatar.Image size={50} source={{ uri: item.imgURL }} />
+                )
+              }
+              onPress={() => onShowHandler(item)}
+              rippleColor={color.primaryLight}
+            />
+          )}
+        />
       </View>
     </SafeAreaView>
   );
 }
+
 const styles = StyleSheet.create({
   mainContainer: {
     flex: 1,
@@ -145,7 +144,7 @@ const styles = StyleSheet.create({
   searchBar: {
     borderRadius: 20,
     flex: 0.98,
-    height: 45,
+    height: 40,
     backgroundColor: color.white,
     elevation: 2,
     paddingLeft: 10,
