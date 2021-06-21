@@ -50,8 +50,7 @@ function SearchScreen({ route, navigation }) {
   }, []);
 
   const onChangeSearch = (query) => {
-    if (searchQuery.length == 0) {
-      setTeacherList([]);
+    if (searchQuery.length <= 1) {
       setSearchType("search");
       setNotFound(false);
     }
@@ -59,14 +58,12 @@ function SearchScreen({ route, navigation }) {
     setSearchQuery(query);
   };
 
-  const handleFilter = () => {
+  const handleFilter = async () => {
     const toFind = searchQuery.toLowerCase();
+
     setTeacherList(
       list.filter((v) => (v = v.name.toLowerCase().includes(toFind)))
     );
-
-    if (!teacherList.lenght) setNotFound(true);
-    else setNotFound(false);
   };
 
   const onShowHandler = (tdata) => {
@@ -93,6 +90,10 @@ function SearchScreen({ route, navigation }) {
           placeholder="Search..."
           ref={searchRef}
           onChangeText={onChangeSearch}
+          onSubmitEditing={() => {
+            if (teacherList.length) return setNotFound(false);
+            setNotFound(true);
+          }}
           value={searchQuery}
           style={styles.searchBar}
         />
