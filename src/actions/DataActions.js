@@ -89,7 +89,7 @@ export const fetchTeacherRating = (tId, sId) => {
       .catch((error) => console.log(error.message));
   };
 };
-export const serachByDept = (deptCode, setLoading) => {
+export const serachByDept = (deptCode, setLoading, setNotFound) => {
   return async (dispatch) => {
     const data = [];
     firebase
@@ -111,6 +111,8 @@ export const serachByDept = (deptCode, setLoading) => {
       .catch((error) => console.log(error.message))
       .finally(() => {
         setLoading(false);
+        if (!data.length) setNotFound(true);
+
         dispatch({
           type: "SEARCH_TEACHER",
           newData: data,

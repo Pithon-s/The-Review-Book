@@ -6,6 +6,8 @@ import {
   StatusBar,
   FlatList,
   TextInput,
+  Image,
+  Text,
 } from "react-native";
 import { ActivityIndicator, List, Avatar } from "react-native-paper";
 import { useDispatch, useSelector } from "react-redux";
@@ -26,7 +28,7 @@ function SearchScreen({ route, navigation }) {
 
   const [searchQuery, setSearchQuery] = useState("");
   const [isLoading, setLoading] = useState(false);
-  const [isFound, setFound] = useState(false);
+  const [notFound, setNotFound] = useState(false);
   const [searchType, setSearchType] = useState(type);
   const [teacherList, setTeacherList] = useState([]);
   const searchRef = useRef();
@@ -43,7 +45,7 @@ function SearchScreen({ route, navigation }) {
     else {
       teacherList.length = 0;
       setLoading(true);
-      dispatch(serachByDept(deptcode, setLoading));
+      dispatch(serachByDept(deptcode, setLoading, setNotFound));
     }
   }, []);
 
@@ -51,6 +53,7 @@ function SearchScreen({ route, navigation }) {
     if (searchQuery.length == 0) {
       setTeacherList([]);
       setSearchType("search");
+      setNotFound(false);
     }
     handleFilter();
     setSearchQuery(query);
@@ -61,6 +64,9 @@ function SearchScreen({ route, navigation }) {
     setTeacherList(
       list.filter((v) => (v = v.name.toLowerCase().includes(toFind)))
     );
+
+    if (!teacherList.lenght) setNotFound(true);
+    else setNotFound(false);
   };
 
   const onShowHandler = (tdata) => {
@@ -80,7 +86,7 @@ function SearchScreen({ route, navigation }) {
           name="arrow-left"
           size={28}
           color={color.primary}
-          onPress={() => navigation.navigate("TabNavigator")}
+          onPress={() => navigation.pop()}
         />
 
         <TextInput
@@ -89,41 +95,60 @@ function SearchScreen({ route, navigation }) {
           onChangeText={onChangeSearch}
           value={searchQuery}
           style={styles.searchBar}
-          autoFocus={true}
         />
       </View>
 
       <View style={styles.cardView}>
         <ActivityIndicator animating={isLoading} color={color.primary} />
-        <FlatList
-          data={searchType === "search" ? teacherList : deptList}
-          keyExtractor={(key) => key.id.toString()}
-          ListFooterComponent={<View style={{ height: 10 }} />}
-          showsVerticalScrollIndicator={false}
-          renderItem={({ item }) => (
-            <List.Item
-              title={item.name}
-              left={() =>
-                searchType === "search" ? (
-                  <Avatar.Icon
-                    size={50}
-                    icon="magnify"
-                    color={color.primary}
-                    style={{
-                      backgroundColor: color.white,
-                      borderColor: color.primary,
-                      borderWidth: 0.1,
-                    }}
-                  />
-                ) : (
-                  <Avatar.Image size={50} source={{ uri: item.imgURL }} />
-                )
-              }
-              onPress={() => onShowHandler(item)}
-              rippleColor={color.primaryLight}
+
+        {notFound ? (
+          <View
+            style={{
+              flex: 1,
+              alignItems: "center",
+              paddingTop: 20,
+            }}
+          >
+            <Image
+              style={{ height: 200, width: 200, opacity: 0.7 }}
+              source={require("../assets/not_found.jpg")}
             />
-          )}
-        />
+
+            <Text style={{ fontSize: 20, color: color.darkgrey }}>
+              No Result Found
+            </Text>
+          </View>
+        ) : (
+          <FlatList
+            data={searchType === "search" ? teacherList : deptList}
+            keyExtractor={(key) => key.id.toString()}
+            ListFooterComponent={<View style={{ height: 10 }} />}
+            showsVerticalScrollIndicator={false}
+            renderItem={({ item }) => (
+              <List.Item
+                title={item.name}
+                left={() =>
+                  searchType === "search" ? (
+                    <Avatar.Icon
+                      size={50}
+                      icon="magnify"
+                      color={color.primary}
+                      style={{
+                        backgroundColor: color.white,
+                        borderColor: color.primary,
+                        borderWidth: 0.1,
+                      }}
+                    />
+                  ) : (
+                    <Avatar.Image size={50} source={{ uri: item.imgURL }} />
+                  )
+                }
+                onPress={() => onShowHandler(item)}
+                rippleColor={color.primaryLight}
+              />
+            )}
+          />
+        )}
       </View>
     </SafeAreaView>
   );

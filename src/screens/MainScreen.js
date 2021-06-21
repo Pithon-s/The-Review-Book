@@ -8,12 +8,21 @@ import {
   Image,
 } from "react-native";
 import { IconButton, Card, Title } from "react-native-paper";
-import colors from "../config/colors";
+import { useSelector, useDispatch } from "react-redux";
+import { fetchTeachersList } from "../actions/DataActions";
 
 import color from "../config/colors";
 import deptArray from "../utilities/DepartmentData";
 
 function MainScreen({ navigation }) {
+  const list = useSelector((state) => state.Data.list);
+  const dispatch = useDispatch();
+
+  const handleSearch = () => {
+    navigation.navigate("SearchScreen", { type: "search", code: "" });
+    if (!list.length) dispatch(fetchTeachersList());
+  };
+
   return (
     <SafeAreaView style={styles.mainContainer}>
       <StatusBar backgroundColor={color.primary} />
@@ -38,9 +47,7 @@ function MainScreen({ navigation }) {
             borderColor: color.primary,
             borderWidth: 0.1,
           }}
-          onPress={() =>
-            navigation.navigate("SearchScreen", { type: "search", code: "" })
-          }
+          onPress={handleSearch}
         />
       </View>
 
@@ -95,7 +102,7 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 20,
-    color: colors.primary,
+    color: color.primary,
   },
   logoContainer: {
     height: 40,
