@@ -7,7 +7,7 @@ import {
   Pressable,
   Text,
 } from "react-native";
-import { Button, Provider, HelperText, TextInput } from "react-native-paper";
+import { Button, HelperText, TextInput } from "react-native-paper";
 import { Formik } from "formik";
 import { useDispatch, useSelector } from "react-redux";
 import { Ionicons, MaterialIcons } from "@expo/vector-icons";
@@ -61,187 +61,185 @@ function RegisterScreen({ navigation }) {
   };
 
   return (
-    <Provider>
-      <View style={styles.container}>
-        <EmailVerificationScreen />
-        <AgreementScreen
-          isVisible={showTerms}
-          setIsVisible={setShowTerms}
-          setIsAgree={setIsAgree}
-        />
-        <ContactUsScreen
-          isVisible={showContactUs}
-          setIsVisible={setShowContactUs}
-        />
+    <View style={styles.container}>
+      <EmailVerificationScreen />
+      <AgreementScreen
+        isVisible={showTerms}
+        setIsVisible={setShowTerms}
+        setIsAgree={setIsAgree}
+      />
+      <ContactUsScreen
+        isVisible={showContactUs}
+        setIsVisible={setShowContactUs}
+      />
 
-        <View style={styles.topContainer}>
-          <Pressable
-            onPress={() => setShowContactUs(true)}
-            onPressIn={() => setPressableColor(colors.white)}
-            onPressOut={() => setPressableColor("#9BAFE8")}
-            style={styles.contactUs}
-          >
-            <MaterialIcons name="email" size={20} color={pressableColor} />
-            <Text style={{ color: pressableColor, fontSize: 14 }}>
-              Contact Us
-            </Text>
-          </Pressable>
+      <View style={styles.topContainer}>
+        <Pressable
+          onPress={() => setShowContactUs(true)}
+          onPressIn={() => setPressableColor(colors.white)}
+          onPressOut={() => setPressableColor("#9BAFE8")}
+          style={styles.contactUs}
+        >
+          <MaterialIcons name="email" size={20} color={pressableColor} />
+          <Text style={{ color: pressableColor, fontSize: 14 }}>
+            Contact Us
+          </Text>
+        </Pressable>
 
-          <View style={styles.iconContainer}>
-            <ImagePicker imageUri={imageUri} setImageUri={setImageUri} />
-          </View>
+        <View style={styles.iconContainer}>
+          <ImagePicker imageUri={imageUri} setImageUri={setImageUri} />
         </View>
-        <ScrollView>
-          <View style={styles.bottomContainer}>
-            <Formik
-              initialValues={{
-                username: "",
-                email: "",
-                password: "",
-                confirmPassword: "",
-              }}
-              onSubmit={handleSubmit}
-            >
-              {({ handleSubmit, setFieldValue, values, touched }) => (
-                <View>
-                  <FormTextInput
-                    mode="flat"
-                    label="Full name"
-                    title="username"
-                    error={!values["username"] && touched["username"]}
-                    style={styles.textField}
-                    theme={{
-                      colors: { primary: colors.primary },
-                    }}
-                  />
-
-                  <FormTextInput
-                    mode="flat"
-                    label="Email"
-                    title="email"
-                    placeholder="xxxx-xxx-xxx@cuilahore.edu.pk"
-                    keyboardType="email-address"
-                    error={
-                      (!values["email"] && touched["email"]) || !isInvalidEmail
-                    }
-                    onChangeText={(email) => {
-                      setFieldValue("email", email);
-
-                      if (!validateEmail(email)) setIsInvalidEmail(false);
-                      else setIsInvalidEmail(true);
-                    }}
-                    style={styles.textField}
-                    theme={{
-                      colors: { primary: colors.primary },
-                    }}
-                  />
-                  <HelperText
-                    type="error"
-                    visible={!isInvalidEmail}
-                    style={{ marginBottom: -20 }}
-                  >
-                    Use domain xxxx-xxx-xxx@cuilahore.edu.pk
-                  </HelperText>
-
-                  <FormTextInput
-                    mode="flat"
-                    label="Password"
-                    title="password"
-                    secureTextEntry={!showPassword}
-                    style={styles.textField}
-                    error={!values["password"] && touched["password"]}
-                    theme={{
-                      colors: { primary: colors.primary },
-                    }}
-                    right={
-                      <TextInput.Icon
-                        name={() => (
-                          <Ionicons
-                            name={
-                              showPassword
-                                ? "ios-eye-off-outline"
-                                : "ios-eye-outline"
-                            }
-                            size={20}
-                            color={colors.darkgrey}
-                          />
-                        )}
-                        onPress={() => setShowPassword(!showPassword)}
-                      />
-                    }
-                  />
-
-                  <FormTextInput
-                    mode="flat"
-                    label="Confirm Password"
-                    title="confirmPassword"
-                    secureTextEntry={!showPassword}
-                    style={styles.textField}
-                    error={values["password"] !== values["confirmPassword"]}
-                    theme={{
-                      colors: { primary: colors.primary },
-                    }}
-                    right={
-                      <TextInput.Icon
-                        name={() => (
-                          <Ionicons
-                            name={
-                              showPassword
-                                ? "ios-eye-off-outline"
-                                : "ios-eye-outline"
-                            }
-                            size={20}
-                            color={colors.darkgrey}
-                          />
-                        )}
-                        onPress={() => setShowPassword(!showPassword)}
-                      />
-                    }
-                  />
-
-                  <CheckboxWithDesc
-                    status={isAgree}
-                    fontSize={14}
-                    style={{ marginVertical: 10 }}
-                    descriptionComp={
-                      <TextWithTouchable
-                        description="I agree to "
-                        touchableDescription="terms and conditions"
-                        handlePress={() => setShowTerms(true)}
-                      />
-                    }
-                    handlePress={() => {
-                      setIsAgree(!isAgree);
-                    }}
-                  />
-
-                  <Button
-                    mode="contained"
-                    loading={isLoading}
-                    disabled={!isAgree}
-                    onPress={handleSubmit}
-                    style={styles.button}
-                    theme={{
-                      colors: { primary: colors.primary },
-                    }}
-                  >
-                    register
-                  </Button>
-
-                  <TextWithTouchable
-                    description="ALREADY HAVE AN ACCOUNT?  "
-                    touchableDescription="SIGN IN"
-                    handlePress={() => navigation.navigate("Login")}
-                    fontSize={14}
-                    style={{ marginTop: 15, justifyContent: "center" }}
-                  />
-                </View>
-              )}
-            </Formik>
-          </View>
-        </ScrollView>
       </View>
-    </Provider>
+      <ScrollView>
+        <View style={styles.bottomContainer}>
+          <Formik
+            initialValues={{
+              username: "",
+              email: "",
+              password: "",
+              confirmPassword: "",
+            }}
+            onSubmit={handleSubmit}
+          >
+            {({ handleSubmit, setFieldValue, values, touched }) => (
+              <View>
+                <FormTextInput
+                  mode="flat"
+                  label="Full name"
+                  title="username"
+                  error={!values["username"] && touched["username"]}
+                  style={styles.textField}
+                  theme={{
+                    colors: { primary: colors.primary },
+                  }}
+                />
+
+                <FormTextInput
+                  mode="flat"
+                  label="Email"
+                  title="email"
+                  placeholder="xxxx-xxx-xxx@cuilahore.edu.pk"
+                  keyboardType="email-address"
+                  error={
+                    (!values["email"] && touched["email"]) || !isInvalidEmail
+                  }
+                  onChangeText={(email) => {
+                    setFieldValue("email", email);
+
+                    if (!validateEmail(email)) setIsInvalidEmail(false);
+                    else setIsInvalidEmail(true);
+                  }}
+                  style={styles.textField}
+                  theme={{
+                    colors: { primary: colors.primary },
+                  }}
+                />
+                <HelperText
+                  type="error"
+                  visible={!isInvalidEmail}
+                  style={{ marginBottom: -20 }}
+                >
+                  Use domain xxxx-xxx-xxx@cuilahore.edu.pk
+                </HelperText>
+
+                <FormTextInput
+                  mode="flat"
+                  label="Password"
+                  title="password"
+                  secureTextEntry={!showPassword}
+                  style={styles.textField}
+                  error={!values["password"] && touched["password"]}
+                  theme={{
+                    colors: { primary: colors.primary },
+                  }}
+                  right={
+                    <TextInput.Icon
+                      name={() => (
+                        <Ionicons
+                          name={
+                            showPassword
+                              ? "ios-eye-off-outline"
+                              : "ios-eye-outline"
+                          }
+                          size={20}
+                          color={colors.darkgrey}
+                        />
+                      )}
+                      onPress={() => setShowPassword(!showPassword)}
+                    />
+                  }
+                />
+
+                <FormTextInput
+                  mode="flat"
+                  label="Confirm Password"
+                  title="confirmPassword"
+                  secureTextEntry={!showPassword}
+                  style={styles.textField}
+                  error={values["password"] !== values["confirmPassword"]}
+                  theme={{
+                    colors: { primary: colors.primary },
+                  }}
+                  right={
+                    <TextInput.Icon
+                      name={() => (
+                        <Ionicons
+                          name={
+                            showPassword
+                              ? "ios-eye-off-outline"
+                              : "ios-eye-outline"
+                          }
+                          size={20}
+                          color={colors.darkgrey}
+                        />
+                      )}
+                      onPress={() => setShowPassword(!showPassword)}
+                    />
+                  }
+                />
+
+                <CheckboxWithDesc
+                  status={isAgree}
+                  fontSize={14}
+                  style={{ marginVertical: 10 }}
+                  descriptionComp={
+                    <TextWithTouchable
+                      description="I agree to "
+                      touchableDescription="terms and conditions"
+                      handlePress={() => setShowTerms(true)}
+                    />
+                  }
+                  handlePress={() => {
+                    setIsAgree(!isAgree);
+                  }}
+                />
+
+                <Button
+                  mode="contained"
+                  loading={isLoading}
+                  disabled={!isAgree}
+                  onPress={handleSubmit}
+                  style={styles.button}
+                  theme={{
+                    colors: { primary: colors.primary },
+                  }}
+                >
+                  register
+                </Button>
+
+                <TextWithTouchable
+                  description="ALREADY HAVE AN ACCOUNT?  "
+                  touchableDescription="SIGN IN"
+                  handlePress={() => navigation.navigate("Login")}
+                  fontSize={14}
+                  style={{ marginTop: 15, justifyContent: "center" }}
+                />
+              </View>
+            )}
+          </Formik>
+        </View>
+      </ScrollView>
+    </View>
   );
 }
 

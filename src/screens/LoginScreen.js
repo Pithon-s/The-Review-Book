@@ -9,7 +9,7 @@ import {
   Image,
   Alert,
 } from "react-native";
-import { Button, TextInput, HelperText, Provider } from "react-native-paper";
+import { Button, TextInput, HelperText } from "react-native-paper";
 import { useDispatch, useSelector } from "react-redux";
 import { Ionicons } from "@expo/vector-icons";
 
@@ -60,9 +60,8 @@ function LoginScreen({ navigation }) {
   };
 
   return (
-    // <Provider>
     <ScrollView style={styles.container}>
-      {/* <EmailVerificationScreen /> */}
+      <EmailVerificationScreen />
 
       <StatusBar style="light" backgroundColor={colors.primary} />
       <View style={styles.logoContainer}>
@@ -196,7 +195,6 @@ function LoginScreen({ navigation }) {
         </Button>
       </View>
     </ScrollView>
-    // </Provider>
   );
 }
 

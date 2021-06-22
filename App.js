@@ -1,11 +1,12 @@
 import { NavigationContainer } from "@react-navigation/native";
 import React from "react";
+import { LogBox } from "react-native";
 import firebase from "firebase";
 import AppLoading from "expo-app-loading";
 import { Provider, useDispatch, useSelector } from "react-redux";
 import { createStore, applyMiddleware } from "redux";
 import thunk from "redux-thunk";
-import { LogBox } from "react-native";
+import { Provider as PaperProvider } from "react-native-paper";
 
 import NavigationTheme from "./src/navigations/NavigationTheme";
 import AuthNavigation from "./src/navigations/AuthNavigation";
@@ -67,7 +68,9 @@ export default function App() {
 
   return (
     <Provider store={store}>
-      <NavigationImp />
+      <PaperProvider>
+        <NavigationImp />
+      </PaperProvider>
     </Provider>
   );
 }
