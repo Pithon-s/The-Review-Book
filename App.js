@@ -6,7 +6,6 @@ import AppLoading from "expo-app-loading";
 import { Provider, useDispatch, useSelector } from "react-redux";
 import { createStore, applyMiddleware } from "redux";
 import thunk from "redux-thunk";
-import { Provider as PaperProvider } from "react-native-paper";
 
 import NavigationTheme from "./src/navigations/NavigationTheme";
 import AuthNavigation from "./src/navigations/AuthNavigation";
@@ -50,9 +49,7 @@ const NavigationImp = () => {
 
   return (
     <NavigationContainer theme={NavigationTheme}>
-      <PaperProvider>
-        {isLogged ? <ProfileNavigation /> : <AuthNavigation />}
-      </PaperProvider>
+      {isLogged ? <ProfileNavigation /> : <AuthNavigation />}
     </NavigationContainer>
   );
 };
@@ -65,7 +62,6 @@ export default function App() {
     'Each child in a list should have a unique "key" prop',
     "undefined is not a function (near '...}).catch(function (error) {...')",
     "Function Query.where() called with invalid data",
-    "Error: Directory for",
   ]);
 
   return (

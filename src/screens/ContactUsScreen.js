@@ -16,7 +16,6 @@ function ContactUsScreen({ isVisible, setIsVisible }) {
     <PopUpDialog
       icon={require("../assets/email.png")}
       iconSize={80}
-      flexVal={0.87}
       visible={isVisible}
       title="Contact Us"
       onDismiss={() => setIsVisible(false)}
@@ -71,7 +70,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingTop: 40,
-    width: width * 0.85,
     paddingHorizontal: 15,
   },
   button: {

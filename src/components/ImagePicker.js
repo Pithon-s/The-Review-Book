@@ -68,7 +68,7 @@ function ImagePicker({ imageUri, setImageUri }) {
             size={25}
             color={colors.white}
             theme={{
-              colors: { primary: colors.primaryLight },
+              colors: { primary: "#32D095" },
             }}
             style={{ position: "absolute", bottom: 55, left: 60 }}
           />

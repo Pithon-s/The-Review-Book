@@ -1,6 +1,6 @@
 import React from "react";
 import { View, Text, StyleSheet, Dimensions, Image } from "react-native";
-import { Modal, Portal } from "react-native-paper";
+import Modal from "react-native-modal";
 
 import colors from "../config/colors";
 
@@ -8,7 +8,7 @@ const height = Dimensions.get("screen").height;
 
 function PopUpDialog({
   title,
-  flexVal = 0.85,
+  flexVal = 0.8,
   children,
   icon,
   iconSize = 70,
@@ -17,14 +17,8 @@ function PopUpDialog({
   onDismiss,
 }) {
   return (
-    <Portal>
-      <Modal
-        visible={visible}
-        onDismiss={onDismiss}
-        contentContainerStyle={{
-          alignSelf: "center",
-        }}
-      >
+    <View>
+      <Modal isVisible={visible} onBackdropPress={onDismiss}>
         <View style={[styles.container, { flex: flexVal }]}>
           <View style={styles.topContainer}>
             <Text style={styles.topTitle}>{title}</Text>
@@ -49,7 +43,7 @@ function PopUpDialog({
           {children}
         </View>
       </Modal>
-    </Portal>
+    </View>
   );
 }
 

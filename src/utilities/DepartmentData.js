@@ -55,18 +55,24 @@ export default [
   },
   {
     id: 11,
+    title: "Department of Statistics",
+    uri: require("../assets/Departments/Statistics.jpg"),
+    code: "ST",
+  },
+  {
+    id: 12,
     title: "Department of Chemistery",
     uri: require("../assets/Departments/Chemistry.jpg"),
     code: "CE",
   },
   {
-    id: 12,
+    id: 13,
     title: "Department of Architecture",
     uri: require("../assets/Departments/Architecture.jpeg"),
     code: "AE",
   },
   {
-    id: 13,
+    id: 14,
     title: "Department of Art & Design",
     uri: require("../assets/Departments/ArtDesign.jpeg"),
     code: "AD",

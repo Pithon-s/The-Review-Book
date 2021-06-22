@@ -1,6 +1,7 @@
 firebase
 formik
 react-native-paper
+react-native-screens
 
 expo-app-loading
 expo-secure-store

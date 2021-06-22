@@ -66,7 +66,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingTop: 40,
-    width: width * 0.85,
     paddingHorizontal: 20,
   },
   button: {

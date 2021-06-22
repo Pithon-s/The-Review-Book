@@ -7,7 +7,7 @@ import {
   SafeAreaView,
   Dimensions,
 } from "react-native";
-import { Button, Provider } from "react-native-paper";
+import { Button } from "react-native-paper";
 import { useDispatch, useSelector } from "react-redux";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 
@@ -29,78 +29,76 @@ function ProfileScreen() {
   };
 
   return (
-    <Provider>
-      <SafeAreaView style={styles.container}>
-        <AboutUsScreen
-          isVisible={aboutUsVisible}
-          setIsVisible={setAboutUsVisible}
-        />
+    <SafeAreaView style={styles.container}>
+      <AboutUsScreen
+        isVisible={aboutUsVisible}
+        setIsVisible={setAboutUsVisible}
+      />
 
-        <View style={styles.topContainer}>
-          <View style={styles.info}>
-            <Text style={styles.title}>{user.username}</Text>
-            {!user.isAnonymous && (
-              <>
-                <Text style={styles.rollno}>
-                  {user.email.substr(0, user.email.indexOf("@"))}
-                </Text>
+      <View style={styles.topContainer}>
+        <View style={styles.info}>
+          <Text style={styles.title}>{user.username}</Text>
+          {!user.isAnonymous && (
+            <>
+              <Text style={styles.rollno}>
+                {user.email.substr(0, user.email.indexOf("@"))}
+              </Text>
 
-                <View
-                  style={{
-                    flexDirection: "row",
-                    alignItems: "center",
-                  }}
-                >
-                  <MaterialCommunityIcons
-                    name="email"
-                    size={20}
-                    color={color.lightgrey}
-                  />
-                  <Text style={styles.email}>{user.email}</Text>
-                </View>
-              </>
-            )}
-          </View>
-          <View style={styles.profilePic}>
-            <View style={styles.profilePicContainer}>
-              <Image
-                source={{ uri: user.profilePictureURI }}
-                style={styles.image}
-                resizeMode="center"
-              />
-            </View>
+              <View
+                style={{
+                  flexDirection: "row",
+                  alignItems: "center",
+                }}
+              >
+                <MaterialCommunityIcons
+                  name="email"
+                  size={20}
+                  color={color.lightgrey}
+                />
+                <Text style={styles.email}>{user.email}</Text>
+              </View>
+            </>
+          )}
+        </View>
+        <View style={styles.profilePic}>
+          <View style={styles.profilePicContainer}>
+            <Image
+              source={{ uri: user.profilePictureURI }}
+              style={styles.image}
+              resizeMode="center"
+            />
           </View>
         </View>
+      </View>
 
-        <View style={styles.bottomContainer}>
-          <Button
-            icon="information-outline"
-            onPress={() => setAboutUsVisible(true)}
-            color={color.primary}
-            style={{
-              borderRadius: 20,
-              alignSelf: "center",
-              width: "80%",
-            }}
-          >
-            about us
-          </Button>
+      <View style={styles.bottomContainer}>
+        <Button
+          icon="information-outline"
+          onPress={() => setAboutUsVisible(true)}
+          color={color.primary}
+          style={{
+            borderRadius: 20,
+            alignSelf: "center",
+            width: "80%",
+          }}
+        >
+          about us
+        </Button>
 
-          <Button
-            icon="logout"
-            onPress={handleLogout}
-            color="red"
-            style={{
-              borderRadius: 20,
-              alignSelf: "center",
-              width: "80%",
-            }}
-          >
-            Logout
-          </Button>
-        </View>
-      </SafeAreaView>
-    </Provider>
+        <Button
+          icon="logout"
+          onPress={handleLogout}
+          color="red"
+          style={{
+            borderRadius: 20,
+            alignSelf: "center",
+            width: "80%",
+          }}
+        >
+          Logout
+        </Button>
+      </View>
+    </SafeAreaView>
   );
 }
 

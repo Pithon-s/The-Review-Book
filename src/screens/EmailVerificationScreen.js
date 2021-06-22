@@ -28,6 +28,7 @@ function EmailVerificationScreen() {
     <PopUpDialog
       icon={require("../assets/email.png")}
       visible={isModelVisible}
+      flexVal={0.75}
       title="Email Verification"
       onDismiss={() =>
         dispatch({
