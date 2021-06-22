@@ -9,7 +9,7 @@ import {
   Image,
   Alert,
 } from "react-native";
-import { Button, TextInput, HelperText, Provider } from "react-native-paper";
+import { Button, HelperText, TextInput, Provider } from "react-native-paper";
 import { useDispatch, useSelector } from "react-redux";
 import { Ionicons } from "@expo/vector-icons";
 
@@ -74,7 +74,7 @@ function LoginScreen({ navigation }) {
         </View>
         <View style={styles.fieldContainer}>
           <TextInput
-            mode="flatlined"
+            mode="flat"
             label="Enter your email"
             value={email}
             onChangeText={(email) => {
@@ -86,16 +86,17 @@ function LoginScreen({ navigation }) {
             placeholder="xxxx-xxx-xxx@cuilahore.edu.pk"
             keyboardType="email-address"
             style={styles.textField}
-            // theme={{
-            //   colors: { primary: colors.primary },
-            // }}
+            theme={{
+              colors: { primary: colors.primary },
+            }}
           />
+
           <HelperText type="error" visible={!isInvalidEmail}>
             Use domain xxxx-xxx-xxx@cuilahore.edu.pk
           </HelperText>
 
           <TextInput
-            mode="flatlined"
+            mode="flat"
             label="Enter your password"
             value={password}
             right={
@@ -116,9 +117,9 @@ function LoginScreen({ navigation }) {
             placeholder=""
             secureTextEntry={!showPassword}
             style={[styles.textField, { marginBottom: 10 }]}
-            // theme={{
-            //   colors: { primary: colors.primary },
-            // }}
+            theme={{
+              colors: { primary: colors.primary },
+            }}
           />
 
           <CheckboxWithDesc
@@ -203,6 +204,7 @@ function LoginScreen({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: colors.white,
   },
   button: {
     borderRadius: 20,

@@ -102,15 +102,8 @@ function RegisterScreen({ navigation }) {
               }}
               onSubmit={handleSubmit}
             >
-              {({
-                handleSubmit,
-                setFieldValue,
-                handleChange,
-                setFieldTouched,
-                values,
-                touched,
-              }) => (
-                <View style={styles.inputs}>
+              {({ handleSubmit, setFieldValue, values, touched }) => (
+                <View>
                   <FormTextInput
                     mode="flat"
                     label="Full name"
@@ -255,6 +248,7 @@ function RegisterScreen({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: colors.white,
   },
   contactUs: {
     position: "absolute",
