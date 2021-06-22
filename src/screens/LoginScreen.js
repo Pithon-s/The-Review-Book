@@ -61,7 +61,8 @@ function LoginScreen({ navigation }) {
 
   return (
     <Provider>
-      <ScrollView style={styles.container}>
+      {/* <ScrollView style={styles.container}> */}
+      <View style={styles.container}>
         <EmailVerificationScreen />
 
         <StatusBar style="light" backgroundColor={colors.primary} />
@@ -196,7 +197,7 @@ function LoginScreen({ navigation }) {
             <Text style={{ color: colors.primary }}>log in anonymously</Text>
           </Button>
         </View>
-      </ScrollView>
+      </View>
     </Provider>
   );
 }
