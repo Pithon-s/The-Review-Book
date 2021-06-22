@@ -48,7 +48,7 @@ function LoginScreen({ navigation }) {
   const handleAnonymous = () => {
     Alert.alert(
       "Limitations",
-      "You will only be able to read reviews and view teachers profile.",
+      "With anonymous login, you can ONLY read reviews.",
       [
         { text: "Cancel" },
         {
@@ -86,9 +86,9 @@ function LoginScreen({ navigation }) {
             placeholder="xxxx-xxx-xxx@cuilahore.edu.pk"
             keyboardType="email-address"
             style={styles.textField}
-            theme={{
-              colors: { primary: colors.primary },
-            }}
+            // theme={{
+            //   colors: { primary: colors.primary },
+            // }}
           />
           <HelperText type="error" visible={!isInvalidEmail}>
             Use domain xxxx-xxx-xxx@cuilahore.edu.pk
@@ -116,9 +116,9 @@ function LoginScreen({ navigation }) {
             placeholder=""
             secureTextEntry={!showPassword}
             style={[styles.textField, { marginBottom: 10 }]}
-            theme={{
-              colors: { primary: colors.primary },
-            }}
+            // theme={{
+            //   colors: { primary: colors.primary },
+            // }}
           />
 
           <CheckboxWithDesc
