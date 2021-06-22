@@ -25,7 +25,7 @@ import timeSince from "../utilities/timeSince";
 const height = Dimensions.get("screen").height;
 const width = Dimensions.get("screen").width;
 
-function TeacherProfileScreen({ navigation }) {
+function TeacherProfileScreen(props) {
   const [comment, setComment] = useState("");
   const isAnonymous = useSelector((state) => state.Auth.user.isAnonymous);
   const teacherData = useSelector((state) => state.Data.teacherData);
@@ -116,7 +116,9 @@ function TeacherProfileScreen({ navigation }) {
             icon="arrow-left"
             color={color.white}
             size={30}
-            onPress={() => navigation.pop()}
+            onPress={() => {
+              props.navigation.navigate("SearchScreen");
+            }}
             style={{ alignSelf: "flex-start", position: "absolute", top: 3 }}
           />
           <View style={styles.imageBackgroundDiv}>

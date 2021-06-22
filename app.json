@@ -13,22 +13,20 @@
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true
     },
     "android": {
       "package": "the.review.book",
       "versionCode": 1,
-      "enableDangerousExperimentalLeanBuilds": true,
       "adaptiveIcon": {
-        "foregroundImage": "./src/assets/icon.png"
+        "foregroundImage": "./src/assets/adaptive-icon.png",
+        "backgroundImage": "./src/assets/adaptive-frame.png"
       }
     },
     "web": {
-      "favicon": "./src/assets/icon.png"
+      "favicon": "./src/assets/favicon.png"
     },
     "description": "",
     "githubUrl": "https://github.com/Pithon-s/The-Review-Book"
