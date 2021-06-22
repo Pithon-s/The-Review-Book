@@ -9,11 +9,7 @@ import {
   Image,
   Alert,
 } from "react-native";
-import { TextInput, Button, HelperText, Provider } from "react-native-paper";
-import {
-  FilledTextField,
-  OutlinedTextField,
-} from "react-native-material-textfield";
+import { Button, TextInput, HelperText, Provider } from "react-native-paper";
 import { useDispatch, useSelector } from "react-redux";
 import { Ionicons } from "@expo/vector-icons";
 
@@ -64,128 +60,143 @@ function LoginScreen({ navigation }) {
   };
 
   return (
-    <Provider>
-      <ScrollView style={styles.container}>
-        <EmailVerificationScreen />
+    // <Provider>
+    <ScrollView style={styles.container}>
+      {/* <EmailVerificationScreen /> */}
 
-        <StatusBar style="light" backgroundColor={colors.primary} />
-        <View style={styles.logoContainer}>
-          <Image
-            source={require("../assets/logo_blue.png")}
-            style={styles.logo}
-            resizeMode="center"
-          />
-        </View>
-        <View style={styles.fieldContainer}>
-          <FilledTextField
-            label="Enter your email"
-            value={email}
-            onChangeText={(email) => {
-              setEmail(email);
-              if (!validateEmail(email)) setIsInvalidEmail(false);
-              else setIsInvalidEmail(true);
-            }}
-            tintColor={colors.primary}
-            error={
-              !isInvalidEmail ? "Use domain xxxx-xxx-xxx@cuilahore.edu.pk" : ""
-            }
-            keyboardType="email-address"
-            inputContainerStyle={styles.textField}
-          />
+      <StatusBar style="light" backgroundColor={colors.primary} />
+      <View style={styles.logoContainer}>
+        <Image
+          source={require("../assets/logo_blue.png")}
+          style={styles.logo}
+          resizeMode="center"
+        />
+      </View>
+      <View style={styles.fieldContainer}>
+        <TextInput
+          mode="flatlined"
+          label="Enter your email"
+          value={email}
+          onChangeText={(email) => {
+            setEmail(email);
+            if (!validateEmail(email)) setIsInvalidEmail(false);
+            else setIsInvalidEmail(true);
+          }}
+          error={!isInvalidEmail}
+          placeholder="xxxx-xxx-xxx@cuilahore.edu.pk"
+          keyboardType="email-address"
+          style={styles.textField}
+          theme={{
+            colors: { primary: colors.primary },
+          }}
+        />
+        <HelperText type="error" visible={!isInvalidEmail}>
+          Use domain xxxx-xxx-xxx@cuilahore.edu.pk
+        </HelperText>
 
-          <FilledTextField
-            secureTextEntry={true}
-            label="Enter your password"
-            value={password}
-            onChangeText={(password) => setPassword(password)}
-            tintColor={colors.primary}
-            keyboardType="visible-password"
-            inputContainerStyle={[styles.textField, { marginVertical: 10 }]}
-            renderRightAccessory={() => (
-              <Ionicons
-                name={showPassword ? "ios-eye-off-outline" : "ios-eye-outline"}
-                size={20}
-                color={colors.darkgrey}
-                onPress={() => setShowPassword(!showPassword)}
-              />
-            )}
-          />
+        <TextInput
+          mode="flatlined"
+          label="Enter your password"
+          value={password}
+          right={
+            <TextInput.Icon
+              name={() => (
+                <Ionicons
+                  name={
+                    showPassword ? "ios-eye-off-outline" : "ios-eye-outline"
+                  }
+                  size={20}
+                  color={colors.darkgrey}
+                />
+              )}
+              onPress={() => setShowPassword(!showPassword)}
+            />
+          }
+          onChangeText={(password) => setPassword(password)}
+          placeholder=""
+          secureTextEntry={!showPassword}
+          style={[styles.textField, { marginBottom: 10 }]}
+          theme={{
+            colors: { primary: colors.primary },
+          }}
+        />
 
-          <CheckboxWithDesc
-            status={keepLogged}
-            description="Keep me signed in"
-            handlePress={() => {
-              setKeepLogged(!keepLogged);
-            }}
-          />
-          <View style={styles.buttonsContainer}>
-            <Button
-              mode="contained"
-              loading={isLoading}
-              onPress={handleSubmit}
-              style={[styles.button, { width: 120 }]}
-              theme={{
-                colors: { primary: colors.primary },
-              }}
-            >
-              sign in
-            </Button>
+        <CheckboxWithDesc
+          status={keepLogged}
+          description="Keep me signed in"
+          handlePress={() => {
+            setKeepLogged(!keepLogged);
+          }}
+        />
 
-            <Button
-              mode="text"
-              onPress={() => navigation.navigate("ForgetPassword")}
-              style={styles.button}
-              theme={{
-                colors: { primary: colors.primary },
-              }}
-            >
-              forget password?
-            </Button>
-          </View>
-        </View>
-        <View style={styles.bottomContainer}>
-          <View
-            style={{
-              flexDirection: "row",
-              alignItems: "center",
-              marginBottom: 15,
-            }}
-          >
-            <View style={styles.seperator} />
-            <Text numberOfLines={1} style={styles.msgText}>
-              {"  Don't have an account  "}
-            </Text>
-            <View style={styles.seperator} />
-          </View>
-
+        <View style={styles.buttonsContainer}>
           <Button
             mode="contained"
-            onPress={() => navigation.navigate("Register")}
-            style={[styles.button, { width: "100%" }]}
-            theme={{
-              colors: { primary: "#DDDDDD" },
-            }}
-          >
-            <Text style={{ color: "#5F5F5F" }}>sign up</Text>
-          </Button>
-
-          <Text style={styles.or}>OR</Text>
-
-          <Button
-            mode="text"
-            onPress={handleAnonymous}
-            style={[styles.button, { width: "100%" }]}
-            loading={anonymousLoading}
-            icon="lock"
+            loading={isLoading}
+            onPress={handleSubmit}
+            style={[styles.button, { width: 120 }]}
             theme={{
               colors: { primary: colors.primary },
             }}
           >
-            <Text style={{ color: colors.primary }}>log in anonymously</Text>
+            sign in
+          </Button>
+
+          <Button
+            mode="text"
+            onPress={() => navigation.navigate("ForgetPassword")}
+            style={styles.button}
+            theme={{
+              colors: { primary: colors.primary },
+            }}
+          >
+            forget password?
           </Button>
         </View>
-      </ScrollView>
-    </Provider>
+      </View>
+      <View style={styles.bottomContainer}>
+        <View
+          style={{
+            flexDirection: "row",
+            alignItems: "center",
+            marginBottom: 15,
+          }}
+        >
+          <View style={styles.seperator} />
+          <Text numberOfLines={1} style={styles.msgText}>
+            {"  Don't have an account  "}
+          </Text>
+          <View style={styles.seperator} />
+        </View>
+
+        <Button
+          mode="contained"
+          onPress={() => navigation.navigate("Register")}
+          style={[styles.button, { width: "100%" }]}
+          theme={{
+            colors: { primary: "#DDDDDD" },
+          }}
+        >
+          <Text style={{ color: "#5F5F5F" }}>sign up</Text>
+        </Button>
+
+        <Text style={styles.or}>OR</Text>
+
+        <Button
+          mode="text"
+          onPress={handleAnonymous}
+          style={[styles.button, { width: "100%" }]}
+          loading={anonymousLoading}
+          icon="lock"
+          theme={{
+            colors: { primary: colors.primary },
+          }}
+        >
+          <Text style={{ color: colors.primary }}>log in anonymously</Text>
+        </Button>
+      </View>
+    </ScrollView>
+    // </Provider>
   );
 }
 
