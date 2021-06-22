@@ -50,7 +50,9 @@ const NavigationImp = () => {
 
   return (
     <NavigationContainer theme={NavigationTheme}>
-      {isLogged ? <ProfileNavigation /> : <AuthNavigation />}
+      <PaperProvider>
+        {isLogged ? <ProfileNavigation /> : <AuthNavigation />}
+      </PaperProvider>
     </NavigationContainer>
   );
 };
@@ -68,9 +70,7 @@ export default function App() {
 
   return (
     <Provider store={store}>
-      <PaperProvider>
-        <NavigationImp />
-      </PaperProvider>
+      <NavigationImp />
     </Provider>
   );
 }
