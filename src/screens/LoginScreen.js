@@ -73,7 +73,49 @@ function LoginScreen({ navigation }) {
             resizeMode="center"
           />
         </View>
-        <View style={styles.fieldContainer}>
+
+        <View style={styles.bottomContainer}>
+          <Text style={styles.msgText}>
+            Please enter your email address. We will send you an email to reset
+            your password
+          </Text>
+
+          <TextInput
+            mode="flat"
+            label="Enter your email"
+            value={email}
+            onChangeText={(email) => {
+              setEmail(email);
+
+              if (!validateEmail(email)) setIsInvalidEmail(false);
+              else setIsInvalidEmail(true);
+            }}
+            error={!isInvalidEmail}
+            placeholder="xxxx-xxx-xxx@cuilahore.edu.pk"
+            keyboardType="email-address"
+            style={styles.textField}
+            theme={{
+              colors: { primary: colors.primary },
+            }}
+          />
+          <HelperText type="error" visible={!isInvalidEmail}>
+            Use domain xxxx-xxx-xxx@cuilahore.edu.pk
+          </HelperText>
+
+          <Button
+            mode="contained"
+            onPress={handleSubmit}
+            // loading={loading}
+            style={styles.button}
+            theme={{
+              colors: { primary: colors.primary },
+            }}
+          >
+            Send email
+          </Button>
+        </View>
+
+        {/* <View style={styles.fieldContainer}>
           <TextInput
             mode="flat"
             label="Enter your email"
@@ -196,7 +238,7 @@ function LoginScreen({ navigation }) {
           >
             <Text style={{ color: colors.primary }}>log in anonymously</Text>
           </Button>
-        </View>
+        </View> */}
       </View>
     </Provider>
   );
@@ -227,12 +269,12 @@ const styles = StyleSheet.create({
     width: "90%",
     alignSelf: "center",
   },
-  bottomContainer: {
-    justifyContent: "center",
-    height: height * 0.25,
-    width: "90%",
-    alignSelf: "center",
-  },
+  // bottomContainer: {
+  //   justifyContent: "center",
+  //   height: height * 0.25,
+  //   width: "90%",
+  //   alignSelf: "center",
+  // },
   textField: {
     backgroundColor: colors.white,
   },
@@ -240,10 +282,10 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: colors.darkgrey,
   },
-  msgText: {
-    fontSize: 16,
-    color: colors.darkgrey,
-  },
+  // msgText: {
+  //   fontSize: 16,
+  //   color: colors.darkgrey,
+  // },
   or: {
     alignSelf: "center",
     marginBottom: 5,
@@ -259,6 +301,19 @@ const styles = StyleSheet.create({
   logo: {
     height: 150,
     width: 200,
+  },
+
+  bottomContainer: {
+    paddingTop: 80,
+    height: height * 0.75,
+    alignSelf: "center",
+    width: "85%",
+  },
+  msgText: {
+    color: colors.darkgrey,
+    fontSize: 18,
+    textAlign: "center",
+    marginBottom: 40,
   },
 });
 
