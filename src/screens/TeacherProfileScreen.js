@@ -1,4 +1,4 @@
-import React, { useState, useRef, createRef } from "react";
+import React, { useState, useRef, createRef, useEffect } from "react";
 import {
   View,
   StyleSheet,
@@ -8,6 +8,7 @@ import {
   FlatList,
   Text,
   Alert,
+  Keyboard,
 } from "react-native";
 import { List, Avatar, IconButton, TextInput } from "react-native-paper";
 import {
@@ -17,7 +18,6 @@ import {
 } from "react-native-vector-icons";
 
 import { useDispatch, useSelector } from "react-redux";
-import colors from "../config/colors";
 import color from "../config/colors";
 import { sendComment, setRating } from "../actions/DataActions";
 import timeSince from "../utilities/timeSince";
@@ -27,6 +27,7 @@ const width = Dimensions.get("screen").width;
 
 function TeacherProfileScreen(props) {
   const [comment, setComment] = useState("");
+  const [arrowVisible, setArrowVisible] = useState(true);
   const isAnonymous = useSelector((state) => state.Auth.user.isAnonymous);
   const teacherData = useSelector((state) => state.Data.teacherData);
   const profileComments = useSelector((state) => state.Data.comments);
@@ -38,6 +39,11 @@ function TeacherProfileScreen(props) {
   const textInput = createRef();
   const scrollRef = useRef();
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    Keyboard.addListener("keyboardDidShow", () => setArrowVisible(false));
+    Keyboard.addListener("keyboardDidHide", () => setArrowVisible(true));
+  }, []);
 
   //----------Handlers------------
   const handleSend = () => {
@@ -109,7 +115,7 @@ function TeacherProfileScreen(props) {
         style={styles.maincontainer}
         showsVerticalScrollIndicator={false}
       >
-        <StatusBar barStyle="dark-content" backgroundColor={colors.white} />
+        <StatusBar barStyle="dark-content" backgroundColor={color.white} />
 
         <View style={styles.imageDiv}>
           <IconButton
@@ -210,6 +216,7 @@ function TeacherProfileScreen(props) {
               ref={textInput}
               mode="flat"
               placeholder="Comment here..."
+              multiline
               disabled={isAnonymous}
               onChangeText={(text) => setComment(text)}
               style={{
@@ -221,6 +228,7 @@ function TeacherProfileScreen(props) {
                 colors: { primary: color.primary },
               }}
             />
+
             <IconButton
               icon="send"
               color={color.primary}
@@ -244,9 +252,7 @@ function TeacherProfileScreen(props) {
                   <View style={styles.commentTitle}>
                     <Text style={{ fontSize: 16 }}>{item.name}</Text>
                     <Text style={{ fontSize: 12, color: color.darkgrey }}>
-                      {/* {item.timeStamp.substr(0, item.timeStamp.indexOf(" "))} */}
                       {timeSince(item.timeStamp)}
-                      {/* {timeSince(new Date(Date.now()))} */}
                     </Text>
                   </View>
                 }
@@ -254,7 +260,7 @@ function TeacherProfileScreen(props) {
                 descriptionStyle={{ fontSize: 16 }}
                 descriptionNumberOfLines={4}
                 left={() => (
-                  <Avatar.Image size={60} source={{ uri: item.imgURL }} />
+                  <Avatar.Image size={55} source={{ uri: item.imgURL }} />
                 )}
               />
             )}
@@ -263,13 +269,15 @@ function TeacherProfileScreen(props) {
         <View style={{ height: 20 }} />
       </ScrollView>
 
-      <MaterialCommunityIcons
-        name="arrow-up"
-        onPress={handleScroll}
-        size={30}
-        style={styles.upwardButton}
-        color={color.white}
-      />
+      {arrowVisible && (
+        <MaterialCommunityIcons
+          name="arrow-up"
+          onPress={handleScroll}
+          size={30}
+          style={styles.upwardButton}
+          color={color.white}
+        />
+      )}
     </>
   );
 }
@@ -281,7 +289,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
   },
   text: {
-    color: colors.white,
+    color: color.white,
   },
   imageDiv: {
     height: height * 0.5,
@@ -347,7 +355,7 @@ const styles = StyleSheet.create({
     right: 15,
   },
   subText: {
-    color: colors.lightgrey,
+    color: color.lightgrey,
   },
 });
 

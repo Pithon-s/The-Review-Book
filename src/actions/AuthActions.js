@@ -2,6 +2,7 @@ import firebase from "firebase";
 import { Alert } from "react-native";
 
 import secureStorage from "../utilities/secureStorage";
+import selectAvatar from "../utilities/selectAvatar";
 
 const _uriToBlob = (uri) => {
   return new Promise((resolve, reject) => {
@@ -28,14 +29,15 @@ const _createUser = async (email, password, username, imageURI) => {
   });
 
   if (!imageURI) {
+    const avatar = selectAvatar();
+
     db.collection("users")
       .doc(email)
       .set({ email, username })
       .then(() => {
         current.updateProfile({
           displayName: username,
-          photoURL:
-            "https://firebasestorage.googleapis.com/v0/b/the-review-book-f2959.appspot.com/o/assets%2Fuser.png?alt=media&token=e009d53b-3f86-4187-90bf-7ccb8e8caffc",
+          photoURL: avatar,
         });
       });
 

@@ -8,12 +8,17 @@ import {
   Image,
 } from "react-native";
 import { IconButton, Card, Title } from "react-native-paper";
-import colors from "../config/colors";
+import { useDispatch, useSelector } from "react-redux";
 
+import colors from "../config/colors";
 import color from "../config/colors";
 import deptArray from "../utilities/DepartmentData";
+import { fetchTeachersList } from "../actions/DataActions";
 
 function MainScreen({ navigation }) {
+  const list = useSelector((state) => state.Data.list);
+  const dispatch = useDispatch();
+
   return (
     <SafeAreaView style={styles.mainContainer}>
       <StatusBar backgroundColor={color.primary} />
@@ -38,9 +43,10 @@ function MainScreen({ navigation }) {
             borderColor: color.primary,
             borderWidth: 0.1,
           }}
-          onPress={() =>
-            navigation.navigate("SearchScreen", { type: "search", code: "" })
-          }
+          onPress={() => {
+            navigation.navigate("SearchScreen", { type: "search", code: "" });
+            if (!list.length) dispatch(fetchTeachersList());
+          }}
         />
       </View>
 
@@ -71,6 +77,7 @@ function MainScreen({ navigation }) {
     </SafeAreaView>
   );
 }
+
 const styles = StyleSheet.create({
   mainContainer: {
     flex: 1,

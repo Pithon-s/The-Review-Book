@@ -62,6 +62,7 @@ export default function App() {
     'Each child in a list should have a unique "key" prop',
     "undefined is not a function (near '...}).catch(function (error) {...')",
     "Function Query.where() called with invalid data",
+    "Can't perform a React state update on an unmounted component.",
   ]);
 
   return (

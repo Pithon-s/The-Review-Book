@@ -90,6 +90,7 @@ function RegisterScreen({ navigation }) {
           <ImagePicker imageUri={imageUri} setImageUri={setImageUri} />
         </View>
       </View>
+      <View style={{ height: 45 }} />
       <ScrollView>
         <View style={styles.bottomContainer}>
           <Formik
@@ -267,7 +268,6 @@ const styles = StyleSheet.create({
   bottomContainer: {
     alignSelf: "center",
     paddingBottom: 50,
-    paddingTop: 40,
     width: "90%",
   },
   iconContainer: {
