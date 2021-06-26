@@ -18,7 +18,6 @@
       "supportsTablet": true
     },
     "android": {
-      "enableDangerousExperimentalLeanBuilds": true,
       "package": "the.review.book",
       "versionCode": 1,
       "adaptiveIcon": {
