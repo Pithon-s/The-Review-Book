@@ -3,10 +3,6 @@
     "android": {
       "release": {
         "workflow": "managed"
-      },
-      "preview": {
-        "workflow": "managed",
-        "buildType": "apk"
       }
     }
   }

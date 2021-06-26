@@ -27,7 +27,6 @@
     "web": {
       "favicon": "./src/assets/icon.png"
     },
-    "description": "",
-    "githubUrl": "https://github.com/Pithon-s/The-Review-Book"
+    "description": "Give reviews to your teachers, share your experience and help fellow students."
   }
 }

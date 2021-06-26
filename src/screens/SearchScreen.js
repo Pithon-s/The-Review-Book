@@ -132,7 +132,6 @@ function SearchScreen({ route, navigation }) {
                         borderColor: color.primary,
                         borderWidth: 0.1,
                       }}
-                      style={{ backgroundColor: color.lightgrey }}
                     />
                   ) : (
                     <Avatar.Image
