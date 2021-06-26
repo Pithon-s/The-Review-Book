@@ -19,7 +19,7 @@
     },
     "android": {
       "package": "the.review.book",
-      "versionCode": 2,
+      "versionCode": 1,
       "adaptiveIcon": {
         "foregroundImage": "./src/assets/icon.png"
       }
