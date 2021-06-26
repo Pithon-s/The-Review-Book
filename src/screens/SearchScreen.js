@@ -132,9 +132,14 @@ function SearchScreen({ route, navigation }) {
                         borderColor: color.primary,
                         borderWidth: 0.1,
                       }}
+                      style={{ backgroundColor: color.lightgrey }}
                     />
                   ) : (
-                    <Avatar.Image size={50} source={{ uri: item.imgURL }} />
+                    <Avatar.Image
+                      size={50}
+                      style={{ backgroundColor: color.lightgrey }}
+                      source={{ uri: item.imgURL }}
+                    />
                   )
                 }
                 onPress={() => onShowHandler(item)}

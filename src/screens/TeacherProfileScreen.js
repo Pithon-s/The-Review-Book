@@ -21,6 +21,7 @@ import { useDispatch, useSelector } from "react-redux";
 import color from "../config/colors";
 import { sendComment, setRating } from "../actions/DataActions";
 import timeSince from "../utilities/timeSince";
+import colors from "../config/colors";
 
 const height = Dimensions.get("screen").height;
 const width = Dimensions.get("screen").width;
@@ -83,7 +84,7 @@ function TeacherProfileScreen(props) {
               rating == 0
                 ? Alert.alert(
                     "Note!",
-                    "Once you rate you would not be able to change it.",
+                    "Once you give your rating, you would not be able to change it.",
                     [
                       {
                         text: "Cancel",
@@ -128,7 +129,11 @@ function TeacherProfileScreen(props) {
             style={{ alignSelf: "flex-start", position: "absolute", top: 3 }}
           />
           <View style={styles.imageBackgroundDiv}>
-            <Avatar.Image size={120} source={{ uri: teacherData.imgURL }} />
+            <Avatar.Image
+              size={120}
+              source={{ uri: teacherData.imgURL }}
+              style={{ backgroundColor: color.lightgrey }}
+            />
           </View>
 
           <View style={{ alignItems: "center" }}>
@@ -260,7 +265,11 @@ function TeacherProfileScreen(props) {
                 descriptionStyle={{ fontSize: 16 }}
                 descriptionNumberOfLines={4}
                 left={() => (
-                  <Avatar.Image size={55} source={{ uri: item.imgURL }} />
+                  <Avatar.Image
+                    size={55}
+                    source={{ uri: item.imgURL }}
+                    style={{ backgroundColor: color.lightgrey }}
+                  />
                 )}
               />
             )}

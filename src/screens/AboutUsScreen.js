@@ -23,7 +23,10 @@ function AboutUsScreen({ isVisible, setIsVisible }) {
       onDismiss={() => setIsVisible(false)}
     >
       <View style={styles.container}>
-        <ScrollView style={styles.textContainer}>
+        <ScrollView
+          style={styles.textContainer}
+          showsVerticalScrollIndicator={false}
+        >
           <Text style={[styles.msgText, { textAlign: "center" }]}>
             {`A warm and heartiest welcome to \n“The Review Book”`}
           </Text>
