@@ -6,7 +6,6 @@ const initialState = {
   isModelVisible: false,
   user: {
     email: "",
-    password: "",
     username: "",
     profilePictureURI: "",
     isAnonymous: false,
@@ -22,7 +21,6 @@ export default (state = initialState, action) => {
         isLoading: false,
         user: {
           email: action.payload.email,
-          password: action.payload.password,
           username: action.payload.username,
           profilePictureURI: action.payload.profilePictureURI,
         },
@@ -55,7 +53,6 @@ export default (state = initialState, action) => {
         isLoading: false,
         user: {
           email: action.payload.email,
-          password: action.payload.password,
         },
       };
     case "USER_VERIFIED":

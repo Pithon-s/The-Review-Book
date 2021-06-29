@@ -1,10 +1,11 @@
 import React from "react";
-import { View, Text, StyleSheet, Dimensions } from "react-native";
+import { View, Text, StyleSheet, Dimensions, Alert } from "react-native";
 import { Button } from "react-native-paper";
 import { useDispatch, useSelector } from "react-redux";
+import firebase from "firebase";
 
 import colors from "../config/colors";
-import { Login, sendVerification } from "../actions/AuthActions";
+import { sendVerification, Verified } from "../actions/AuthActions";
 import PopUpDialog from "../components/PopUpDialog";
 import TextWithTouchable from "../components/TextWithTouchable";
 
@@ -12,14 +13,22 @@ const height = Dimensions.get("screen").height;
 
 function EmailVerificationScreen() {
   const dispatch = useDispatch();
-  const email = useSelector((state) => state.Auth.user.email);
-  const password = useSelector((state) => state.Auth.user.password);
-  const isLoading = useSelector((state) => state.Auth.isLoading);
   const isModelVisible = useSelector((state) => state.Auth.isModelVisible);
 
   const handleContinue = () => {
-    dispatch(Login(email, password, true, "again"));
+    const auth = firebase.auth();
+
+    auth.currentUser.reload().then(() => {
+      if (auth.currentUser.emailVerified) dispatch(Verified());
+      else {
+        Alert.alert(
+          "Email not verified",
+          "Please check your email to verify yourself. "
+        );
+      }
+    });
   };
+
   const handleResend = () => {
     dispatch(sendVerification());
   };
@@ -49,7 +58,6 @@ function EmailVerificationScreen() {
           <Button
             mode="contained"
             onPress={handleContinue}
-            loading={isLoading}
             style={styles.button}
             theme={{
               colors: { primary: colors.primary },

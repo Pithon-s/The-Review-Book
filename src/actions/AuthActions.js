@@ -86,7 +86,6 @@ export const Login = (email, password, keepSigned, type) => {
           type: "LOGIN",
           payload: {
             email,
-            password,
             username: current.user.displayName,
             profilePictureURI: current.user.photoURL,
           },
@@ -104,7 +103,7 @@ export const Login = (email, password, keepSigned, type) => {
           });
         } else {
           Alert.alert(
-            "Login Failed !!",
+            "Login Failed",
             "Possible reason, your email is not verified. "
           );
         }
@@ -114,15 +113,15 @@ export const Login = (email, password, keepSigned, type) => {
         dispatch({
           type: "LOGIN_FAILED",
         });
-        if (
-          error.message ===
-          "There is no user record corresponding to this identifier. The user may have been deleted."
-        )
+
+        if (error.code == "auth/user-not-found")
           Alert.alert(
-            "Login Failed !!",
+            "Login Failed",
             "There is no user record corresponding to this email."
           );
-        else Alert.alert("Login Failed !!", error.message);
+        else if (error.code == "auth/wrong-password")
+          Alert.alert("Login Failed", "Wrong Password.");
+        else Alert.alert("Login Failed", error.message);
       });
   };
 };
@@ -164,48 +163,40 @@ export const Signup = (
       .auth()
       .createUserWithEmailAndPassword(email, password)
       .then(() => {
-        _createUser(email, password, username, imageURI)
-          .then(() => {
-            dispatch(sendVerification());
+        _createUser(email, password, username, imageURI).then(() => {
+          dispatch(sendVerification());
 
-            dispatch({
-              type: "SIGNUP",
-              payload: {
-                email,
-                password,
-              },
-            });
-
-            resetForm();
-            setImageUri(null);
-          })
-          .catch(() => {
-            dispatch({
-              type: "SET_LOADING",
-              payload: {
-                value: false,
-              },
-            });
+          dispatch({
+            type: "SIGNUP",
+            payload: {
+              email,
+            },
           });
+
+          resetForm();
+          setImageUri(null);
+        });
       })
       .catch((error) => {
+        if (error.code == "auth/email-already-in-use")
+          Alert.alert(
+            "Registration Failed",
+            "Email already in use. \nUse 'Forget Password' to recover your account.'."
+          );
+        else if (error.code == "auth/weak-password")
+          Alert.alert(
+            "Registration Failed",
+            "Password MUST be atleast 6 characters long."
+          );
+        else Alert.alert("Registration Failed", error.message);
+      })
+      .finally(() => {
         dispatch({
           type: "SET_LOADING",
           payload: {
             value: false,
           },
         });
-
-        if (
-          error.message ===
-          "The email address is already in use by another account."
-        )
-          Alert.alert(
-            "Registration Failed !!",
-            error.message +
-              "\n\nTip: \nIf you didn't register before then use 'Forget Password' to recover your account. "
-          );
-        else Alert.alert("Registration Failed !!", error.message);
       });
   };
 };
@@ -248,5 +239,13 @@ export const AutoLogin = () => {
 
     const parsed = JSON.parse(result);
     dispatch(Login(parsed.email, parsed.password, false, "auto_login"));
+  };
+};
+
+export const Verified = () => {
+  return async (dispatch) => {
+    dispatch({
+      type: "USER_VERIFIED",
+    });
   };
 };
