@@ -33,7 +33,7 @@ function LoginScreen({ navigation }) {
   const dispatch = useDispatch();
 
   const handleSubmit = () => {
-    if (!email || !password || !validateEmail(email)) return;
+    if (isLoading || !email || !password || !validateEmail(email)) return;
 
     dispatch(
       Login(
@@ -46,6 +46,8 @@ function LoginScreen({ navigation }) {
   };
 
   const handleAnonymous = () => {
+    if (anonymousLoading) return;
+
     Alert.alert(
       "Limitations",
       "With anonymous login, you can ONLY read reviews.",

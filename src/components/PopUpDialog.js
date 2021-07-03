@@ -18,7 +18,11 @@ function PopUpDialog({
 }) {
   return (
     <View>
-      <Modal isVisible={visible} onBackdropPress={onDismiss}>
+      <Modal
+        isVisible={visible}
+        onBackdropPress={onDismiss}
+        onBackButtonPress={onDismiss}
+      >
         <View style={[styles.container, { flex: flexVal }]}>
           <View style={styles.topContainer}>
             <Text style={styles.topTitle}>{title}</Text>

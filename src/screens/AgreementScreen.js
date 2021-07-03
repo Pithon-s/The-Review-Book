@@ -1,11 +1,9 @@
 import React from "react";
-import { View, Text, StyleSheet, Dimensions, ScrollView } from "react-native";
+import { View, Text, StyleSheet, ScrollView } from "react-native";
 import { Button } from "react-native-paper";
 
 import colors from "../config/colors";
 import PopUpDialog from "../components/PopUpDialog";
-
-const width = Dimensions.get("screen").width;
 
 function AgreementScreen({ isVisible, setIsVisible, setIsAgree }) {
   const handleContinue = () => {

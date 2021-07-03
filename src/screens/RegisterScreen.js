@@ -40,6 +40,7 @@ function RegisterScreen({ navigation }) {
 
   const handleSubmit = (data, { resetForm }) => {
     if (
+      isLoading ||
       !data.username ||
       !data.email ||
       !data.password ||
