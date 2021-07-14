@@ -4,22 +4,26 @@ import deptArray from "../utilities/DepartmentData";
 export const fetchTeachersList = () => {
   return async (dispatch) => {
     firebase
-      .firestore()
-      .collection("teacherslist")
-      .doc("list")
+      .database()
+      .ref("teacherlist")
       .get()
-      .then((doc) => {
-        if (doc.exists) dispatch({ type: "FETCHLIST", Data: doc.data().data });
+      .then((snapshot) => {
+        if (snapshot.exists())
+          dispatch({ type: "FETCHLIST", Data: snapshot.val() });
       })
-      .catch((err) => console.log(err.message));
+      .catch((error) => {
+        console.error(error);
+      });
   };
 };
+
 // Action to fetch data of specific searched teacher
 export const setLocalRating = () => {
   return async (dispatch) => {
     dispatch({ type: "ZERO_RATING" });
   };
 };
+
 // Action to pass selected teacher data in MainScreen to the TeacherProfileScreen
 export const showSelectedTeacherData = (data, navigation, setLoading) => {
   return async (dispatch) => {
