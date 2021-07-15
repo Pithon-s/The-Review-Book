@@ -80,8 +80,8 @@ function LoginScreen({ navigation }) {
           value={email}
           onChangeText={(email) => {
             setEmail(email);
-            if (!validateEmail(email)) setIsInvalidEmail(false);
-            else setIsInvalidEmail(true);
+            if (validateEmail(email) || !email) setIsInvalidEmail(true);
+            else setIsInvalidEmail(false);
           }}
           error={!isInvalidEmail}
           placeholder="xxxx-xxx-xxx@cuilahore.edu.pk"

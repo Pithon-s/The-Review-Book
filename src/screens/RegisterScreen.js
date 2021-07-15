@@ -107,8 +107,9 @@ function RegisterScreen({ navigation }) {
               <View>
                 <FormTextInput
                   mode="flat"
-                  label="Full name"
+                  label="Public name"
                   title="username"
+                  placeholder="Username to show with comments"
                   error={!values["username"] && touched["username"]}
                   style={styles.textField}
                   theme={{
@@ -136,13 +137,16 @@ function RegisterScreen({ navigation }) {
                     colors: { primary: colors.primary },
                   }}
                 />
-                <HelperText
-                  type="error"
-                  visible={!isInvalidEmail}
-                  style={{ marginBottom: -20 }}
-                >
-                  Use domain xxxx-xxx-xxx@cuilahore.edu.pk
-                </HelperText>
+
+                {!isInvalidEmail ? (
+                  <HelperText type="error" style={{ marginBottom: -15 }}>
+                    Use domain xxxx-xxx-xxx@cuilahore.edu.pk
+                  </HelperText>
+                ) : (
+                  <HelperText type="info" style={{ marginBottom: -15 }}>
+                    Your email and SID is completely CONFIDENTIAL
+                  </HelperText>
+                )}
 
                 <FormTextInput
                   mode="flat"
